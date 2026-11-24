@@ -30,14 +30,13 @@ const MODEL_LABELS = {
 };
 
 /* =========================================================
-   1. OTAK AI KAMISATO AYAKA (MENGGUNAKAN GROQ API KEY USER)
+   1. OTAK AI KAMISATO AYAKA (API KEY & LOGIKA TIDAK DIUBAH)
    ========================================================= */
 class AyakaBrain {
     constructor() {
         this.apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        this.apiKey = localStorage.getItem("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") || "";
+        this.apiKey = localStorage.getItem("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") || "";
 
-        // Validasi model tersimpan; jika model lama sudah pensiun, otomatis pakai GPT-OSS 120B
         const savedModel = localStorage.getItem("luqman_ayaka_model");
         this.model = ACTIVE_GROQ_MODELS.includes(savedModel) ? savedModel : "openai/gpt-oss-120b";
 
@@ -169,28 +168,41 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
 }
 
 /* =========================================================
-   2. INISIALISASI HALAMAN, ENTERING ANIMATION & UI CHAT
+   2. INISIALISASI HALAMAN, LOADING SCREEN & UI CHAT
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const ayaka = new AyakaBrain();
 
-    // Entering Animation Genshin
+    // Loading Screen Autentik Genshin Impact (7 Elemen & Lore Tips)
     const loader = document.getElementById("genshin-loader");
     const fillBar = document.getElementById("elements-fill");
-    const icons = document.querySelectorAll(".el-icon");
+    const icons = document.querySelectorAll(".el-symbol");
+    const tipTitle = document.getElementById("tip-title");
     const loadText = document.getElementById("loading-text");
     const enterBtn = document.getElementById("enter-gate-btn");
 
-    const loadingPhrases = [
-        "Menyinkronkan Statue of The Seven...",
-        "Memuat memori pohon Sacred Sakura...",
-        "Menghubungkan Irminsul ke server Luqman...",
-        "Kamisato Ayaka telah menyadari kehadiranmu..."
+    const teyvatLoadingTips = [
+        {
+            title: "Inazuma — Kepulauan Petir Abadi",
+            desc: "Kepulauan terisolasi di ujung timur Teyvat. Di tengah gelombang badai abadi, berdiri pohon Sacred Sakura yang menjaga ingatan negeri ini."
+        },
+        {
+            title: "Komisi Yashiro — Klan Kamisato",
+            desc: "Bertanggung jawab atas urusan upacara adat, kuil, dan budaya Inazuma. Putri sulungnya, Kamisato Ayaka, dikenal sebagai Shirasagi Himegimi."
+        },
+        {
+            title: "Irminsul & Resonansi Ley Line",
+            desc: "Seluruh ingatan dunia Teyvat mengalir melalui akar Irminsul yang kini terhubung langsung dengan arsitektur digital rancangan Luqman."
+        },
+        {
+            title: "Kediaman Kamisato — Pintu Terbuka",
+            desc: "Kamisato Ayaka telah menunggumu di beranda dengan secangkir teh hangat dan kipas lipatnya."
+        }
     ];
 
     let progress = 0;
     const interval = setInterval(() => {
-        progress += 5;
+        progress += 4;
         fillBar.style.width = `${progress}%`;
 
         const activeCount = Math.floor((progress / 100) * icons.length);
@@ -198,15 +210,15 @@ document.addEventListener("DOMContentLoaded", () => {
             if (idx < activeCount) icon.classList.add("lit");
         });
 
-        const phraseIdx = Math.min(
-            Math.floor((progress / 100) * loadingPhrases.length),
-            loadingPhrases.length - 1
+        const tipIdx = Math.min(
+            Math.floor((progress / 100) * teyvatLoadingTips.length),
+            teyvatLoadingTips.length - 1
         );
-        loadText.textContent = loadingPhrases[phraseIdx];
+        tipTitle.textContent = teyvatLoadingTips[tipIdx].title;
+        loadText.textContent = teyvatLoadingTips[tipIdx].desc;
 
         if (progress >= 100) {
             clearInterval(interval);
-            loadText.textContent = "Koneksi Teyvat Selesai.";
             enterBtn.classList.remove("hidden");
         }
     }, 65);
@@ -250,21 +262,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     appendMessage("ayaka", "Kamisato Ayaka", welcomeText, false);
 
-    // Toggle lihat/sembunyikan API Key
     toggleKeyBtn.addEventListener("click", () => {
         const isPass = apiKeyInput.type === "password";
         apiKeyInput.type = isPass ? "text" : "password";
         toggleKeyBtn.textContent = isPass ? "🙈" : "👁️";
     });
 
-    // Simpan API Key milik user
     saveKeyBtn.addEventListener("click", () => {
         ayaka.setCredentials(apiKeyInput.value, modelSelect.value);
         activeModelBadge.textContent = MODEL_LABELS[ayaka.model] || ayaka.model;
         showFeedback("✓ API Key pribadimu tersimpan di browser.", "#4ade80");
     });
 
-    // Tes Koneksi API Key milik user
     testKeyBtn.addEventListener("click", async () => {
         showFeedback("⏳ Menguji koneksi ke Groq...", "#74d4ff");
         try {
@@ -287,7 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 4500);
     }
 
-    // Reset Ingatan
     document.getElementById("clear-chat").addEventListener("click", () => {
         ayaka.resetMemory();
         obsessionVal.textContent = "85%";
@@ -302,7 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 
-    // Enter untuk kirim, Shift+Enter untuk baris baru
     userInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -310,7 +317,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Submit pesan ke Groq AI
     chatForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         const text = userInput.value.trim();
@@ -403,11 +409,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================================
-   3. NAVIGASI TAB & TEMA VISION
+   3. NAVIGASI HUD GENSHIN, RESIN, PRIMOGEMS & DAILY QUESTS
    ========================================================= */
-document.querySelectorAll(".nav-btn").forEach(btn => {
+document.querySelectorAll(".hud-tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-        document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".hud-tab-btn").forEach(b => b.classList.remove("active"));
         document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
 
         btn.classList.add("active");
@@ -415,21 +421,67 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
     });
 });
 
-document.querySelectorAll(".v-dot").forEach(dot => {
-    dot.addEventListener("click", () => {
-        document.querySelectorAll(".v-dot").forEach(d => d.classList.remove("active"));
-        dot.classList.add("active");
-        document.body.setAttribute("data-vision", dot.dataset.setVision);
+document.querySelectorAll(".v-orb").forEach(orb => {
+    orb.addEventListener("click", () => {
+        document.querySelectorAll(".v-orb").forEach(o => o.classList.remove("active"));
+        orb.classList.add("active");
+        document.body.setAttribute("data-vision", orb.dataset.setVision);
+    });
+});
+
+// Sinkronisasi Primogems & Original Resin
+let primogems = 16000;
+let resin = 200;
+let pityCounter = 0;
+
+const primoDisplay = document.getElementById("primo-count");
+const hudPrimoDisplay = document.getElementById("hud-primo-count");
+const resinDisplay = document.getElementById("resin-count");
+const pityDisplay = document.getElementById("pity-count");
+const wishResults = document.getElementById("wish-results");
+
+function updatePrimogems(amount) {
+    primogems += amount;
+    primoDisplay.textContent = primogems;
+    hudPrimoDisplay.textContent = primogems;
+}
+
+document.getElementById("add-primo-btn").addEventListener("click", () => updatePrimogems(1600));
+document.getElementById("hud-add-primo").addEventListener("click", () => updatePrimogems(1600));
+
+// Original Resin -> Tukar 40 Resin menjadi 60 Primogems
+document.getElementById("condense-resin-btn").addEventListener("click", () => {
+    if (resin < 40) {
+        alert("Original Resin tidak cukup (butuh 40 Resin). Tunggu pemulihan otomatis!");
+        return;
+    }
+    resin -= 40;
+    resinDisplay.textContent = resin;
+    updatePrimogems(60);
+});
+
+// Pemulihan Resin otomatis setiap beberapa detik
+setInterval(() => {
+    if (resin < 200) {
+        resin++;
+        resinDisplay.textContent = resin;
+    }
+}, 4000);
+
+// Klaim Misi Harian Adventurers' Guild
+document.querySelectorAll(".claim-quest-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        if (btn.classList.contains("claimed")) return;
+        const reward = parseInt(btn.dataset.reward, 10) || 60;
+        updatePrimogems(reward);
+        btn.classList.add("claimed");
+        btn.textContent = "✓ Diklaim";
     });
 });
 
 /* =========================================================
-   4. WISH / GACHA SIMULATOR
+   4. WISH / GACHA SIMULATOR DENGAN SISTEM PITY 90
    ========================================================= */
-let primogems = 16000;
-const primoDisplay = document.getElementById("primo-count");
-const wishResults = document.getElementById("wish-results");
-
 const wishPool = [
     { name: "❄️ Kamisato Ayaka", star: 5 },
     { name: "⚔️ Mistsplitter Reforged", star: 5 },
@@ -442,27 +494,27 @@ const wishPool = [
     { name: "🏹 Slingshot", star: 3 }
 ];
 
-document.getElementById("add-primo-btn").addEventListener("click", () => {
-    primogems += 1600;
-    primoDisplay.textContent = primogems;
-});
-
 function doWish(count) {
     const cost = count * 160;
     if (primogems < cost) {
-        alert("Primogems tidak cukup! Klik tombol +1600 💎.");
+        alert("Primogems tidak cukup! Klik tombol +1600 💎 atau selesaikan Misi Harian.");
         return;
     }
 
-    primogems -= cost;
-    primoDisplay.textContent = primogems;
+    updatePrimogems(-cost);
     wishResults.innerHTML = "";
 
     for (let i = 0; i < count; i++) {
+        pityCounter++;
         const rand = Math.random() * 100;
         let item;
-        if (rand < 4) {
+
+        // Hard pity di 90 atau peluang 5★ meningkat setelah pity 74
+        const fiveStarChance = pityCounter >= 90 ? 100 : (pityCounter >= 74 ? 25 : 3.5);
+
+        if (rand < fiveStarChance) {
             item = wishPool[Math.floor(Math.random() * 2)];
+            pityCounter = 0; // Reset pity setelah dapat 5★
         } else if (rand < 22 || (count === 10 && i === 9)) {
             item = wishPool[2 + Math.floor(Math.random() * 4)];
         } else {
@@ -474,6 +526,8 @@ function doWish(count) {
         card.innerHTML = `${"★".repeat(item.star)}<br>${item.name}`;
         wishResults.appendChild(card);
     }
+
+    pityDisplay.textContent = pityCounter;
 }
 
 /* =========================================================
@@ -490,7 +544,7 @@ function resizeCanvas() {
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-for (let i = 0; i < 45; i++) {
+for (let i = 0; i < 48; i++) {
     particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -544,7 +598,7 @@ function playGateSound() {
 document.getElementById("bgm-toggle").addEventListener("click", function () {
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     bgmPlaying = !bgmPlaying;
-    this.textContent = bgmPlaying ? "🔊 BGM" : "🔇 BGM";
+    this.textContent = bgmPlaying ? "🔊" : "🔇";
 
     if (bgmPlaying) {
         const notes = [293.66, 329.63, 349.23, 440.00, 466.16, 587.33];
