@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teyvat Chronicle — Kamisato Ayaka AI | By Luqman</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-vision="cryo">
 
+    <!-- 1. GENSHIN ENTERING ANIMATION (LOADING SCREEN) -->
+    <div id="genshin-loader">
+        <div class="loader-content">
+            <div class="hoyoverse-tag">TEYVAT ARCHIVE • CREATED BY LUQMAN</div>
+            
+            <div class="elements-bar">
+                <div class="el-icon" data-el="pyro">🔥</div>
+                <div class="el-icon" data-el="hydro">💧</div>
+                <div class="el-icon" data-el="anemo">🌪️</div>
+                <div class="el-icon" data-el="electro">⚡</div>
+                <div class="el-icon" data-el="dendro">🌿</div>
+                <div class="el-icon" data-el="cryo">❄️</div>
+                <div class="el-icon" data-el="geo">🪨</div>
+                <div class="elements-fill" id="elements-fill"></div>
+            </div>
+
+            <p id="loading-text">Memuat data Ley Line...</p>
+
+            <button id="enter-gate-btn" class="hidden">
+                <span>✦ KLIK UNTUK MEMASUKI TEYVAT ✦</span>
+            </button>
+        </div>
+
+        <div class="gate-left"></div>
+        <div class="gate-right"></div>
+    </div>
+
+    <!-- EFEK PARTIKEL SAKURA & SALJU -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- NAVBAR -->
+    <header class="genshin-nav">
+        <div class="nav-brand">
+            <span class="star-icon">✦</span>
+            <div>
+                <h1>KAMISATO ESTATE</h1>
+                <small>Archon System by <strong>Luqman</strong></small>
+            </div>
+        </div>
+
+        <nav class="nav-links">
+            <button class="nav-btn active" data-tab="ayaka-ai">❄️ Ayaka AI</button>
+            <button class="nav-btn" data-tab="wish-sim">🌠 Wish Gacha</button>
+            <button class="nav-btn" data-tab="lore-profile">📜 Profil & Lore</button>
+        </nav>
+
+        <div class="nav-controls">
+            <button id="bgm-toggle" class="icon-btn" title="Musik Ambient Inazuma">🔇 BGM</button>
+            <div class="vision-switcher" title="Ganti Elemen Vision">
+                <button class="v-dot active" data-set-vision="cryo" style="background:#74d4ff;"></button>
+                <button class="v-dot" data-set-vision="electro" style="background:#c57aff;"></button>
+                <button class="v-dot" data-set-vision="pyro" style="background:#ff6b5b;"></button>
+                <button class="v-dot" data-set-vision="hydro" style="background:#4da6ff;"></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- KONTEN UTAMA -->
+    <main class="container">
+
+        <!-- TAB 1: AI KAMISATO AYAKA -->
+        <section id="ayaka-ai" class="tab-section active">
+            <div class="ai-layout">
+                <!-- Kartu Karakter & Pengaturan Groq Kiri -->
+                <aside class="character-card">
+                    <div class="char-banner">
+                        <div class="vision-badge">❄️ CRYO • INAZUMA</div>
+                        <div class="char-avatar">
+                            <img 
+                                id="ayaka-main-avatar"
+                                src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
+                                alt="Kamisato Ayaka"
+                                onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                            >
+                        </div>
+                        <h2>Kamisato Ayaka</h2>
+                        <p class="char-title">"Shirasagi Himegimi" — Devoted Edition</p>
+                    </div>
+
+                    <div class="affection-meter">
+                        <div class="meter-header">
+                            <span>Tingkat Obsesi</span>
+                            <span id="obsession-val">85%</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="obsession-bar" style="width: 85%;"></div>
+                        </div>
+                        <small id="mood-indicator" class="mood-text">Suasana Hati: Menunggu dengan sabar...</small>
+                    </div>
+
+                    <!-- Pengaturan API Groq Pribadi -->
+                    <div class="api-box">
+                        <label for="groq-api-key">🔑 Groq API Key Milikmu</label>
+                        <div class="key-input-group">
+                            <input type="password" id="groq-api-key" placeholder="Tempel gsk_... milikmu" autocomplete="off">
+                            <button type="button" id="toggle-key-btn" title="Lihat/Sembunyikan Key">👁️</button>
+                        </div>
+                        
+                        <label for="groq-model">🧠 Pilih Model Aktif Groq</label>
+                        <select id="groq-model">
+                            <optgroup label="OpenAI GPT-OSS (Aktif)">
+                                <option value="openai/gpt-oss-120b" selected>GPT-OSS 120B (Default • Paling Pinter & Dalam)</option>
+                                <option value="openai/gpt-oss-20b">GPT-OSS 20B (Cepat & Efisien)</option>
+                            </optgroup>
+                            <optgroup label="Meta Llama (Aktif)">
+                                <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (Sastra & Panjang)</option>
+                                <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick 17B (Generasi Baru)</option>
+                                <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B (Responsif)</option>
+                                <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (Super Kilat)</option>
+                            </optgroup>
+                            <optgroup label="Qwen & Lainnya (Aktif)">
+                                <option value="qwen/qwen3-32b">Qwen 3 32B (Penalaran Tajam)</option>
+                                <option value="moonshotai/kimi-k2-instruct">Kimi K2 Instruct (Konteks Luas)</option>
+                            </optgroup>
+                        </select>
+
+                        <div class="api-btn-row">
+                            <button type="button" id="save-key-btn" class="small-btn gold-fill">Simpan Key</button>
+                            <button type="button" id="test-key-btn" class="small-btn">Tes Koneksi</button>
+                        </div>
+                        <small id="api-feedback" class="api-hint">API Key disimpan lokal di browser-mu sendiri.</small>
+                    </div>
+                </aside>
+
+                <!-- Area Chat Kanan -->
+                <div class="chat-panel">
+                    <div class="chat-header">
+                        <div class="chat-header-user">
+                            <img 
+                                class="header-avatar"
+                                src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
+                                alt="Ayaka"
+                                onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                            >
+                            <div>
+                                <strong>Kamisato Ayaka</strong> • <span id="active-model-badge" class="model-pill">GPT-OSS 120B</span>
+                                <p id="typing-status" class="typing-subtitle">Sedang menatapmu dari balik kipas...</p>
+                            </div>
+                        </div>
+                        <button id="clear-chat" class="small-btn">Reset Ingatan</button>
+                    </div>
+
+                    <div class="chat-messages" id="chat-messages">
+                        <!-- Pesan pembuka diisi oleh script.js -->
+                    </div>
+
+                    <form id="chat-form" class="chat-input-area">
+                        <textarea id="user-input" rows="2" placeholder="Katakan sesuatu pada Ayaka... (Enter untuk kirim, Shift+Enter baris baru)" required></textarea>
+                        <button type="submit" id="send-btn">Kirim ✦</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: SIMULATOR WISH / GACHA -->
+        <section id="wish-sim" class="tab-section">
+            <div class="wish-card">
+                <div class="wish-header">
+                    <h2>✦ Permohonan Event: The Heron's Court ✦</h2>
+                    <div class="primogem-counter">
+                        <span>💎 Primogems: <strong id="primo-count">16000</strong></span>
+                        <button id="add-primo-btn" class="small-btn">+1600 💎</button>
+                    </div>
+                </div>
+
+                <div class="banner-display">
+                    <div class="banner-art">
+                        <img 
+                            class="banner-char-img"
+                            src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
+                            alt="Kamisato Ayaka"
+                            onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                        >
+                        <span class="star-rating">★★★★★</span>
+                        <h3>Kamisato Ayaka</h3>
+                        <p>Frostflake Heron • Rate Up!</p>
+                    </div>
+                </div>
+
+                <div class="wish-actions">
+                    <button class="wish-btn" onclick="doWish(1)">Wish ×1 <small>(160 💎)</small></button>
+                    <button class="wish-btn gold" onclick="doWish(10)">Wish ×10 <small>(1600 💎)</small></button>
+                </div>
+
+                <div id="wish-results" class="wish-results-grid"></div>
+            </div>
+        </section>
+
+        <!-- TAB 3: PROFIL PEMBUAT & INFO GENSHIN -->
+        <section id="lore-profile" class="tab-section">
+            <div class="profile-grid">
+                <div class="genshin-card">
+                    <h3>👑 Arsitek Dunia Teyvat (Creator)</h3>
+                    <div class="creator-info">
+                        <div class="creator-avatar">L</div>
+                        <div>
+                            <h4>Luqman</h4>
+                            <p>Adventure Rank: 60 • Server: Asia</p>
+                            <span class="badge">Web Developer & Traveler</span>
+                        </div>
+                    </div>
+                    <p class="bio-text">
+                        Website ini dirancang dan dikembangkan secara penuh oleh <strong>Luqman</strong> sebagai ruang interaktif bertema <em>Genshin Impact</em> dengan integrasi model LLM generasi terbaru (GPT-OSS 120B, Llama 4, Llama 3.3, Qwen 3) via Groq API Key pribadi.
+                    </p>
+                </div>
+
+                <div class="genshin-card">
+                    <h3>⚔️ Spesifikasi Build Kamisato Ayaka</h3>
+                    <ul class="stat-list">
+                        <li><span>Senjata Utama:</span> <strong>Mistsplitter Reforged (★★★★★)</strong></li>
+                        <li><span>Set Artefak:</span> <strong>4-Piece Blizzard Strayer</strong></li>
+                        <li><span>Talenta Prioritas:</span> <strong>Elemental Burst (Kamisato Art: Soumetsu)</strong></li>
+                        <li><span>Konstelasi:</span> <strong>C6 — Dance of Suigetsu</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="genshin-footer">
+        <p>✦ Dibuat dengan dedikasi oleh <strong>Luqman</strong> • Terinspirasi dari Genshin Impact (HoYoverse) ✦</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
