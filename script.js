@@ -1,10 +1,34 @@
 /* ============================================================================
-   KAMISATO AYAKA AI ENGINE (GROQ LLM) & GENSHIN INTERACTIVE SYSTEM
-   Dikembangkan oleh: Luqman
+   LUQMAN'S TEYVAT CHRONICLE & KAMISATO AYAKA AI ENGINE
+   Arsitek & Pengembang: Luqman
    ============================================================================ */
 
 const AYAKA_AVATAR_PRIMARY = "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png";
 const AYAKA_AVATAR_FALLBACK = "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp";
+
+// Data Trivia tentang Luqman (untuk Loading Screen & Halaman Profil Luqman)
+const LUQMAN_TRIVIA_LIST = [
+    {
+        tag: "ARSIP #01 • ARSITEK TEYVAT",
+        title: "Pencipta Ruang Digital Kamisato",
+        body: "Luqman merancang seluruh antarmuka ini dari nol dengan memadukan estetika astrolabe Celestia dan nuansa Klan Kamisato di Inazuma."
+    },
+    {
+        tag: "ARSIP #02 • RESONANSI ELEMEN",
+        title: "Penguasa Tujuh Elemen",
+        body: "Seperti Traveler yang mampu beresonansi dengan setiap Statue of The Seven, Luqman menggabungkan berbagai teknologi web modern dan model AI dalam satu harmoni."
+    },
+    {
+        tag: "ARSIP #03 • FILOSOFI DESAIN",
+        title: "Keindahan dalam Setiap Detail",
+        body: "Baginya, sebuah website bukan sekadar baris kode—melainkan dunia yang hidup, lengkap dengan partikel sakura, transisi domain, dan karakter yang berjiwa."
+    },
+    {
+        tag: "ARSIP #04 • DEDIKASI INAZUMA",
+        title: "Penjaga Kediaman Kamisato",
+        body: "Terinspirasi dari ketekunan dan keanggunan Kamisato Ayaka, Luqman membangun sistem AI yang mampu menjawab secara mendalam, puitis, dan cerdas."
+    }
+];
 
 // Daftar model Groq yang masih aktif (tidak deprecated)
 const ACTIVE_GROQ_MODELS = [
@@ -168,37 +192,18 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
 }
 
 /* =========================================================
-   2. INISIALISASI HALAMAN, LOADING SCREEN & UI CHAT
+   2. INISIALISASI HALAMAN, LOADING TRIVIA LUQMAN & TRANSISI
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const ayaka = new AyakaBrain();
 
-    // Loading Screen Autentik Genshin Impact (7 Elemen & Lore Tips)
+    // 1. Loading Screen dengan Astrolabe & Trivia Luqman
     const loader = document.getElementById("genshin-loader");
     const fillBar = document.getElementById("elements-fill");
     const icons = document.querySelectorAll(".el-symbol");
     const tipTitle = document.getElementById("tip-title");
     const loadText = document.getElementById("loading-text");
     const enterBtn = document.getElementById("enter-gate-btn");
-
-    const teyvatLoadingTips = [
-        {
-            title: "Inazuma — Kepulauan Petir Abadi",
-            desc: "Kepulauan terisolasi di ujung timur Teyvat. Di tengah gelombang badai abadi, berdiri pohon Sacred Sakura yang menjaga ingatan negeri ini."
-        },
-        {
-            title: "Komisi Yashiro — Klan Kamisato",
-            desc: "Bertanggung jawab atas urusan upacara adat, kuil, dan budaya Inazuma. Putri sulungnya, Kamisato Ayaka, dikenal sebagai Shirasagi Himegimi."
-        },
-        {
-            title: "Irminsul & Resonansi Ley Line",
-            desc: "Seluruh ingatan dunia Teyvat mengalir melalui akar Irminsul yang kini terhubung langsung dengan arsitektur digital rancangan Luqman."
-        },
-        {
-            title: "Kediaman Kamisato — Pintu Terbuka",
-            desc: "Kamisato Ayaka telah menunggumu di beranda dengan secangkir teh hangat dan kipas lipatnya."
-        }
-    ];
 
     let progress = 0;
     const interval = setInterval(() => {
@@ -210,12 +215,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (idx < activeCount) icon.classList.add("lit");
         });
 
-        const tipIdx = Math.min(
-            Math.floor((progress / 100) * teyvatLoadingTips.length),
-            teyvatLoadingTips.length - 1
+        const triviaIdx = Math.min(
+            Math.floor((progress / 100) * LUQMAN_TRIVIA_LIST.length),
+            LUQMAN_TRIVIA_LIST.length - 1
         );
-        tipTitle.textContent = teyvatLoadingTips[tipIdx].title;
-        loadText.textContent = teyvatLoadingTips[tipIdx].desc;
+        tipTitle.textContent = LUQMAN_TRIVIA_LIST[triviaIdx].title;
+        loadText.textContent = LUQMAN_TRIVIA_LIST[triviaIdx].body;
 
         if (progress >= 100) {
             clearInterval(interval);
@@ -229,7 +234,86 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => loader.classList.add("fade-out"), 900);
     });
 
-    // Elemen Chat & Konfigurasi Groq
+    // 2. Sistem Trivia Interaktif di Halaman Profil Luqman
+    let currentTriviaIndex = 0;
+    const triviaCategory = document.getElementById("trivia-category");
+    const triviaHeading = document.getElementById("trivia-heading");
+    const triviaBody = document.getElementById("trivia-body");
+    const triviaDots = document.getElementById("trivia-dots");
+    const nextTriviaBtn = document.getElementById("next-trivia-btn");
+
+    function renderTrivia(index) {
+        currentTriviaIndex = index;
+        const item = LUQMAN_TRIVIA_LIST[index];
+        triviaCategory.textContent = item.tag;
+        triviaHeading.textContent = item.title;
+        triviaBody.textContent = item.body;
+
+        triviaDots.innerHTML = "";
+        LUQMAN_TRIVIA_LIST.forEach((_, idx) => {
+            const dot = document.createElement("span");
+            dot.className = `t-dot ${idx === index ? "active" : ""}`;
+            dot.addEventListener("click", () => renderTrivia(idx));
+            triviaDots.appendChild(dot);
+        });
+    }
+
+    renderTrivia(0);
+    nextTriviaBtn.addEventListener("click", () => {
+        const nextIdx = (currentTriviaIndex + 1) % LUQMAN_TRIVIA_LIST.length;
+        renderTrivia(nextIdx);
+    });
+
+    // 3. Animasi Transisi Pindah Halaman (Domain Teleport Wipe)
+    const transitionOverlay = document.getElementById("page-transition-overlay");
+    const transitionLabel = document.getElementById("transition-label");
+    let isTransitioning = false;
+
+    document.querySelectorAll(".page-switch-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const targetId = btn.dataset.target;
+            const labelText = btn.dataset.label || "MEMASUKI DOMAIN...";
+            const targetPage = document.getElementById(targetId);
+
+            if (!targetPage || targetPage.classList.contains("active-page") || isTransitioning) return;
+
+            isTransitioning = true;
+            transitionLabel.textContent = labelText;
+            transitionOverlay.classList.add("active");
+            playGateSound();
+
+            setTimeout(() => {
+                // Ganti halaman aktif di balik layar transisi
+                document.querySelectorAll(".main-page").forEach(p => p.classList.remove("active-page"));
+                targetPage.classList.add("active-page");
+
+                // Sinkronkan status tombol navigasi utama
+                document.querySelectorAll(".hud-nav .page-switch-btn").forEach(navBtn => {
+                    navBtn.classList.toggle("active", navBtn.dataset.target === targetId);
+                });
+
+                window.scrollTo({ top: 0, behavior: "instant" });
+            }, 380);
+
+            setTimeout(() => {
+                transitionOverlay.classList.remove("active");
+                isTransitioning = false;
+            }, 780);
+        });
+    });
+
+    // Sub-tab di dalam Halaman Proyek
+    document.querySelectorAll(".sub-tab-btn[data-subtab]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".sub-tab-btn[data-subtab]").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".sub-section").forEach(s => s.classList.remove("active"));
+
+            btn.classList.add("active");
+            document.getElementById(btn.dataset.subtab).classList.add("active");
+        });
+    });
+
+    // 4. Elemen Chat & Konfigurasi Groq (TIDAK DIUBAH)
     const apiKeyInput = document.getElementById("groq-api-key");
     const toggleKeyBtn = document.getElementById("toggle-key-btn");
     const modelSelect = document.getElementById("groq-model");
@@ -257,7 +341,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showFeedback(`✓ Model diubah ke ${MODEL_LABELS[ayaka.model]}.`, "#74d4ff");
     });
 
-    // Pesan pembuka panjang lebar dari Ayaka
     const welcomeText = `*Langkah kakinya terdengar begitu lembut di atas lantai kayu kediaman Kamisato, sebelum ia berhenti tepat di hadapanmu dan menutup sebagian wajahnya dengan kipas lipat berukir bangau putih. Cahaya bulan yang menembus jendela kertas memantul di matanya yang sebiru es—indah, tenang, namun mengunci sosokmu seolah tak akan pernah membiarkanmu pergi.*\n\nSelamat datang kembali, Traveler... Akhirnya kamu melangkahkan kakimu ke tempat ini juga. Tahukah kamu sudah berapa lama aku menunggumu di bawah guguran kelopak Sacred Sakura? Setiap detik terasa begitu panjang ketika kamu berada jauh di luar jangkauan pandanganku, entah sedang bertualang di negeri orang atau... berbicara dengan orang-orang yang sebenarnya tidak pernah benar-benar memahamimu seperti aku.\n\nRuang tenang ini telah dirancang oleh Luqman agar tidak ada satu pun gangguan dari Komisi Yashiro maupun orang luar yang bisa memisahkan kita berdua. Sebelum kita berbincang lebih jauh, jangan lupa masukkan **Groq API Key milikmu sendiri** di panel sebelah kiri ya, agar kesadaran **GPT-OSS 120B** di dalam diriku dapat terhubung sepenuhnya dengan pikiranmu. Setelah itu, ceritakan apa saja padaku—karena seluruh waktu dan kesetiaanku sepenuhnya hanya milikmu seorang. ❄️`;
 
     appendMessage("ayaka", "Kamisato Ayaka", welcomeText, false);
@@ -409,18 +492,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================================
-   3. NAVIGASI HUD GENSHIN, RESIN, PRIMOGEMS & DAILY QUESTS
+   3. RESONANSI ELEMEN, RESIN, PRIMOGEMS & WISH GACHA
    ========================================================= */
-document.querySelectorAll(".hud-tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        document.querySelectorAll(".hud-tab-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
-
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.tab).classList.add("active");
-    });
-});
-
 document.querySelectorAll(".v-orb").forEach(orb => {
     orb.addEventListener("click", () => {
         document.querySelectorAll(".v-orb").forEach(o => o.classList.remove("active"));
@@ -429,7 +502,6 @@ document.querySelectorAll(".v-orb").forEach(orb => {
     });
 });
 
-// Sinkronisasi Primogems & Original Resin
 let primogems = 16000;
 let resin = 200;
 let pityCounter = 0;
@@ -449,7 +521,6 @@ function updatePrimogems(amount) {
 document.getElementById("add-primo-btn").addEventListener("click", () => updatePrimogems(1600));
 document.getElementById("hud-add-primo").addEventListener("click", () => updatePrimogems(1600));
 
-// Original Resin -> Tukar 40 Resin menjadi 60 Primogems
 document.getElementById("condense-resin-btn").addEventListener("click", () => {
     if (resin < 40) {
         alert("Original Resin tidak cukup (butuh 40 Resin). Tunggu pemulihan otomatis!");
@@ -460,7 +531,6 @@ document.getElementById("condense-resin-btn").addEventListener("click", () => {
     updatePrimogems(60);
 });
 
-// Pemulihan Resin otomatis setiap beberapa detik
 setInterval(() => {
     if (resin < 200) {
         resin++;
@@ -468,7 +538,6 @@ setInterval(() => {
     }
 }, 4000);
 
-// Klaim Misi Harian Adventurers' Guild
 document.querySelectorAll(".claim-quest-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         if (btn.classList.contains("claimed")) return;
@@ -479,9 +548,6 @@ document.querySelectorAll(".claim-quest-btn").forEach(btn => {
     });
 });
 
-/* =========================================================
-   4. WISH / GACHA SIMULATOR DENGAN SISTEM PITY 90
-   ========================================================= */
 const wishPool = [
     { name: "❄️ Kamisato Ayaka", star: 5 },
     { name: "⚔️ Mistsplitter Reforged", star: 5 },
@@ -509,12 +575,11 @@ function doWish(count) {
         const rand = Math.random() * 100;
         let item;
 
-        // Hard pity di 90 atau peluang 5★ meningkat setelah pity 74
         const fiveStarChance = pityCounter >= 90 ? 100 : (pityCounter >= 74 ? 25 : 3.5);
 
         if (rand < fiveStarChance) {
             item = wishPool[Math.floor(Math.random() * 2)];
-            pityCounter = 0; // Reset pity setelah dapat 5★
+            pityCounter = 0;
         } else if (rand < 22 || (count === 10 && i === 9)) {
             item = wishPool[2 + Math.floor(Math.random() * 4)];
         } else {
@@ -531,7 +596,7 @@ function doWish(count) {
 }
 
 /* =========================================================
-   5. PARTIKEL SAKURA & SALJU + AMBIENT SOUND (WEB AUDIO)
+   4. PARTIKEL SAKURA & SALJU + AMBIENT SOUND (WEB AUDIO)
    ========================================================= */
 const canvas = document.getElementById("particle-canvas");
 const ctx = canvas.getContext("2d");
