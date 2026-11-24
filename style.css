@@ -1,1 +1,782 @@
+/* =========================================
+   VARIABLES & TEMA ELEMEN GENSHIN
+   ========================================= */
+:root {
+    --bg-dark: #0d111a;
+    --bg-panel: rgba(20, 27, 41, 0.88);
+    --gold: #e6c687;
+    --gold-bright: #fff0c2;
+    --text-main: #f2efe9;
+    --text-muted: #a6b0c3;
+    --accent: #74d4ff;
+    --accent-glow: rgba(116, 212, 255, 0.4);
+    --border-gold: rgba(230, 198, 135, 0.35);
+    --yandere-pink: #ff6b9d;
+}
 
+body[data-vision="cryo"] { --accent: #74d4ff; --accent-glow: rgba(116, 212, 255, 0.4); }
+body[data-vision="electro"] { --accent: #c57aff; --accent-glow: rgba(197, 122, 255, 0.4); }
+body[data-vision="pyro"] { --accent: #ff6b5b; --accent-glow: rgba(255, 107, 91, 0.4); }
+body[data-vision="hydro"] { --accent: #4da6ff; --accent-glow: rgba(77, 166, 255, 0.4); }
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: radial-gradient(circle at top, #182338 0%, var(--bg-dark) 75%);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .hoyoverse-tag {
+    font-family: 'Cinzel', serif;
+}
+
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* =========================================
+   1. ENTERING ANIMATION ALA GENSHIN
+   ========================================= */
+#genshin-loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#genshin-loader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.gate-left, .gate-right {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: #f5f2eb;
+    z-index: 1;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.gate-left { left: 0; border-right: 2px solid #d4af37; }
+.gate-right { right: 0; border-left: 2px solid #d4af37; }
+
+#genshin-loader.open-gates .gate-left { transform: translateX(-100%); }
+#genshin-loader.open-gates .gate-right { transform: translateX(100%); }
+
+.loader-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #3a3f4b;
+    padding: 2rem;
+    max-width: 550px;
+    width: 90%;
+}
+
+.hoyoverse-tag {
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    color: #8c7853;
+    margin-bottom: 2.5rem;
+    font-weight: 700;
+}
+
+.elements-bar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    background: #e5e0d5;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.el-icon {
+    position: relative;
+    z-index: 2;
+    font-size: 1.4rem;
+    opacity: 0.25;
+    filter: grayscale(100%);
+    transition: all 0.4s ease;
+}
+
+.el-icon.lit {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.15);
+}
+
+.elements-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #fff8e7, #e6c687);
+    transition: width 0.3s ease;
+    z-index: 1;
+}
+
+#loading-text {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+#enter-gate-btn {
+    background: linear-gradient(135deg, #2b3344, #181e29);
+    color: var(--gold);
+    border: 2px solid var(--gold);
+    padding: 14px 32px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    border-radius: 40px;
+    cursor: pointer;
+    box-shadow: 0 0 25px rgba(230, 198, 135, 0.6);
+    animation: pulseGold 2s infinite;
+    transition: transform 0.2s;
+}
+
+#enter-gate-btn:hover { transform: scale(1.05); }
+.hidden { display: none !important; }
+
+@keyframes pulseGold {
+    0%, 100% { box-shadow: 0 0 15px rgba(230, 198, 135, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(230, 198, 135, 0.95); }
+}
+
+/* =========================================
+   NAVBAR & LAYOUT UTAMA
+   ========================================= */
+.genshin-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: rgba(13, 17, 26, 0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-gold);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.star-icon {
+    font-size: 1.8rem;
+    color: var(--gold);
+    text-shadow: 0 0 12px var(--gold);
+}
+
+.nav-brand h1 {
+    font-size: 1.2rem;
+    color: var(--gold-bright);
+    letter-spacing: 1.5px;
+}
+
+.nav-brand small {
+    color: var(--accent);
+    font-size: 0.78rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    color: var(--gold-bright);
+    border-color: var(--gold);
+    background: rgba(230, 198, 135, 0.12);
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.icon-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--border-gold);
+    color: var(--text-main);
+    padding: 6px 12px;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.vision-switcher {
+    display: flex;
+    gap: 6px;
+    background: rgba(0,0,0,0.4);
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border-gold);
+}
+
+.v-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.v-dot.active {
+    border-color: #fff;
+    transform: scale(1.25);
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    max-width: 1260px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+}
+
+.tab-section { display: none; }
+.tab-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   2. AI AYAKA LAYOUT
+   ========================================= */
+.ai-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 880px) {
+    .ai-layout { grid-template-columns: 1fr; }
+}
+
+.character-card, .chat-panel, .wish-card, .genshin-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+}
+
+.character-card {
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.char-banner { text-align: center; }
+
+.vision-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+}
+
+.char-avatar {
+    width: 108px;
+    height: 108px;
+    margin: 0 auto 0.7rem;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, var(--gold), var(--accent), var(--yandere-pink));
+    box-shadow: 0 0 25px var(--accent-glow);
+    overflow: hidden;
+}
+
+.char-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background: #1a263d;
+}
+
+.char-banner h2 {
+    color: var(--gold-bright);
+    font-size: 1.35rem;
+}
+
+.char-title {
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-style: italic;
+}
+
+.affection-meter {
+    background: rgba(0,0,0,0.32);
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 105, 180, 0.32);
+}
+
+.meter-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+    color: #ff9ec7;
+    font-weight: 600;
+}
+
+.meter-bar {
+    height: 8px;
+    background: #1a1f2c;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), #ff5c8a);
+    transition: width 0.5s ease;
+}
+
+.mood-text {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: block;
+}
+
+.api-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--border-gold);
+    padding-top: 0.9rem;
+}
+
+.api-box label {
+    font-size: 0.78rem;
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.key-input-group {
+    display: flex;
+    gap: 6px;
+}
+
+.key-input-group input {
+    flex: 1;
+}
+
+#toggle-key-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--border-gold);
+    color: var(--text-main);
+    border-radius: 8px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.api-box input, .api-box select {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--border-gold);
+    color: var(--text-main);
+    padding: 9px 11px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    outline: none;
+}
+
+.api-box select optgroup {
+    background: #121826;
+    color: var(--gold);
+    font-weight: 700;
+}
+
+.api-box select option {
+    background: #182033;
+    color: var(--text-main);
+}
+
+.api-box input:focus, .api-box select:focus {
+    border-color: var(--accent);
+}
+
+.api-btn-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.api-hint {
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    min-height: 16px;
+}
+
+/* Chat Panel */
+.chat-panel {
+    display: flex;
+    flex-direction: column;
+    height: 640px;
+    overflow: hidden;
+}
+
+.chat-header {
+    padding: 0.9rem 1.4rem;
+    border-bottom: 1px solid var(--border-gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.28);
+}
+
+.chat-header-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    background: #1a263d;
+}
+
+.model-pill {
+    font-size: 0.7rem;
+    background: rgba(116, 212, 255, 0.14);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 12px;
+    vertical-align: middle;
+}
+
+.typing-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 2px;
+}
+
+.small-btn {
+    background: rgba(230, 198, 135, 0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.small-btn.gold-fill {
+    background: linear-gradient(135deg, var(--gold), #c79c46);
+    color: #111622;
+}
+
+.small-btn:hover {
+    background: var(--gold);
+    color: #111;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.msg-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    max-width: 86%;
+    animation: fadeIn 0.3s ease;
+}
+
+.msg-wrapper.ayaka { align-self: flex-start; }
+.msg-wrapper.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.chat-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+    background: #1a263d;
+    box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.msg-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.msg-wrapper.user .msg-body { align-items: flex-end; }
+
+.msg-sender {
+    font-size: 0.75rem;
+    color: var(--gold);
+    margin-bottom: 4px;
+    font-weight: 700;
+}
+
+.msg-wrapper.user .msg-sender { color: var(--accent); }
+
+.msg-bubble {
+    padding: 14px 18px;
+    border-radius: 15px;
+    line-height: 1.65;
+    font-size: 0.93rem;
+}
+
+.msg-wrapper.ayaka .msg-bubble {
+    background: rgba(30, 41, 66, 0.92);
+    border: 1px solid var(--accent-glow);
+    border-top-left-radius: 3px;
+}
+
+.msg-wrapper.user .msg-bubble {
+    background: linear-gradient(135deg, #2b4c7e, #1d3557);
+    border: 1px solid var(--border-gold);
+    border-top-right-radius: 3px;
+}
+
+.msg-bubble em { color: #bfe8ff; }
+
+.chat-input-area {
+    display: flex;
+    padding: 1rem;
+    gap: 10px;
+    border-top: 1px solid var(--border-gold);
+    background: rgba(0,0,0,0.32);
+}
+
+.chat-input-area textarea {
+    flex: 1;
+    resize: none;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border-gold);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 16px;
+    font-family: inherit;
+    font-size: 0.92rem;
+    outline: none;
+}
+
+.chat-input-area textarea:focus { border-color: var(--accent); }
+
+.chat-input-area button {
+    background: linear-gradient(135deg, var(--gold), #c99e48);
+    color: #161922;
+    font-weight: 700;
+    border: none;
+    padding: 0 24px;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.chat-input-area button:hover:not(:disabled) { transform: scale(1.03); }
+.chat-input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* =========================================
+   3. WISH GACHA & PROFIL
+   ========================================= */
+.wish-card {
+    padding: 2rem;
+    text-align: center;
+}
+
+.wish-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.banner-display {
+    background: linear-gradient(135deg, #1b2c4a, #2c1d42);
+    border: 2px solid var(--gold);
+    border-radius: 14px;
+    padding: 2.2rem 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.banner-char-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 0.6rem;
+}
+
+.star-rating { color: #ffd700; letter-spacing: 4px; font-size: 1.2rem; }
+.banner-art h3 { font-size: 2rem; color: var(--gold-bright); margin: 0.4rem 0; }
+
+.wish-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.wish-btn {
+    background: #f2efe9;
+    color: #2b3344;
+    border: 2px solid var(--gold);
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.wish-btn.gold { background: linear-gradient(135deg, #f5d896, #d4a64a); }
+.wish-btn:hover { transform: translateY(-2px); }
+
+.wish-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.wish-item {
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid #555;
+    font-size: 0.85rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.wish-item.star-5 { border-color: #ffb703; background: rgba(255, 183, 3, 0.15); color: #ffd166; font-weight: 700; }
+.wish-item.star-4 { border-color: #c77dff; background: rgba(199, 125, 255, 0.15); color: #e0aaff; }
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.genshin-card { padding: 1.8rem; }
+.genshin-card h3 { color: var(--gold); margin-bottom: 1.2rem; }
+
+.creator-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.creator-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #111;
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    background: var(--accent-glow);
+    color: var(--accent);
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
+.bio-text { color: var(--text-muted); line-height: 1.6; font-size: 0.92rem; }
+
+.stat-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.stat-list li {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.9rem;
+}
+
+.genshin-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-gold);
+    margin-top: 3rem;
+}
