@@ -3,43 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genshin Impact — Kamisato Estate | Created by Luqman</title>
+    <title>Luqman — Teyvat Archive & Kamisato AI</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-vision="cryo">
 
-    <!-- 1. LOADING SCREEN AUTENTIK GENSHIN IMPACT (7 ELEMEN & TIPS TEYVAT) -->
+    <!-- 1. LOADING SCREEN CELESTIA ASTROLABE + TRIVIA LUQMAN -->
     <div id="genshin-loader">
-        <div class="celestia-bg"></div>
-        <div class="celestia-pillars"></div>
+        <div class="celestia-astrolabe">
+            <div class="ring ring-outer"></div>
+            <div class="ring ring-mid"></div>
+            <div class="ring ring-inner"></div>
+            <div class="astrolabe-star">✦</div>
+        </div>
 
         <div class="loader-content">
-            <div class="hoyoverse-tag">TEYVAT ARCHIVE • CRAFTED BY LUQMAN</div>
+            <div class="hoyoverse-tag">TEYVAT CHRONICLE • ARCHITECT LUQMAN</div>
             
-            <!-- Bar 7 Elemen Khas Layar Loading Genshin -->
+            <!-- Bar 7 Elemen Genshin -->
             <div class="genshin-elements-wrapper">
                 <div class="elements-track">
-                    <span class="el-symbol" data-el="pyro" title="Pyro">🔥</span>
-                    <span class="el-symbol" data-el="hydro" title="Hydro">💧</span>
-                    <span class="el-symbol" data-el="anemo" title="Anemo">🌪️</span>
-                    <span class="el-symbol" data-el="electro" title="Electro">⚡</span>
-                    <span class="el-symbol" data-el="dendro" title="Dendro">🌿</span>
-                    <span class="el-symbol" data-el="cryo" title="Cryo">❄️</span>
-                    <span class="el-symbol" data-el="geo" title="Geo">🪨</span>
+                    <span class="el-symbol" data-el="pyro">🔥</span>
+                    <span class="el-symbol" data-el="hydro">💧</span>
+                    <span class="el-symbol" data-el="anemo">🌪️</span>
+                    <span class="el-symbol" data-el="electro">⚡</span>
+                    <span class="el-symbol" data-el="dendro">🌿</span>
+                    <span class="el-symbol" data-el="cryo">❄️</span>
+                    <span class="el-symbol" data-el="geo">🪨</span>
                     <div class="elements-progress-bar" id="elements-fill"></div>
                 </div>
             </div>
 
-            <!-- Tips Teyvat Dinamis ala Loading Screen Genshin -->
+            <!-- Kartu Trivia Luqman saat Loading -->
             <div class="teyvat-tip-box">
-                <h4 id="tip-title">Inazuma — Kepulauan Petir Abadi</h4>
-                <p id="loading-text">Menyinkronkan Statue of The Seven...</p>
+                <span class="tip-badge">✦ TRIVIA TRAVELER LUQMAN ✦</span>
+                <h4 id="tip-title">Arsitek Dunia Digital</h4>
+                <p id="loading-text">Memuat arsip Irminsul milik Luqman...</p>
             </div>
 
-            <!-- Gerbang Masuk Celestia -->
             <button id="enter-gate-btn" class="hidden">
-                <span class="gate-star">✦</span> KLIK UNTUK MEMASUKI TEYVAT <span class="gate-star">✦</span>
+                <span>✦ SENTUH GERBANG UNTUK MASUK ✦</span>
             </button>
         </div>
 
@@ -47,317 +51,377 @@
         <div class="gate-right"></div>
     </div>
 
-    <!-- PARTIKEL KELOPAK SAKURA & SALJU CRYO -->
+    <!-- 2. ANIMASI TRANSISI PINDAH HALAMAN (TELEPORT DOMAIN WIPE) -->
+    <div id="page-transition-overlay">
+        <div class="transition-flash"></div>
+        <div class="transition-emblem">
+            <div class="emblem-ring"></div>
+            <span>✦</span>
+            <p id="transition-label">MEMASUKI DOMAIN...</p>
+        </div>
+    </div>
+
+    <!-- PARTIKEL SAKURA & SALJU -->
     <canvas id="particle-canvas"></canvas>
 
-    <!-- HUD ATAS ALA GENSHIN IMPACT -->
+    <!-- HUD NAVIGASI UTAMA GENSHIN IMPACT -->
     <header class="genshin-hud-top">
         <div class="hud-left">
-            <div class="paimon-emblem" title="Paimon Menu — Luqman Edition">
-                <span>✦</span>
+            <div class="paimon-emblem" title="Luqman's Chronicle">
+                <span>L</span>
             </div>
             <div class="player-uid-box">
                 <div class="player-name-row">
-                    <h1>KAMISATO ESTATE</h1>
+                    <h1>LUQMAN ARCHIVE</h1>
                     <span class="ar-badge">AR 60</span>
                 </div>
-                <small>UID: 800000001 • Traveler: <strong>Luqman</strong></small>
+                <small>UID: 800000001 • Server Asia</small>
             </div>
         </div>
 
-        <!-- Navigasi Ikon Menu Genshin -->
+        <!-- Navigasi Halaman Terpisah -->
         <nav class="hud-nav">
-            <button class="hud-tab-btn active" data-tab="ayaka-ai">
-                <span class="tab-diamond">❖</span> Karakter & AI
+            <button class="page-switch-btn active" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">
+                <span class="tab-diamond">👑</span> Profil Luqman
             </button>
-            <button class="hud-tab-btn" data-tab="wish-sim">
-                <span class="tab-diamond">✦</span> Permohonan (Wish)
-            </button>
-            <button class="hud-tab-btn" data-tab="handbook-tab">
-                <span class="tab-diamond">📖</span> Buku Panduan
-            </button>
-            <button class="hud-tab-btn" data-tab="lore-profile">
-                <span class="tab-diamond">👑</span> Arsip Luqman
+            <button class="page-switch-btn" data-target="page-projects" data-label="PROYEK: KAMISATO ESTATE">
+                <span class="tab-diamond">❖</span> Proyek Teyvat (AI & Wish)
             </button>
         </nav>
 
-        <!-- Resource Bar (Original Resin, Primogems, Vision Switcher & BGM) -->
+        <!-- Resource Bar -->
         <div class="hud-right">
-            <div class="resource-pill" title="Original Resin (Pulih otomatis)">
+            <div class="resource-pill" title="Original Resin">
                 <span>🌙</span>
                 <strong id="resin-count">200</strong><small>/200</small>
-                <button id="condense-resin-btn" class="mini-plus" title="Gunakan 40 Resin untuk +60 Primogems">⚡</button>
+                <button id="condense-resin-btn" class="mini-plus" title="Gunakan 40 Resin (+60 Primogems)">⚡</button>
             </div>
 
             <div class="resource-pill" title="Primogems">
                 <span>💎</span>
                 <strong id="hud-primo-count">16000</strong>
-                <button id="hud-add-primo" class="mini-plus" title="Klaim Berkah Welkin (+1600)">+</button>
+                <button id="hud-add-primo" class="mini-plus" title="Tambah +1600 Primogems">+</button>
             </div>
 
             <button id="bgm-toggle" class="hud-circle-btn" title="Musik Ambient Inazuma">🔇</button>
 
-            <div class="vision-orb-selector" title="Ubah Resonansi Elemen">
-                <button class="v-orb active" data-set-vision="cryo" style="--orb-color:#74d4ff;" title="Cryo"></button>
-                <button class="v-orb" data-set-vision="electro" style="--orb-color:#c57aff;" title="Electro"></button>
-                <button class="v-orb" data-set-vision="pyro" style="--orb-color:#ff6b5b;" title="Pyro"></button>
-                <button class="v-orb" data-set-vision="hydro" style="--orb-color:#4da6ff;" title="Hydro"></button>
-                <button class="v-orb" data-set-vision="geo" style="--orb-color:#f5c542;" title="Geo"></button>
+            <div class="vision-orb-selector" title="Resonansi Elemen">
+                <button class="v-orb active" data-set-vision="cryo" style="--orb-color:#74d4ff;"></button>
+                <button class="v-orb" data-set-vision="electro" style="--orb-color:#c57aff;"></button>
+                <button class="v-orb" data-set-vision="pyro" style="--orb-color:#ff6b5b;"></button>
+                <button class="v-orb" data-set-vision="hydro" style="--orb-color:#4da6ff;"></button>
+                <button class="v-orb" data-set-vision="geo" style="--orb-color:#f5c542;"></button>
             </div>
         </div>
     </header>
 
-    <!-- KONTEN UTAMA -->
-    <main class="container">
+    <!-- =========================================================================
+         HALAMAN 1: PROFIL MEWAH LUQMAN + INISIAL ORBIT 7 ELEMEN + TRIVIA
+         ========================================================================= -->
+    <main id="page-luqman" class="main-page active-page">
+        <div class="container">
+            <section class="luqman-hero-grid">
+                
+                <!-- Kolom Kiri: Inisial "L" Diorbit oleh 7 Elemen -->
+                <div class="orbit-showcase">
+                    <div class="orbit-system">
+                        <div class="orbit-track-outer"></div>
+                        <div class="orbit-track-inner"></div>
+                        
+                        <!-- Inti Inisial Luqman -->
+                        <div class="luqman-core-emblem">
+                            <span class="initial-letter">L</span>
+                            <small>LUQMAN</small>
+                        </div>
 
-        <!-- TAB 1: KARAKTER & AI KAMISATO AYAKA -->
-        <section id="ayaka-ai" class="tab-section active">
-            <div class="ai-layout">
-                <!-- Panel Karakter & Konfigurasi API Groq -->
-                <aside class="genshin-frame character-card">
-                    <div class="corner-ornament tl"></div>
-                    <div class="corner-ornament tr"></div>
-                    <div class="corner-ornament bl"></div>
-                    <div class="corner-ornament br"></div>
+                        <!-- 7 Elemen Mengorbit -->
+                        <div class="orbit-ring">
+                            <div class="orbit-planet" style="--i:0; --el-color:#ff6b5b;" title="Pyro">🔥</div>
+                            <div class="orbit-planet" style="--i:1; --el-color:#4da6ff;" title="Hydro">💧</div>
+                            <div class="orbit-planet" style="--i:2; --el-color:#6ee7b7;" title="Anemo">🌪️</div>
+                            <div class="orbit-planet" style="--i:3; --el-color:#c57aff;" title="Electro">⚡</div>
+                            <div class="orbit-planet" style="--i:4; --el-color:#a3e635;" title="Dendro">🌿</div>
+                            <div class="orbit-planet" style="--i:5; --el-color:#74d4ff;" title="Cryo">❄️</div>
+                            <div class="orbit-planet" style="--i:6; --el-color:#f5c542;" title="Geo">🪨</div>
+                        </div>
+                    </div>
+                    <p class="orbit-caption">✦ Resonansi Tujuh Elemen Mengelilingi Inisial <strong>Luqman</strong> ✦</p>
+                </div>
 
-                    <div class="char-banner">
-                        <div class="vision-badge">❄️ CRYO • YASHIRO COMMISSION</div>
-                        <div class="char-avatar">
+                <!-- Kolom Kanan: Identitas & Trivia Interaktif Luqman -->
+                <div class="luqman-bio-column">
+                    <div class="genshin-frame profile-intro-card">
+                        <div class="corner-ornament tl"></div>
+                        <div class="corner-ornament tr"></div>
+                        <div class="corner-ornament bl"></div>
+                        <div class="corner-ornament br"></div>
+
+                        <span class="subtitle-gold">TRAVELER & DIGITAL ARCHITECT</span>
+                        <h2 class="hero-name">Luqman</h2>
+                        <p class="hero-desc">
+                            Selamat datang di arsip pribadi <strong>Luqman</strong>. Sebagai pengelana di dunia Teyvat sekaligus pengembang web kreatif, seluruh sistem di dalam situs ini dibangun untuk memadukan estetika megah <em>Genshin Impact</em> dengan kecerdasan buatan modern.
+                        </p>
+
+                        <div class="hero-stats-row">
+                            <div class="h-stat">
+                                <span>Adventure Rank</span>
+                                <strong>60 (Max)</strong>
+                            </div>
+                            <div class="h-stat">
+                                <span>Wilayah Favorit</span>
+                                <strong>Inazuma ❄️</strong>
+                            </div>
+                            <div class="h-stat">
+                                <span>Karakter Utama</span>
+                                <strong>Kamisato Ayaka</strong>
+                            </div>
+                        </div>
+
+                        <button class="cta-enter-project page-switch-btn" data-target="page-projects" data-label="PROYEK: KAMISATO ESTATE">
+                            <span>✦ JELAJAHI PROYEK AYAKA AI & WISH SYSTEM ✦</span>
+                        </button>
+                    </div>
+
+                    <!-- Kartu Trivia Luqman -->
+                    <div class="genshin-frame trivia-card">
+                        <div class="trivia-header">
+                            <h3>📜 Trivia & Fakta Menarik Luqman</h3>
+                            <button id="next-trivia-btn" class="genshin-btn gold-fill">Acak Trivia ↻</button>
+                        </div>
+                        <div class="trivia-spotlight">
+                            <span id="trivia-category" class="trivia-tag">ARSIP #01 • KREATOR</span>
+                            <h4 id="trivia-heading">Visi di Balik Kamisato Estate</h4>
+                            <p id="trivia-body">
+                                Luqman merancang sistem ini agar setiap pengunjung merasakan atmosfer autentik Genshin Impact—mulai dari gerbang Celestia hingga kecerdasan buatan interaktif berbasis Groq.
+                            </p>
+                        </div>
+                        <div class="trivia-dots" id="trivia-dots"></div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- =========================================================================
+         HALAMAN 2: PROYEK TEYVAT (AI KAMISATO AYAKA, WISH GACHA, BUKU PANDUAN)
+         ========================================================================= -->
+    <main id="page-projects" class="main-page">
+        <div class="container">
+            
+            <!-- Sub-Navigasi di dalam Halaman Proyek -->
+            <div class="project-subnav">
+                <button class="sub-tab-btn active" data-subtab="proj-ayaka-ai">❄️ AI Kamisato Ayaka</button>
+                <button class="sub-tab-btn" data-subtab="proj-wish-sim">🌠 Permohonan (Wish Gacha)</button>
+                <button class="sub-tab-btn" data-subtab="proj-handbook">📖 Buku Panduan & Misi</button>
+                <button class="sub-tab-btn back-home page-switch-btn" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">← Kembali ke Profil Luqman</button>
+            </div>
+
+            <!-- SUB-TAB 1: AI KAMISATO AYAKA (API KEY TIDAK DIUBAH) -->
+            <section id="proj-ayaka-ai" class="sub-section active">
+                <div class="ai-layout">
+                    <!-- Kartu Karakter & Pengaturan Groq -->
+                    <aside class="genshin-frame character-card">
+                        <div class="corner-ornament tl"></div>
+                        <div class="corner-ornament tr"></div>
+                        <div class="corner-ornament bl"></div>
+                        <div class="corner-ornament br"></div>
+
+                        <div class="char-banner">
+                            <div class="vision-badge">❄️ CRYO • YASHIRO COMMISSION</div>
+                            <div class="char-avatar">
+                                <img 
+                                    id="ayaka-main-avatar"
+                                    src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
+                                    alt="Kamisato Ayaka"
+                                    onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                                >
+                            </div>
+                            <h2>Kamisato Ayaka</h2>
+                            <p class="char-title">"Shirasagi Himegimi" • Lv. 90</p>
+                            <div class="friendship-level">Friendship Lv. 10 ♥</div>
+                        </div>
+
+                        <div class="affection-meter">
+                            <div class="meter-header">
+                                <span>Tingkat Obsesi</span>
+                                <span id="obsession-val">85%</span>
+                            </div>
+                            <div class="meter-bar">
+                                <div class="meter-fill" id="obsession-bar" style="width: 85%;"></div>
+                            </div>
+                            <small id="mood-indicator" class="mood-text">Suasana Hati: Menunggu dengan sabar...</small>
+                        </div>
+
+                        <!-- Pengaturan API Groq Pribadi (UTUH) -->
+                        <div class="api-box">
+                            <label for="groq-api-key">🔑 Groq API Key Milikmu</label>
+                            <div class="key-input-group">
+                                <input type="password" id="groq-api-key" placeholder="Tempel gsk_... milikmu" autocomplete="off">
+                                <button type="button" id="toggle-key-btn" title="Lihat/Sembunyikan Key">👁️</button>
+                            </div>
+                            
+                            <label for="groq-model">🧠 Pilih Model Aktif Groq</label>
+                            <select id="groq-model">
+                                <optgroup label="OpenAI GPT-OSS (Aktif)">
+                                    <option value="openai/gpt-oss-120b" selected>GPT-OSS 120B (Default • Paling Pinter & Dalam)</option>
+                                    <option value="openai/gpt-oss-20b">GPT-OSS 20B (Cepat & Efisien)</option>
+                                </optgroup>
+                                <optgroup label="Meta Llama (Aktif)">
+                                    <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (Sastra & Panjang)</option>
+                                    <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick 17B (Generasi Baru)</option>
+                                    <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B (Responsif)</option>
+                                    <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (Super Kilat)</option>
+                                </optgroup>
+                                <optgroup label="Qwen & Lainnya (Aktif)">
+                                    <option value="qwen/qwen3-32b">Qwen 3 32B (Penalaran Tajam)</option>
+                                    <option value="moonshotai/kimi-k2-instruct">Kimi K2 Instruct (Konteks Luas)</option>
+                                </optgroup>
+                            </select>
+
+                            <div class="api-btn-row">
+                                <button type="button" id="save-key-btn" class="genshin-btn gold-fill">Simpan Key</button>
+                                <button type="button" id="test-key-btn" class="genshin-btn">Tes Koneksi</button>
+                            </div>
+                            <small id="api-feedback" class="api-hint">API Key disimpan lokal di browser-mu sendiri.</small>
+                        </div>
+                    </aside>
+
+                    <!-- Area Chat Kanan -->
+                    <div class="genshin-frame chat-panel">
+                        <div class="chat-header">
+                            <div class="chat-header-user">
+                                <img 
+                                    class="header-avatar"
+                                    src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
+                                    alt="Ayaka"
+                                    onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                                >
+                                <div>
+                                    <strong>Kamisato Ayaka</strong> • <span id="active-model-badge" class="model-pill">GPT-OSS 120B</span>
+                                    <p id="typing-status" class="typing-subtitle">Sedang menatapmu dari balik kipas...</p>
+                                </div>
+                            </div>
+                            <button id="clear-chat" class="genshin-btn">Reset Ingatan</button>
+                        </div>
+
+                        <div class="chat-messages" id="chat-messages"></div>
+
+                        <form id="chat-form" class="chat-input-area">
+                            <textarea id="user-input" rows="2" placeholder="Katakan sesuatu pada Ayaka... (Enter untuk kirim, Shift+Enter baris baru)" required></textarea>
+                            <button type="submit" id="send-btn">Kirim ✦</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SUB-TAB 2: SIMULATOR WISH GACHA -->
+            <section id="proj-wish-sim" class="sub-section">
+                <div class="genshin-frame wish-card">
+                    <div class="wish-header">
+                        <div>
+                            <span class="event-tag">PERMOHONAN EVENT KARAKTER</span>
+                            <h2>✦ The Heron's Court (Bangau Putih) ✦</h2>
+                        </div>
+                        <div class="wish-stats-bar">
+                            <div class="stat-pill">Pity 5★: <strong id="pity-count">0</strong>/90</div>
+                            <div class="stat-pill">💎 <strong id="primo-count">16000</strong></div>
+                            <button id="add-primo-btn" class="genshin-btn gold-fill">+1600 💎</button>
+                        </div>
+                    </div>
+
+                    <div class="banner-display">
+                        <div class="banner-art">
                             <img 
-                                id="ayaka-main-avatar"
+                                class="banner-char-img"
                                 src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
                                 alt="Kamisato Ayaka"
                                 onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
                             >
+                            <span class="star-rating">★★★★★</span>
+                            <h3>Kamisato Ayaka</h3>
+                            <p>Frostflake Heron • Rate Up! (Dijamin 5★ pada tarikan ke-90)</p>
                         </div>
-                        <h2>Kamisato Ayaka</h2>
-                        <p class="char-title">"Shirasagi Himegimi" • Lv. 90</p>
-                        <div class="friendship-level">Friendship Lv. 10 ♥</div>
                     </div>
 
-                    <div class="affection-meter">
-                        <div class="meter-header">
-                            <span>Tingkat Obsesi</span>
-                            <span id="obsession-val">85%</span>
-                        </div>
-                        <div class="meter-bar">
-                            <div class="meter-fill" id="obsession-bar" style="width: 85%;"></div>
-                        </div>
-                        <small id="mood-indicator" class="mood-text">Suasana Hati: Menunggu dengan sabar...</small>
+                    <div class="wish-actions">
+                        <button class="wish-btn" onclick="doWish(1)">
+                            <span>Permohonan ×1</span>
+                            <small>✦ 160 Primogems</small>
+                        </button>
+                        <button class="wish-btn gold" onclick="doWish(10)">
+                            <span>Permohonan ×10</span>
+                            <small>✦ 1600 Primogems</small>
+                        </button>
                     </div>
 
-                    <!-- Pengaturan API Groq (TIDAK DIUBAH) -->
-                    <div class="api-box">
-                        <label for="groq-api-key">🔑 Groq API Key Milikmu</label>
-                        <div class="key-input-group">
-                            <input type="password" id="groq-api-key" placeholder="Tempel gsk_... milikmu" autocomplete="off">
-                            <button type="button" id="toggle-key-btn" title="Lihat/Sembunyikan Key">👁️</button>
+                    <div id="wish-results" class="wish-results-grid"></div>
+                </div>
+            </section>
+
+            <!-- SUB-TAB 3: BUKU PANDUAN & MISI HARIAN -->
+            <section id="proj-handbook" class="sub-section">
+                <div class="handbook-grid">
+                    <div class="genshin-frame handbook-card">
+                        <div class="handbook-title">
+                            <h3>🧭 Misi Harian (Adventurers' Guild)</h3>
+                            <span class="guild-note">"Ad Astra Abyssosque!"</span>
                         </div>
+                        <p class="handbook-desc">Selesaikan Misi Harian di Inazuma untuk mengumpulkan Primogems:</p>
                         
-                        <label for="groq-model">🧠 Pilih Model Aktif Groq</label>
-                        <select id="groq-model">
-                            <optgroup label="OpenAI GPT-OSS (Aktif)">
-                                <option value="openai/gpt-oss-120b" selected>GPT-OSS 120B (Default • Paling Pinter & Dalam)</option>
-                                <option value="openai/gpt-oss-20b">GPT-OSS 20B (Cepat & Efisien)</option>
-                            </optgroup>
-                            <optgroup label="Meta Llama (Aktif)">
-                                <option value="llama-3.3-70b-versatile">Llama 3.3 70B Versatile (Sastra & Panjang)</option>
-                                <option value="meta-llama/llama-4-maverick-17b-128e-instruct">Llama 4 Maverick 17B (Generasi Baru)</option>
-                                <option value="meta-llama/llama-4-scout-17b-16e-instruct">Llama 4 Scout 17B (Responsif)</option>
-                                <option value="llama-3.1-8b-instant">Llama 3.1 8B Instant (Super Kilat)</option>
-                            </optgroup>
-                            <optgroup label="Qwen & Lainnya (Aktif)">
-                                <option value="qwen/qwen3-32b">Qwen 3 32B (Penalaran Tajam)</option>
-                                <option value="moonshotai/kimi-k2-instruct">Kimi K2 Instruct (Konteks Luas)</option>
-                            </optgroup>
-                        </select>
-
-                        <div class="api-btn-row">
-                            <button type="button" id="save-key-btn" class="genshin-btn gold-fill">Simpan Key</button>
-                            <button type="button" id="test-key-btn" class="genshin-btn">Tes Koneksi</button>
-                        </div>
-                        <small id="api-feedback" class="api-hint">API Key disimpan lokal di browser-mu sendiri.</small>
-                    </div>
-                </aside>
-
-                <!-- Area Chat Kanan -->
-                <div class="genshin-frame chat-panel">
-                    <div class="chat-header">
-                        <div class="chat-header-user">
-                            <img 
-                                class="header-avatar"
-                                src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
-                                alt="Ayaka"
-                                onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
-                            >
-                            <div>
-                                <strong>Kamisato Ayaka</strong> • <span id="active-model-badge" class="model-pill">GPT-OSS 120B</span>
-                                <p id="typing-status" class="typing-subtitle">Sedang menatapmu dari balik kipas...</p>
+                        <div class="commission-list">
+                            <div class="commission-item">
+                                <div>
+                                    <strong>1. Upacara Teh di Komore Teahouse</strong>
+                                    <p>Berbincang minimal 1 kali dengan Kamisato Ayaka.</p>
+                                </div>
+                                <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
+                            </div>
+                            <div class="commission-item">
+                                <div>
+                                    <strong>2. Latihan Pedang Kamisato Art</strong>
+                                    <p>Uji Resonansi Elemen di bilah atas layar.</p>
+                                </div>
+                                <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
+                            </div>
+                            <div class="commission-item">
+                                <div>
+                                    <strong>3. Patroli Hutan Chinju</strong>
+                                    <p>Lakukan 1 kali Permohonan (Wish) di Banner Ayaka.</p>
+                                </div>
+                                <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
+                            </div>
+                            <div class="commission-item">
+                                <div>
+                                    <strong>4. Hadiah Katheryne (Bonus Luqman)</strong>
+                                    <p>Penghargaan khusus untuk sang kreator.</p>
+                                </div>
+                                <button class="genshin-btn gold-fill claim-quest-btn" data-reward="120">Klaim 120 💎</button>
                             </div>
                         </div>
-                        <button id="clear-chat" class="genshin-btn">Reset Ingatan</button>
                     </div>
 
-                    <div class="chat-messages" id="chat-messages"></div>
-
-                    <form id="chat-form" class="chat-input-area">
-                        <textarea id="user-input" rows="2" placeholder="Katakan sesuatu pada Ayaka... (Enter untuk kirim, Shift+Enter baris baru)" required></textarea>
-                        <button type="submit" id="send-btn">Kirim ✦</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 2: PERMOHONAN EVENT (WISH GACHA + PITY COUNTER) -->
-        <section id="wish-sim" class="tab-section">
-            <div class="genshin-frame wish-card">
-                <div class="wish-header">
-                    <div>
-                        <span class="event-tag">PERMOHONAN EVENT KARAKTER</span>
-                        <h2>✦ The Heron's Court (Bangau Putih) ✦</h2>
-                    </div>
-                    <div class="wish-stats-bar">
-                        <div class="stat-pill">Pity 5★: <strong id="pity-count">0</strong>/90</div>
-                        <div class="stat-pill">💎 <strong id="primo-count">16000</strong></div>
-                        <button id="add-primo-btn" class="genshin-btn gold-fill">+1600 💎</button>
+                    <div class="genshin-frame handbook-card">
+                        <div class="handbook-title">
+                            <h3>⚔️ Build Kamisato Ayaka Milik Luqman</h3>
+                            <span class="guild-note">C6 R5 Mistsplitter</span>
+                        </div>
+                        <ul class="stat-list">
+                            <li><span>Senjata Utama:</span> <strong>Mistsplitter Reforged (Lv. 90 • R5)</strong></li>
+                            <li><span>Set Artefak:</span> <strong>4-Piece Blizzard Strayer</strong></li>
+                            <li><span>CRIT Rate / CRIT DMG:</span> <strong>45.2% / 278.4%</strong></li>
+                            <li><span>Talenta Prioritas:</span> <strong>Kamisato Art: Soumetsu (Lv. 10)</strong></li>
+                            <li><span>Konstelasi:</span> <strong>C6 — Dance of Suigetsu</strong></li>
+                        </ul>
                     </div>
                 </div>
+            </section>
 
-                <div class="banner-display">
-                    <div class="banner-art">
-                        <img 
-                            class="banner-char-img"
-                            src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
-                            alt="Kamisato Ayaka"
-                            onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
-                        >
-                        <span class="star-rating">★★★★★</span>
-                        <h3>Kamisato Ayaka</h3>
-                        <p>Frostflake Heron • Rate Up! (Dijamin 5★ pada tarikan ke-90)</p>
-                    </div>
-                </div>
-
-                <div class="wish-actions">
-                    <button class="wish-btn" onclick="doWish(1)">
-                        <span>Permohonan ×1</span>
-                        <small>✦ 160 Primogems</small>
-                    </button>
-                    <button class="wish-btn gold" onclick="doWish(10)">
-                        <span>Permohonan ×10</span>
-                        <small>✦ 1600 Primogems</small>
-                    </button>
-                </div>
-
-                <div id="wish-results" class="wish-results-grid"></div>
-            </div>
-        </section>
-
-        <!-- TAB 3: ADVENTURER'S HANDBOOK (DAILY COMMISSIONS & ELEMENTAL RESONANCE) -->
-        <section id="handbook-tab" class="tab-section">
-            <div class="handbook-grid">
-                <!-- Misi Harian Katheryne -->
-                <div class="genshin-frame handbook-card">
-                    <div class="handbook-title">
-                        <h3>🧭 Misi Harian (Adventurers' Guild)</h3>
-                        <span class="guild-note">"Ad Astra Abyssosque!"</span>
-                    </div>
-                    <p class="handbook-desc">Selesaikan Misi Harian di Inazuma untuk mengumpulkan Primogems tambahan:</p>
-                    
-                    <div class="commission-list" id="commission-list">
-                        <div class="commission-item">
-                            <div>
-                                <strong>1. Upacara Teh di Komore Teahouse</strong>
-                                <p>Berbincang minimal 1 kali dengan Kamisato Ayaka.</p>
-                            </div>
-                            <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
-                        </div>
-                        <div class="commission-item">
-                            <div>
-                                <strong>2. Latihan Pedang Kamisato Art</strong>
-                                <p>Uji Resonansi Elemen di bilah atas layar.</p>
-                            </div>
-                            <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
-                        </div>
-                        <div class="commission-item">
-                            <div>
-                                <strong>3. Patroli Hutan Chinju</strong>
-                                <p>Lakukan 1 kali Permohonan (Wish) di Banner Ayaka.</p>
-                            </div>
-                            <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
-                        </div>
-                        <div class="commission-item">
-                            <div>
-                                <strong>4. Hadiah Katheryne (Bonus Harian)</strong>
-                                <p>Penghargaan khusus untuk Traveler Luqman.</p>
-                            </div>
-                            <button class="genshin-btn gold-fill claim-quest-btn" data-reward="120">Klaim 120 💎</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Resonansi Elemen Teyvat -->
-                <div class="genshin-frame handbook-card">
-                    <div class="handbook-title">
-                        <h3>🔮 Resonansi Elemen Teyvat</h3>
-                        <span class="guild-note">Ensiklopedia Statue of The Seven</span>
-                    </div>
-                    <div class="resonance-list">
-                        <div class="res-card cryo">
-                            <strong>❄️ Shattering Ice (Cryo)</strong>
-                            <p>Meningkatkan CRIT Rate sebesar 15% terhadap musuh yang terkena efek Frozen atau Cryo. Elemen utama Kamisato Ayaka.</p>
-                        </div>
-                        <div class="res-card electro">
-                            <strong>⚡ High Voltage (Electro)</strong>
-                            <p>Mempercepat pemulihan Energy Recharge dan menghasilkan partikel Electro saat memicu reaksi Superconduct atau Electro-Charged.</p>
-                        </div>
-                        <div class="res-card pyro">
-                            <strong>🔥 Fervent Flames (Pyro)</strong>
-                            <p>Mengurangi durasi efek Cryo sebesar 40% dan meningkatkan ATK seluruh anggota party sebesar 25%.</p>
-                        </div>
-                        <div class="res-card hydro">
-                            <strong>💧 Soothing Water (Hydro)</strong>
-                            <p>Meningkatkan Max HP sebesar 25%—pasangan sempurna bersama Cryo untuk membekukan lawan secara permanen.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 4: PROFIL PEMBUAT & BUILD AYAKA -->
-        <section id="lore-profile" class="tab-section">
-            <div class="profile-grid">
-                <div class="genshin-frame genshin-card">
-                    <h3>👑 Arsitek Dunia Teyvat (Creator)</h3>
-                    <div class="creator-info">
-                        <div class="creator-avatar">L</div>
-                        <div>
-                            <h4>Luqman</h4>
-                            <p>Adventure Rank: 60 • World Level: 9 • Server: Asia</p>
-                            <span class="badge">Architect of Teyvat & Web Developer</span>
-                        </div>
-                    </div>
-                    <p class="bio-text">
-                        Seluruh dunia interaktif ini dirancang dan dibangun oleh <strong>Luqman</strong> dengan estetika asli <em>Genshin Impact</em>—mulai dari gerbang Celestia, mekanik Resin & Wish Gacha, Misi Harian Adventurers' Guild, hingga integrasi AI Kamisato Ayaka menggunakan Groq API Key pribadi pengguna.
-                    </p>
-                </div>
-
-                <div class="genshin-frame genshin-card">
-                    <h3>⚔️ Spesifikasi Build Kamisato Ayaka</h3>
-                    <ul class="stat-list">
-                        <li><span>Senjata Utama:</span> <strong>Mistsplitter Reforged (Lv. 90 • R5)</strong></li>
-                        <li><span>Set Artefak:</span> <strong>4-Piece Blizzard Strayer</strong></li>
-                        <li><span>CRIT Rate / CRIT DMG:</span> <strong>45.2% / 278.4%</strong></li>
-                        <li><span>Talenta Prioritas:</span> <strong>Kamisato Art: Soumetsu (Lv. 10)</strong></li>
-                        <li><span>Konstelasi:</span> <strong>C6 — Dance of Suigetsu</strong></li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
+        </div>
     </main>
 
     <footer class="genshin-footer">
-        <p>✦ Ad Astra Abyssosque! Dibuat dengan dedikasi oleh <strong>Luqman</strong> • Terinspirasi dari Genshin Impact (HoYoverse) ✦</p>
+        <p>✦ Ad Astra Abyssosque! Dibuat dengan dedikasi tinggi oleh <strong>Luqman</strong> • Terinspirasi dari Genshin Impact ✦</p>
     </footer>
 
     <script src="script.js"></script>
