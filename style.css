@@ -1,23 +1,25 @@
 /* =========================================
-   VARIABLES & TEMA ELEMEN GENSHIN
+   VARIABLES & TEMA ELEMEN GENSHIN IMPACT
    ========================================= */
 :root {
-    --bg-dark: #0d111a;
-    --bg-panel: rgba(20, 27, 41, 0.88);
+    --bg-dark: #0c101b;
+    --bg-panel: rgba(21, 28, 44, 0.9);
     --gold: #e6c687;
-    --gold-bright: #fff0c2;
-    --text-main: #f2efe9;
-    --text-muted: #a6b0c3;
+    --gold-bright: #fff2cc;
+    --gold-dark: #9c7c41;
+    --text-main: #f4f0e6;
+    --text-muted: #a6b1c6;
     --accent: #74d4ff;
-    --accent-glow: rgba(116, 212, 255, 0.4);
-    --border-gold: rgba(230, 198, 135, 0.35);
+    --accent-glow: rgba(116, 212, 255, 0.42);
+    --border-gold: rgba(230, 198, 135, 0.4);
     --yandere-pink: #ff6b9d;
 }
 
-body[data-vision="cryo"] { --accent: #74d4ff; --accent-glow: rgba(116, 212, 255, 0.4); }
-body[data-vision="electro"] { --accent: #c57aff; --accent-glow: rgba(197, 122, 255, 0.4); }
-body[data-vision="pyro"] { --accent: #ff6b5b; --accent-glow: rgba(255, 107, 91, 0.4); }
-body[data-vision="hydro"] { --accent: #4da6ff; --accent-glow: rgba(77, 166, 255, 0.4); }
+body[data-vision="cryo"] { --accent: #74d4ff; --accent-glow: rgba(116, 212, 255, 0.42); }
+body[data-vision="electro"] { --accent: #c57aff; --accent-glow: rgba(197, 122, 255, 0.42); }
+body[data-vision="pyro"] { --accent: #ff6b5b; --accent-glow: rgba(255, 107, 91, 0.42); }
+body[data-vision="hydro"] { --accent: #4da6ff; --accent-glow: rgba(77, 166, 255, 0.42); }
+body[data-vision="geo"] { --accent: #f5c542; --accent-glow: rgba(245, 197, 66, 0.42); }
 
 * {
     margin: 0;
@@ -27,28 +29,28 @@ body[data-vision="hydro"] { --accent: #4da6ff; --accent-glow: rgba(77, 166, 255,
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background: radial-gradient(circle at top, #182338 0%, var(--bg-dark) 75%);
+    background: 
+        radial-gradient(circle at 50% 0%, rgba(36, 56, 94, 0.65) 0%, transparent 65%),
+        radial-gradient(circle at 85% 90%, rgba(116, 212, 255, 0.08) 0%, transparent 50%),
+        var(--bg-dark);
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
 }
 
-h1, h2, h3, h4, .hoyoverse-tag {
+h1, h2, h3, h4, .hoyoverse-tag, .event-tag {
     font-family: 'Cinzel', serif;
 }
 
 #particle-canvas {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     pointer-events: none;
     z-index: 0;
 }
 
 /* =========================================
-   1. ENTERING ANIMATION ALA GENSHIN
+   1. LOADING SCREEN AUTENTIK GENSHIN IMPACT
    ========================================= */
 #genshin-loader {
     position: fixed;
@@ -72,13 +74,22 @@ h1, h2, h3, h4, .hoyoverse-tag {
     top: 0;
     width: 50%;
     height: 100%;
-    background: #f5f2eb;
+    background: linear-gradient(180deg, #faf7f0 0%, #ede7da 100%);
     z-index: 1;
     transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-.gate-left { left: 0; border-right: 2px solid #d4af37; }
-.gate-right { right: 0; border-left: 2px solid #d4af37; }
+.gate-left {
+    left: 0;
+    border-right: 2px solid #d4af37;
+    box-shadow: inset -15px 0 35px rgba(212, 175, 55, 0.15);
+}
+
+.gate-right {
+    right: 0;
+    border-left: 2px solid #d4af37;
+    box-shadow: inset 15px 0 35px rgba(212, 175, 55, 0.15);
+}
 
 #genshin-loader.open-gates .gate-left { transform: translateX(-100%); }
 #genshin-loader.open-gates .gate-right { transform: translateX(100%); }
@@ -89,76 +100,97 @@ h1, h2, h3, h4, .hoyoverse-tag {
     text-align: center;
     color: #3a3f4b;
     padding: 2rem;
-    max-width: 550px;
-    width: 90%;
+    max-width: 620px;
+    width: 92%;
 }
 
 .hoyoverse-tag {
     font-size: 0.85rem;
-    letter-spacing: 3px;
-    color: #8c7853;
-    margin-bottom: 2.5rem;
+    letter-spacing: 3.5px;
+    color: #8c7343;
+    margin-bottom: 2.2rem;
     font-weight: 700;
 }
 
-.elements-bar {
+/* Bar 7 Elemen Khas Layar Loading Genshin */
+.genshin-elements-wrapper {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(196, 164, 102, 0.5);
+    border-radius: 50px;
+    padding: 6px;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.elements-track {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 18px;
-    background: #e5e0d5;
-    border-radius: 50px;
-    margin-bottom: 1.5rem;
+    padding: 10px 22px;
+    background: #e2dcd0;
+    border-radius: 40px;
     overflow: hidden;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.el-icon {
+.el-symbol {
     position: relative;
     z-index: 2;
-    font-size: 1.4rem;
-    opacity: 0.25;
+    font-size: 1.45rem;
+    opacity: 0.22;
     filter: grayscale(100%);
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.el-icon.lit {
+.el-symbol.lit {
     opacity: 1;
     filter: grayscale(0%);
-    transform: scale(1.15);
+    transform: scale(1.22);
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
 }
 
-.elements-fill {
+.elements-progress-bar {
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
     width: 0%;
-    background: linear-gradient(90deg, #fff8e7, #e6c687);
-    transition: width 0.3s ease;
+    background: linear-gradient(90deg, #fffdf7 0%, #f3dfb3 60%, #e6c687 100%);
+    transition: width 0.25s ease;
     z-index: 1;
 }
 
+.teyvat-tip-box {
+    margin-bottom: 1.8rem;
+    padding: 0 1rem;
+}
+
+.teyvat-tip-box h4 {
+    color: #5c4b2b;
+    font-size: 1.05rem;
+    margin-bottom: 6px;
+    letter-spacing: 1px;
+}
+
 #loading-text {
-    font-size: 0.9rem;
-    color: #6b7280;
-    margin-bottom: 1.5rem;
-    font-weight: 600;
+    font-size: 0.88rem;
+    color: #636b78;
+    line-height: 1.5;
+    font-weight: 500;
 }
 
 #enter-gate-btn {
-    background: linear-gradient(135deg, #2b3344, #181e29);
+    background: linear-gradient(135deg, #252e42, #141926);
     color: var(--gold);
     border: 2px solid var(--gold);
-    padding: 14px 32px;
+    padding: 14px 34px;
     font-family: 'Cinzel', serif;
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: 2px;
     border-radius: 40px;
     cursor: pointer;
-    box-shadow: 0 0 25px rgba(230, 198, 135, 0.6);
+    box-shadow: 0 0 28px rgba(230, 198, 135, 0.75);
     animation: pulseGold 2s infinite;
     transition: transform 0.2s;
 }
@@ -167,117 +199,190 @@ h1, h2, h3, h4, .hoyoverse-tag {
 .hidden { display: none !important; }
 
 @keyframes pulseGold {
-    0%, 100% { box-shadow: 0 0 15px rgba(230, 198, 135, 0.5); }
-    50% { box-shadow: 0 0 30px rgba(230, 198, 135, 0.95); }
+    0%, 100% { box-shadow: 0 0 16px rgba(230, 198, 135, 0.55); }
+    50% { box-shadow: 0 0 34px rgba(230, 198, 135, 1); }
 }
 
 /* =========================================
-   NAVBAR & LAYOUT UTAMA
+   2. HUD ATAS ALA GENSHIN IMPACT
    ========================================= */
-.genshin-nav {
+.genshin-hud-top {
     position: sticky;
     top: 0;
     z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 5%;
-    background: rgba(13, 17, 26, 0.88);
-    backdrop-filter: blur(12px);
+    padding: 0.85rem 4%;
+    background: rgba(13, 18, 29, 0.92);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border-gold);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.8rem;
 }
 
-.nav-brand {
+.hud-left {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.star-icon {
-    font-size: 1.8rem;
-    color: var(--gold);
-    text-shadow: 0 0 12px var(--gold);
-}
-
-.nav-brand h1 {
-    font-size: 1.2rem;
-    color: var(--gold-bright);
-    letter-spacing: 1.5px;
-}
-
-.nav-brand small {
-    color: var(--accent);
-    font-size: 0.78rem;
-}
-
-.nav-links {
+.paimon-emblem {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #2a3754, #141b2b);
+    border: 2px solid var(--gold);
     display: flex;
-    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-bright);
+    font-size: 1.3rem;
+    box-shadow: 0 0 14px rgba(230, 198, 135, 0.45);
 }
 
-.nav-btn {
-    background: transparent;
+.player-name-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.player-uid-box h1 {
+    font-size: 1.1rem;
+    color: var(--gold-bright);
+    letter-spacing: 1px;
+}
+
+.ar-badge {
+    background: linear-gradient(135deg, var(--gold), #c29844);
+    color: #131722;
+    font-size: 0.68rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 6px;
+}
+
+.player-uid-box small {
+    color: var(--accent);
+    font-size: 0.75rem;
+}
+
+.hud-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.hud-tab-btn {
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid transparent;
     color: var(--text-muted);
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: 8px 15px;
+    border-radius: 22px;
     cursor: pointer;
     font-weight: 600;
-    transition: all 0.3s;
-}
-
-.nav-btn:hover, .nav-btn.active {
-    color: var(--gold-bright);
-    border-color: var(--gold);
-    background: rgba(230, 198, 135, 0.12);
-}
-
-.nav-controls {
+    font-size: 0.85rem;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 6px;
+    transition: all 0.25s;
 }
 
-.icon-btn {
-    background: rgba(255,255,255,0.08);
+.tab-diamond {
+    color: var(--gold);
+    font-size: 0.8rem;
+}
+
+.hud-tab-btn:hover, .hud-tab-btn.active {
+    color: var(--gold-bright);
+    border-color: var(--gold);
+    background: rgba(230, 198, 135, 0.14);
+    box-shadow: 0 0 12px rgba(230, 198, 135, 0.2);
+}
+
+.hud-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.resource-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.52);
+    border: 1px solid var(--border-gold);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+}
+
+.resource-pill small { color: var(--text-muted); }
+
+.mini-plus {
+    background: var(--gold);
+    color: #111;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: 0.2s;
+}
+
+.mini-plus:hover { transform: scale(1.15); }
+
+.hud-circle-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-gold);
     color: var(--text-main);
-    padding: 6px 12px;
-    border-radius: 16px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
-.vision-switcher {
+.vision-orb-selector {
     display: flex;
     gap: 6px;
-    background: rgba(0,0,0,0.4);
-    padding: 5px 10px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 6px 10px;
     border-radius: 20px;
     border: 1px solid var(--border-gold);
 }
 
-.v-dot {
-    width: 14px;
-    height: 14px;
+.v-orb {
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
+    background: var(--orb-color);
     border: 2px solid transparent;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: 0.2s;
+    box-shadow: 0 0 6px var(--orb-color);
 }
 
-.v-dot.active {
+.v-orb.active {
     border-color: #fff;
-    transform: scale(1.25);
+    transform: scale(1.28);
 }
 
+/* =========================================
+   3. BINGKAI ORNAMEN GENSHIN & LAYOUT
+   ========================================= */
 .container {
     position: relative;
     z-index: 10;
-    max-width: 1260px;
-    margin: 2rem auto;
+    max-width: 1280px;
+    margin: 1.8rem auto;
     padding: 0 1.5rem;
 }
 
@@ -289,9 +394,30 @@ h1, h2, h3, h4, .hoyoverse-tag {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* =========================================
-   2. AI AYAKA LAYOUT
-   ========================================= */
+.genshin-frame {
+    position: relative;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(230, 198, 135, 0.05);
+}
+
+.corner-ornament {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: var(--gold);
+    border-style: solid;
+    pointer-events: none;
+}
+
+.corner-ornament.tl { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+.corner-ornament.tr { top: 8px; right: 8px; border-width: 2px 2px 0 0; }
+.corner-ornament.bl { bottom: 8px; left: 8px; border-width: 0 0 2px 2px; }
+.corner-ornament.br { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
+
+/* AI Layout */
 .ai-layout {
     display: grid;
     grid-template-columns: 340px 1fr;
@@ -302,40 +428,32 @@ h1, h2, h3, h4, .hoyoverse-tag {
     .ai-layout { grid-template-columns: 1fr; }
 }
 
-.character-card, .chat-panel, .wish-card, .genshin-card {
-    background: var(--bg-panel);
-    border: 1px solid var(--border-gold);
-    border-radius: 16px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-}
-
 .character-card {
     padding: 1.4rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.95rem;
 }
 
 .char-banner { text-align: center; }
 
 .vision-badge {
     display: inline-block;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 1px;
     padding: 4px 12px;
     border-radius: 20px;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0, 0, 0, 0.45);
     border: 1px solid var(--accent);
     color: var(--accent);
     margin-bottom: 0.8rem;
 }
 
 .char-avatar {
-    width: 108px;
-    height: 108px;
-    margin: 0 auto 0.7rem;
+    width: 106px;
+    height: 106px;
+    margin: 0 auto 0.6rem;
     border-radius: 50%;
     padding: 4px;
     background: linear-gradient(135deg, var(--gold), var(--accent), var(--yandere-pink));
@@ -362,8 +480,19 @@ h1, h2, h3, h4, .hoyoverse-tag {
     font-style: italic;
 }
 
+.friendship-level {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 0.72rem;
+    color: #ffb3cc;
+    background: rgba(255, 107, 157, 0.14);
+    border: 1px solid rgba(255, 107, 157, 0.35);
+    padding: 2px 10px;
+    border-radius: 12px;
+}
+
 .affection-meter {
-    background: rgba(0,0,0,0.32);
+    background: rgba(0, 0, 0, 0.35);
     padding: 10px 12px;
     border-radius: 10px;
     border: 1px solid rgba(255, 105, 180, 0.32);
@@ -398,6 +527,7 @@ h1, h2, h3, h4, .hoyoverse-tag {
     display: block;
 }
 
+/* API Box */
 .api-box {
     display: flex;
     flex-direction: column;
@@ -417,12 +547,10 @@ h1, h2, h3, h4, .hoyoverse-tag {
     gap: 6px;
 }
 
-.key-input-group input {
-    flex: 1;
-}
+.key-input-group input { flex: 1; }
 
 #toggle-key-btn {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid var(--border-gold);
     color: var(--text-main);
     border-radius: 8px;
@@ -431,7 +559,7 @@ h1, h2, h3, h4, .hoyoverse-tag {
 }
 
 .api-box input, .api-box select {
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--border-gold);
     color: var(--text-main);
     padding: 9px 11px;
@@ -440,20 +568,9 @@ h1, h2, h3, h4, .hoyoverse-tag {
     outline: none;
 }
 
-.api-box select optgroup {
-    background: #121826;
-    color: var(--gold);
-    font-weight: 700;
-}
-
-.api-box select option {
-    background: #182033;
-    color: var(--text-main);
-}
-
-.api-box input:focus, .api-box select:focus {
-    border-color: var(--accent);
-}
+.api-box select optgroup { background: #121826; color: var(--gold); font-weight: 700; }
+.api-box select option { background: #182033; color: var(--text-main); }
+.api-box input:focus, .api-box select:focus { border-color: var(--accent); }
 
 .api-btn-row {
     display: grid;
@@ -468,11 +585,34 @@ h1, h2, h3, h4, .hoyoverse-tag {
     min-height: 16px;
 }
 
+.genshin-btn {
+    background: rgba(230, 198, 135, 0.14);
+    border: 1px solid var(--gold);
+    color: var(--gold-bright);
+    padding: 7px 13px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.genshin-btn.gold-fill {
+    background: linear-gradient(135deg, var(--gold), #c79c46);
+    color: #111622;
+}
+
+.genshin-btn:hover {
+    background: var(--gold);
+    color: #111;
+    transform: translateY(-1px);
+}
+
 /* Chat Panel */
 .chat-panel {
     display: flex;
     flex-direction: column;
-    height: 640px;
+    height: 650px;
     overflow: hidden;
 }
 
@@ -482,7 +622,7 @@ h1, h2, h3, h4, .hoyoverse-tag {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0,0,0,0.28);
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .chat-header-user {
@@ -517,28 +657,6 @@ h1, h2, h3, h4, .hoyoverse-tag {
     margin-top: 2px;
 }
 
-.small-btn {
-    background: rgba(230, 198, 135, 0.15);
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.78rem;
-    font-weight: 600;
-    transition: 0.2s;
-}
-
-.small-btn.gold-fill {
-    background: linear-gradient(135deg, var(--gold), #c79c46);
-    color: #111622;
-}
-
-.small-btn:hover {
-    background: var(--gold);
-    color: #111;
-}
-
 .chat-messages {
     flex: 1;
     padding: 1.5rem;
@@ -570,11 +688,7 @@ h1, h2, h3, h4, .hoyoverse-tag {
     box-shadow: 0 0 10px var(--accent-glow);
 }
 
-.msg-body {
-    display: flex;
-    flex-direction: column;
-}
-
+.msg-body { display: flex; flex-direction: column; }
 .msg-wrapper.user .msg-body { align-items: flex-end; }
 
 .msg-sender {
@@ -612,13 +726,13 @@ h1, h2, h3, h4, .hoyoverse-tag {
     padding: 1rem;
     gap: 10px;
     border-top: 1px solid var(--border-gold);
-    background: rgba(0,0,0,0.32);
+    background: rgba(0, 0, 0, 0.32);
 }
 
 .chat-input-area textarea {
     flex: 1;
     resize: none;
-    background: rgba(255,255,255,0.06);
+    background: rgba(255, 255, 255, 0.06);
     border: 1px solid var(--border-gold);
     color: #fff;
     padding: 10px 15px;
@@ -645,7 +759,7 @@ h1, h2, h3, h4, .hoyoverse-tag {
 .chat-input-area button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* =========================================
-   3. WISH GACHA & PROFIL
+   4. WISH GACHA, HANDBOOK & PROFIL
    ========================================= */
 .wish-card {
     padding: 2rem;
@@ -659,24 +773,49 @@ h1, h2, h3, h4, .hoyoverse-tag {
     flex-wrap: wrap;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.event-tag {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.wish-stats-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.stat-pill {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-gold);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
 }
 
 .banner-display {
     background: linear-gradient(135deg, #1b2c4a, #2c1d42);
     border: 2px solid var(--gold);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 2.2rem 1rem;
     margin-bottom: 1.5rem;
+    box-shadow: inset 0 0 35px rgba(116, 212, 255, 0.18);
 }
 
 .banner-char-img {
-    width: 90px;
-    height: 90px;
+    width: 96px;
+    height: 96px;
     border-radius: 50%;
     border: 3px solid var(--gold);
     object-fit: cover;
     display: block;
     margin: 0 auto 0.6rem;
+    box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .star-rating { color: #ffd700; letter-spacing: 4px; font-size: 1.2rem; }
@@ -687,61 +826,133 @@ h1, h2, h3, h4, .hoyoverse-tag {
     justify-content: center;
     gap: 1rem;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .wish-btn {
-    background: #f2efe9;
+    background: #f5f2eb;
     color: #2b3344;
     border: 2px solid var(--gold);
-    padding: 12px 28px;
-    border-radius: 30px;
+    padding: 10px 28px;
+    border-radius: 35px;
     font-weight: 700;
     cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     transition: 0.2s;
 }
 
-.wish-btn.gold { background: linear-gradient(135deg, #f5d896, #d4a64a); }
-.wish-btn:hover { transform: translateY(-2px); }
+.wish-btn small { font-size: 0.72rem; color: #786032; }
+.wish-btn.gold { background: linear-gradient(135deg, #f8e2ad, #d4a64a); }
+.wish-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(230, 198, 135, 0.35); }
 
 .wish-results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
     gap: 12px;
 }
 
 .wish-item {
     padding: 1rem;
-    border-radius: 10px;
-    background: rgba(0,0,0,0.4);
-    border: 1px solid #555;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid #4c566a;
     font-size: 0.85rem;
     animation: fadeIn 0.3s ease;
 }
 
-.wish-item.star-5 { border-color: #ffb703; background: rgba(255, 183, 3, 0.15); color: #ffd166; font-weight: 700; }
-.wish-item.star-4 { border-color: #c77dff; background: rgba(199, 125, 255, 0.15); color: #e0aaff; }
+.wish-item.star-5 {
+    border-color: #ffb703;
+    background: linear-gradient(135deg, rgba(255, 183, 3, 0.22), rgba(255, 140, 0, 0.12));
+    color: #ffd166;
+    font-weight: 700;
+    box-shadow: 0 0 18px rgba(255, 183, 3, 0.35);
+}
 
-.profile-grid {
+.wish-item.star-4 {
+    border-color: #c77dff;
+    background: rgba(199, 125, 255, 0.16);
+    color: #e0aaff;
+}
+
+/* Adventurer's Handbook */
+.handbook-grid, .profile-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;
 }
 
-.genshin-card { padding: 1.8rem; }
-.genshin-card h3 { color: var(--gold); margin-bottom: 1.2rem; }
+.handbook-card, .genshin-card { padding: 1.8rem; }
+.handbook-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 0.8rem;
+}
 
+.handbook-title h3, .genshin-card h3 { color: var(--gold); }
+.guild-note { font-size: 0.76rem; color: var(--accent); font-style: italic; }
+.handbook-desc { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.2rem; }
+
+.commission-list, .resonance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.commission-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(230, 198, 135, 0.25);
+    padding: 12px 14px;
+    border-radius: 12px;
+}
+
+.commission-item strong { font-size: 0.9rem; color: var(--gold-bright); }
+.commission-item p { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+.claim-quest-btn.claimed {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #555;
+    color: #888;
+    cursor: default;
+    transform: none;
+}
+
+.res-card {
+    background: rgba(0, 0, 0, 0.35);
+    padding: 12px 14px;
+    border-radius: 12px;
+    border-left: 4px solid var(--accent);
+}
+
+.res-card.cryo { border-left-color: #74d4ff; }
+.res-card.electro { border-left-color: #c57aff; }
+.res-card.pyro { border-left-color: #ff6b5b; }
+.res-card.hydro { border-left-color: #4da6ff; }
+
+.res-card strong { font-size: 0.9rem; display: block; margin-bottom: 4px; }
+.res-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; }
+
+/* Profile */
 .creator-info {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 0;
 }
 
 .creator-avatar {
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: var(--gold);
+    background: linear-gradient(135deg, var(--gold), #c79c46);
     color: #111;
     font-family: 'Cinzel', serif;
     font-size: 1.8rem;
@@ -763,13 +974,13 @@ h1, h2, h3, h4, .hoyoverse-tag {
 
 .bio-text { color: var(--text-muted); line-height: 1.6; font-size: 0.92rem; }
 
-.stat-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.stat-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 1rem; }
 .stat-list li {
     display: flex;
     justify-content: space-between;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.88rem;
 }
 
 .genshin-footer {
