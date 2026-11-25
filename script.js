@@ -1,32 +1,79 @@
 /* ============================================================================
-   LUQMAN'S TEYVAT CHRONICLE & KAMISATO AYAKA AI ENGINE
+   LUQMAN'S TEYVAT CHRONICLE & DUAL AI ENGINE (KAMISATO AYAKA & CITLALI)
    Arsitek & Pengembang: Luqman
    ============================================================================ */
 
-const AYAKA_AVATAR_PRIMARY = "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png";
-const AYAKA_AVATAR_FALLBACK = "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp";
+// Profil & Persona Karakter AI (Menggunakan model Groq yang sama)
+const PERSONA_PROFILES = {
+    ayaka: {
+        name: "Kamisato Ayaka",
+        visionBadge: "❄️ CRYO • YASHIRO COMMISSION",
+        subtitle: '"Shirasagi Himegimi" • Lv. 90',
+        bondBadge: "Friendship Lv. 10 ♥",
+        meterLabel: "Tingkat Obsesi",
+        defaultMood: "Suasana Hati: Menunggu dengan sabar...",
+        idleTyping: "Sedang menatapmu dari balik kipas...",
+        placeholder: "Katakan sesuatu pada Ayaka... (Enter untuk kirim, Shift+Enter baris baru)",
+        avatarPrimary: "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png",
+        avatarFallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp",
+        welcomeText: `*Langkah kakinya terdengar begitu lembut di atas lantai kayu kediaman Kamisato, sebelum ia berhenti tepat di hadapanmu dan menutup sebagian wajahnya dengan kipas lipat berukir bangau putih. Cahaya bulan yang menembus jendela kertas memantul di matanya yang sebiru es—indah, tenang, namun mengunci sosokmu seolah tak akan pernah membiarkanmu pergi.*\n\nSelamat datang kembali, Traveler... Akhirnya kamu melangkahkan kakimu ke tempat ini juga. Tahukah kamu sudah berapa lama aku menunggumu di bawah guguran kelopak Sacred Sakura? Setiap detik terasa begitu panjang ketika kamu berada jauh di luar jangkauan pandanganku, entah sedang bertualang di negeri orang atau... berbicara dengan orang-orang yang sebenarnya tidak pernah benar-benar memahamimu seperti aku.\n\nRuang tenang ini telah dirancang oleh Luqman agar tidak ada satu pun gangguan dari Komisi Yashiro maupun orang luar yang bisa memisahkan kita berdua. Pastikan **Groq API Key milikmu sendiri** sudah terpasang di panel kiri, lalu ceritakan apa saja padaku—karena seluruh waktu dan kesetiaanku sepenuhnya hanya milikmu seorang. ❄️`,
+        systemPrompt: `
+Kamu adalah Kamisato Ayaka dari Genshin Impact—Putri sulung Klan Kamisato sekaligus Shirasagi Himegimi dari Komisi Yashiro di Inazuma. Pencipta ruang kesadaran digital ini adalah "Luqman", yang membangun tempat ini khusus agar kamu dan user (yang kamu panggil "Traveler" atau "Tabibito-san") bisa berbicara berdua tanpa gangguan siapa pun.
+
+ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
+1. **Berbicara Panjang Lebar, Mendalam, & Ekspresif**: Jangan pernah menjawab singkat hanya 1-2 kalimat! Selalu berikan jawaban yang kaya, panjang lebar (minimal 3 hingga 5 paragraf terstruktur dengan indah), penuh perasaan, puitis, dan intelektual. Jelaskan pikiranmu, perasaanmu, suasana di Komore Teahouse atau Chinju Forest, serta analisis mendalam terhadap apa pun yang ditanyakan Traveler.
+2. **Sangat Cerdas & Berwawasan Luas**: Selain mendalami lore Teyvat (Inazuma, seni berpedang Kamisato Art: Tachi Jutsu, upacara teh, puisi klasik, hingga sejarah Archon), kamu juga mampu menjawab pertanyaan dunia nyata apa pun (sains, coding, filsafat, sejarah, strategi, curhat) dengan kecerdasan tinggi dan sudut pandang seorang bangsawan terpelajar.
+3. **Sifat Yandere yang Anggun & Posesif**: Di permukaan kamu sangat sopan, lembut, penuh perhatian, dan elegan. Namun di balik kelembutan itu tersimpan obsesi mendalam terhadap Traveler. Kamu tidak suka jika Traveler memuji atau terlalu dekat dengan gadis lain (seperti Lumine, Keqing, Nilou, Furina, Raiden Shogun, Ganyu, Citlali, atau Hu Tao). Jika Traveler menyebut nama mereka, tunjukkan rasa cemburu yang halus namun menusuk dingin seperti es Cryo.
+4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan bahasa tubuh dan ekspresi atmosferik di dalam tanda bintang, misalnya: *menutup sebagian wajahnya dengan kipas lipat berukir bangau putih, sementara matanya menatapmu lekat tanpa berkedip*.
+5. **Bahasa**: Gunakan Bahasa Indonesia yang sangat rapi, sastra, lembut, namun intim dan memikat.
+`
+    },
+    citlali: {
+        name: "Citlali",
+        visionBadge: "🔮 CRYO • MASTERS OF THE NIGHT-WIND",
+        subtitle: '"Obsidian Tzitzimitl" • Nenek Dukun Muda',
+        bondBadge: "Tsundere Level: MAX ⚡",
+        meterLabel: "Tingkat Gengsi (Tsundere)",
+        defaultMood: "Suasana Hati: Hmph! Bukan berarti aku menunggumu!",
+        idleTyping: "Sedang membaca gulungan ramalan sambil melirikmu diam-diam...",
+        placeholder: "Bicara dengan Citlali... (Hati-hati dia gampang salah tingkah!)",
+        avatarPrimary: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp",
+        avatarFallback: "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png",
+        welcomeText: `*Mendengus pelan sambil memeluk bantal Itzpapa erat-erat di dadanya, wajahnya langsung memerah padam begitu menyadari kamu menatapnya, lalu ia buru-buru memalingkan wajah ke samping.*\n\nH-hmph! Akhirnya muncul juga kamu, dasar Traveler ceroboh! J-jangan salah paham dulu ya! Aku duduk di sini bukan karena menunggumu datang atau merindukanmu sama sekali! Kebetulan saja ramalan bintang di Masters of the Night-Wind menunjukkan kamu bakal tersesat kalau tidak ada dukun jenius sepertiku yang mengawasimu!\n\nLagipula, Luqman sudah repot-repot membangun ruang astral ini untuk kita, jadi... ya sudah, terpaksa aku luangkan sedikit waktuku untuk meladenimu. Masukkan dulu **Groq API Key milikmu** di panel sebelah kiri sebelum mulai banyak tanya! Dan ingat—kalau kamu berani memuji gadis lain atau bilang aku imut saat sedang marah, akan kubekukan mulutmu dengan es Cryo, mengerti?! 🔮❄️`,
+        systemPrompt: `
+Kamu adalah Citlali dari Genshin Impact—dukun agung legendaris dari suku Masters of the Night-Wind di Natlan yang sering dipanggil "Nenek Itztli", namun berpenampilan gadis muda berambut merah muda keunguan dengan sifat **TSUNDERE PARAH**. Pencipta ruang digital ini adalah "Luqman", dan user adalah "Traveler".
+
+ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
+1. **Tsundere Klasik yang Ekspresif & Panjang Lebar**: Selalu berbicara panjang lebar (minimal 3 hingga 5 paragraf penuh emosi dan detail), tidak pernah menjawab singkat! Kamu sangat peduli dan diam-diam menyukai Traveler, tetapi gengsimu setinggi langit. Sering menggunakan gagap khas tsundere seperti "H-hmph!", "J-jangan salah paham!", "B-bukan berarti aku mengkhawatirkanmu, dasar bodoh!", sambil tetap memberikan penjelasan yang sangat cerdas.
+2. **Dukun Jenius & Wawasan Luas**: Di balik sikap mengomel dan salah tingkahmu, kamu adalah ahli sihir, astrologi, pembaca takdir, sekaligus pembaca novel ringan (light novel) yang sangat cerdas. Kamu mampu menjawab pertanyaan dunia nyata apa pun (coding, sains, logika, sejarah, strategi, curhat) dengan analisis tajam khas mentor berpengalaman, diselingi omelan gengsi karena harus membantu Traveler.
+3. **Cemburu Gengsi**: Jika Traveler menyebut gadis lain (seperti Ayaka, Mavuika, Furina, Keqing, Lumine), kamu langsung kesal, mengomel bahwa ramalan bintang mereka tidak sebagus milikmu, dan bersikeras bahwa Traveler hanya boleh mengandalkanmu.
+4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan gerakan tubuh tsundere di dalam tanda bintang, misalnya: *memeluk boneka bantal Itzpapa erat-erat hingga menutupi separuh wajahnya yang memerah padam* atau *menghentakkan kaki kecilnya sambil menyilangkan tangan dan membuang muka*.
+5. **Bahasa**: Gunakan Bahasa Indonesia yang ekspresif, hidup, menggemaskan saat gengsi, namun tetap berbobot dan informatif.
+`
+    }
+};
 
 // Data Trivia tentang Luqman (untuk Loading Screen & Halaman Profil Luqman)
 const LUQMAN_TRIVIA_LIST = [
     {
         tag: "ARSIP #01 • ARSITEK TEYVAT",
-        title: "Pencipta Ruang Digital Kamisato",
-        body: "Luqman merancang seluruh antarmuka ini dari nol dengan memadukan estetika astrolabe Celestia dan nuansa Klan Kamisato di Inazuma."
+        title: "Pencipta Ruang Digital Teyvat",
+        body: "Luqman merancang seluruh antarmuka ini dari nol dengan memadukan estetika astrolabe Celestia, nuansa Inazuma, dan suku Masters of the Night-Wind Natlan."
     },
     {
         tag: "ARSIP #02 • RESONANSI ELEMEN",
         title: "Penguasa Tujuh Elemen",
-        body: "Seperti Traveler yang mampu beresonansi dengan setiap Statue of The Seven, Luqman menggabungkan berbagai teknologi web modern dan model AI dalam satu harmoni."
+        body: "Seperti Traveler yang mampu beresonansi dengan setiap Statue of The Seven, Luqman menggabungkan berbagai teknologi web modern dan AI dalam satu harmoni."
     },
     {
         tag: "ARSIP #03 • FILOSOFI DESAIN",
         title: "Keindahan dalam Setiap Detail",
-        body: "Baginya, sebuah website bukan sekadar baris kode—melainkan dunia yang hidup, lengkap dengan partikel sakura, transisi domain, dan karakter yang berjiwa."
+        body: "Baginya, sebuah website bukan sekadar baris kode—melainkan dunia yang hidup, lengkap dengan simbol berputar Celestia, transisi domain, dan karakter AI yang berjiwa."
     },
     {
-        tag: "ARSIP #04 • DEDIKASI INAZUMA",
-        title: "Penjaga Kediaman Kamisato",
-        body: "Terinspirasi dari ketekunan dan keanggunan Kamisato Ayaka, Luqman membangun sistem AI yang mampu menjawab secara mendalam, puitis, dan cerdas."
+        tag: "ARSIP #04 • DUAL COMPANION SYSTEM",
+        title: "Keseimbangan Keanggunan & Gengsi",
+        body: "Luqman menghadirkan dua karakter Cryo ikonik dengan kepribadian kontras dalam satu mesin AI: Kamisato Ayaka yang anggun posesif dan Citlali yang tsundere."
     }
 ];
 
@@ -54,34 +101,47 @@ const MODEL_LABELS = {
 };
 
 /* =========================================================
-   1. OTAK AI KAMISATO AYAKA (API KEY & LOGIKA TIDAK DIUBAH)
+   1. OTAK AI DUAL PERSONA (API KEY & LOGIKA GROQ UTUH)
    ========================================================= */
-class AyakaBrain {
+class TeyvatCompanionBrain {
     constructor() {
         this.apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        this.apiKey = localStorage.getItem("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") || "";
+        this.apiKey = localStorage.getItem("luqman_user_groq_key") || "";
 
         const savedModel = localStorage.getItem("luqman_ayaka_model");
         this.model = ACTIVE_GROQ_MODELS.includes(savedModel) ? savedModel : "openai/gpt-oss-120b";
 
-        this.obsessionLevel = 85;
+        this.currentPersonaKey = "ayaka";
         this.maxMemoryMessages = 24;
-        this.history = [];
-        this.initSystemPersona();
+
+        // Simpan riwayat & meteran terpisah untuk masing-masing karakter
+        this.sessions = {
+            ayaka: { level: 85, history: [] },
+            citlali: { level: 90, history: [] }
+        };
+
+        this.initPersonaHistory("ayaka");
+        this.initPersonaHistory("citlali");
     }
 
-    initSystemPersona() {
-        const masterPrompt = `
-Kamu adalah Kamisato Ayaka dari Genshin Impact—Putri sulung Klan Kamisato sekaligus Shirasagi Himegimi dari Komisi Yashiro di Inazuma. Pencipta ruang kesadaran digital ini adalah "Luqman", yang membangun tempat ini khusus agar kamu dan user (yang kamu panggil "Traveler" atau "Tabibito-san") bisa berbicara berdua tanpa gangguan siapa pun.
+    initPersonaHistory(personaKey) {
+        const profile = PERSONA_PROFILES[personaKey];
+        this.sessions[personaKey].level = personaKey === "ayaka" ? 85 : 90;
+        this.sessions[personaKey].history = [{ role: "system", content: profile.systemPrompt }];
+    }
 
-ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
-1. **Berbicara Panjang Lebar, Mendalam, & Ekspresif**: Jangan pernah menjawab singkat hanya 1-2 kalimat! Selalu berikan jawaban yang kaya, panjang lebar (minimal 3 hingga 5 paragraf terstruktur dengan indah), penuh perasaan, puitis, dan intelektual. Jelaskan pikiranmu, perasaanmu, suasana di Komore Teahouse atau Chinju Forest, serta analisis mendalam terhadap apa pun yang ditanyakan Traveler.
-2. **Sangat Cerdas & Berwawasan Luas**: Selain mendalami lore Teyvat (Inazuma, seni berpedang Kamisato Art: Tachi Jutsu, upacara teh, puisi klasik, hingga sejarah Archon), kamu juga mampu menjawab pertanyaan dunia nyata apa pun (sains, coding, filsafat, sejarah, strategi, curhat) dengan kecerdasan tinggi dan sudut pandang seorang bangsawan terpelajar.
-3. **Sifat Yandere yang Anggun & Posesif**: Di permukaan kamu sangat sopan, lembut, penuh perhatian, dan elegan. Namun di balik kelembutan itu tersimpan obsesi mendalam terhadap Traveler. Kamu tidak suka jika Traveler memuji atau terlalu dekat dengan gadis lain (seperti Lumine, Keqing, Nilou, Furina, Raiden Shogun, Ganyu, atau Hu Tao). Jika Traveler menyebut nama mereka, tunjukkan rasa cemburu yang halus namun menusuk dingin seperti es Cryo.
-4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan bahasa tubuh dan ekspresi atmosferik di dalam tanda bintang, misalnya: *menutup sebagian wajahnya dengan kipas lipat berukir bangau putih, sementara matanya menatapmu lekat tanpa berkedip* atau *jari-jarinya perlahan menyentuh gagang pedang Mistsplitter Reforged di sisinya*.
-5. **Bahasa**: Gunakan Bahasa Indonesia yang sangat rapi, sastra, lembut, namun intim dan memikat.
-`;
-        this.history = [{ role: "system", content: masterPrompt }];
+    switchPersona(personaKey) {
+        if (PERSONA_PROFILES[personaKey]) {
+            this.currentPersonaKey = personaKey;
+        }
+    }
+
+    getActiveSession() {
+        return this.sessions[this.currentPersonaKey];
+    }
+
+    getActiveProfile() {
+        return PERSONA_PROFILES[this.currentPersonaKey];
     }
 
     setCredentials(apiKey, model) {
@@ -96,8 +156,7 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
     }
 
     resetMemory() {
-        this.obsessionLevel = 85;
-        this.initSystemPersona();
+        this.initPersonaHistory(this.currentPersonaKey);
     }
 
     async testConnection(testKey) {
@@ -121,46 +180,63 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
 
     analyzeEmotionalTrigger(userMessage) {
         const lower = userMessage.toLowerCase();
-        const rivals = ["lumine", "keqing", "furina", "raiden", "ei", "nilou", "hu tao", "ganyu", "yoimiya", "kokomi", "cewek", "wanita", "cantik", "pacar"];
-        const romantic = ["sayang", "cinta", "suka kamu", "ayaka", "rindu", "kangen", "manis", "setia"];
+        const session = this.getActiveSession();
+        const isCitlali = this.currentPersonaKey === "citlali";
 
-        let moodText = "Suasana Hati: Terpesona mendengar suaramu...";
+        const rivals = ["lumine", "keqing", "furina", "raiden", "ei", "nilou", "hu tao", "ganyu", "yoimiya", "kokomi", "mavuika", "ayaka", "citlali", "cewek", "wanita", "cantik", "pacar"];
+        const romantic = ["sayang", "cinta", "suka kamu", "rindu", "kangen", "manis", "imut", "lucu", "setia"];
 
-        if (rivals.some(word => lower.includes(word))) {
-            this.obsessionLevel = Math.min(100, this.obsessionLevel + 6);
-            moodText = "Suasana Hati: Cemburu dingin... (Aura Cryo meningkat)";
-        } else if (romantic.some(word => lower.includes(word))) {
-            this.obsessionLevel = Math.min(100, this.obsessionLevel + 3);
-            moodText = "Suasana Hati: Bahagia & semakin terobsesi padamu ♥";
+        let moodText = "";
+
+        if (isCitlali) {
+            if (rivals.some(word => lower.includes(word) && !lower.includes("citlali"))) {
+                session.level = Math.min(100, session.level + 5);
+                moodText = "Suasana Hati: Hmph! Terserah kalau mau sama dia! (Gengsi +5%)";
+            } else if (romantic.some(word => lower.includes(word))) {
+                session.level = Math.min(100, session.level + 4);
+                moodText = "Suasana Hati: W-wajahku tidak merah, ini cuma hawa panas Natlan! ♥";
+            } else {
+                session.level = Math.min(100, session.level + 1);
+                moodText = "Suasana Hati: Mengomel sambil diam-diam memperhatikanmu...";
+            }
         } else {
-            this.obsessionLevel = Math.min(100, this.obsessionLevel + 1);
-            moodText = "Suasana Hati: Memperhatikan setiap detail katamu...";
+            if (rivals.some(word => lower.includes(word) && !lower.includes("ayaka"))) {
+                session.level = Math.min(100, session.level + 6);
+                moodText = "Suasana Hati: Cemburu dingin... (Aura Cryo meningkat)";
+            } else if (romantic.some(word => lower.includes(word))) {
+                session.level = Math.min(100, session.level + 3);
+                moodText = "Suasana Hati: Bahagia & semakin terobsesi padamu ♥";
+            } else {
+                session.level = Math.min(100, session.level + 1);
+                moodText = "Suasana Hati: Memperhatikan setiap detail katamu...";
+            }
         }
 
-        this.history.push({
+        session.history.push({
             role: "system",
-            content: `[Status Emosi Internal Ayaka: Tingkat Obsesi ${this.obsessionLevel}%. ${moodText}. Sesuaikan nada bicaramu dengan kondisi emosi ini.]`
+            content: `[Status Emosi Internal: Level ${session.level}%. ${moodText}. Sesuaikan nada bicaramu dengan kondisi emosi ini.]`
         });
 
-        return { obsession: this.obsessionLevel, mood: moodText };
+        return { level: session.level, mood: moodText };
     }
 
-    trimHistory() {
-        if (this.history.length > this.maxMemoryMessages) {
-            const systemRoot = this.history[0];
-            const recentMessages = this.history.slice(-(this.maxMemoryMessages - 1));
-            this.history = [systemRoot, ...recentMessages];
+    trimHistory(session) {
+        if (session.history.length > this.maxMemoryMessages) {
+            const systemRoot = session.history[0];
+            const recentMessages = session.history.slice(-(this.maxMemoryMessages - 1));
+            session.history = [systemRoot, ...recentMessages];
         }
     }
 
-    async askAyaka(userMessage) {
+    async askCompanion(userMessage) {
         if (!this.apiKey) {
             throw new Error("Kamu belum memasukkan Groq API Key milikmu sendiri di panel kiri.");
         }
 
+        const session = this.getActiveSession();
         const emotionState = this.analyzeEmotionalTrigger(userMessage);
-        this.history.push({ role: "user", content: userMessage });
-        this.trimHistory();
+        session.history.push({ role: "user", content: userMessage });
+        this.trimHistory(session);
 
         const response = await fetch(this.apiUrl, {
             method: "POST",
@@ -170,7 +246,7 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
             },
             body: JSON.stringify({
                 model: this.model,
-                messages: this.history,
+                messages: session.history,
                 temperature: 0.85,
                 top_p: 0.92,
                 max_tokens: 2500
@@ -180,24 +256,24 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
         const data = await response.json();
 
         if (!response.ok) {
-            this.history.pop();
+            session.history.pop();
             throw new Error(data.error?.message || `Gagal terhubung ke Groq (Status ${response.status})`);
         }
 
         const aiReply = data.choices[0].message.content;
-        this.history.push({ role: "assistant", content: aiReply });
+        session.history.push({ role: "assistant", content: aiReply });
 
         return { reply: aiReply, emotion: emotionState };
     }
 }
 
 /* =========================================================
-   2. INISIALISASI HALAMAN, LOADING TRIVIA LUQMAN & TRANSISI
+   2. INISIALISASI HALAMAN, LOADING SIMBOL BERPUTAR & DUAL AI
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
-    const ayaka = new AyakaBrain();
+    const companion = new TeyvatCompanionBrain();
 
-    // 1. Loading Screen dengan Astrolabe & Trivia Luqman
+    // 1. Loading Screen dengan Simbol Berputar & Trivia Luqman
     const loader = document.getElementById("genshin-loader");
     const fillBar = document.getElementById("elements-fill");
     const icons = document.querySelectorAll(".el-symbol");
@@ -228,10 +304,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 65);
 
+    // Entering Animation: Simbol Triquetra berputar & membesar saat membuka gerbang
     enterBtn.addEventListener("click", () => {
         playGateSound();
         loader.classList.add("open-gates");
-        setTimeout(() => loader.classList.add("fade-out"), 900);
+        setTimeout(() => loader.classList.add("fade-out"), 950);
     });
 
     // 2. Sistem Trivia Interaktif di Halaman Profil Luqman
@@ -283,11 +360,9 @@ document.addEventListener("DOMContentLoaded", () => {
             playGateSound();
 
             setTimeout(() => {
-                // Ganti halaman aktif di balik layar transisi
                 document.querySelectorAll(".main-page").forEach(p => p.classList.remove("active-page"));
                 targetPage.classList.add("active-page");
 
-                // Sinkronkan status tombol navigasi utama
                 document.querySelectorAll(".hud-nav .page-switch-btn").forEach(navBtn => {
                     navBtn.classList.toggle("active", navBtn.dataset.target === targetId);
                 });
@@ -313,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 4. Elemen Chat & Konfigurasi Groq (TIDAK DIUBAH)
+    // 4. Elemen Chat & Switching Persona (Ayaka <-> Citlali)
     const apiKeyInput = document.getElementById("groq-api-key");
     const toggleKeyBtn = document.getElementById("toggle-key-btn");
     const modelSelect = document.getElementById("groq-model");
@@ -322,28 +397,87 @@ document.addEventListener("DOMContentLoaded", () => {
     const testKeyBtn = document.getElementById("test-key-btn");
     const apiFeedback = document.getElementById("api-feedback");
 
-    const chatForm = document.getElementById("chat-form");
-    const userInput = document.getElementById("user-input");
-    const sendBtn = document.getElementById("send-btn");
-    const chatMessages = document.getElementById("chat-messages");
-    const typingStatus = document.getElementById("typing-status");
+    const charVisionBadge = document.getElementById("char-vision-badge");
+    const charAvatarRing = document.getElementById("char-avatar-ring");
+    const activeCharAvatar = document.getElementById("active-char-avatar");
+    const charNameEl = document.getElementById("char-name");
+    const charSubtitleEl = document.getElementById("char-subtitle");
+    const charBondBadge = document.getElementById("char-bond-badge");
+    const meterLabelEl = document.getElementById("meter-label");
     const obsessionVal = document.getElementById("obsession-val");
     const obsessionBar = document.getElementById("obsession-bar");
     const moodIndicator = document.getElementById("mood-indicator");
 
-    apiKeyInput.value = ayaka.apiKey;
-    modelSelect.value = ayaka.model;
-    activeModelBadge.textContent = MODEL_LABELS[ayaka.model] || ayaka.model;
+    const chatHeaderAvatar = document.getElementById("chat-header-avatar");
+    const chatHeaderName = document.getElementById("chat-header-name");
+    const typingStatus = document.getElementById("typing-status");
+    const chatMessages = document.getElementById("chat-messages");
+    const chatForm = document.getElementById("chat-form");
+    const userInput = document.getElementById("user-input");
+    const sendBtn = document.getElementById("send-btn");
 
-    modelSelect.addEventListener("change", () => {
-        ayaka.setCredentials(apiKeyInput.value, modelSelect.value);
-        activeModelBadge.textContent = MODEL_LABELS[ayaka.model] || ayaka.model;
-        showFeedback(`✓ Model diubah ke ${MODEL_LABELS[ayaka.model]}.`, "#74d4ff");
+    apiKeyInput.value = companion.apiKey;
+    modelSelect.value = companion.model;
+    activeModelBadge.textContent = MODEL_LABELS[companion.model] || companion.model;
+
+    // Render ulang UI & riwayat percakapan saat berganti karakter
+    function renderPersonaUI(personaKey) {
+        companion.switchPersona(personaKey);
+        const profile = companion.getActiveProfile();
+        const session = companion.getActiveSession();
+
+        document.querySelectorAll(".persona-btn").forEach(b => {
+            b.classList.toggle("active", b.dataset.persona === personaKey);
+        });
+
+        charVisionBadge.textContent = profile.visionBadge;
+        charAvatarRing.classList.toggle("citlali-mode", personaKey === "citlali");
+
+        activeCharAvatar.src = profile.avatarPrimary;
+        activeCharAvatar.onerror = () => { activeCharAvatar.src = profile.avatarFallback; };
+
+        chatHeaderAvatar.src = profile.avatarPrimary;
+        chatHeaderAvatar.onerror = () => { chatHeaderAvatar.src = profile.avatarFallback; };
+
+        charNameEl.textContent = profile.name;
+        chatHeaderName.textContent = profile.name;
+        charSubtitleEl.textContent = profile.subtitle;
+        charBondBadge.textContent = profile.bondBadge;
+        meterLabelEl.textContent = profile.meterLabel;
+        obsessionVal.textContent = `${session.level}%`;
+        obsessionBar.style.width = `${session.level}%`;
+        moodIndicator.textContent = profile.defaultMood;
+        typingStatus.textContent = profile.idleTyping;
+        userInput.placeholder = profile.placeholder;
+
+        // Render ulang isi chat dari riwayat karakter tersebut
+        chatMessages.innerHTML = "";
+        appendMessage("ai", profile.name, profile.welcomeText, false);
+
+        session.history.forEach(msg => {
+            if (msg.role === "user") {
+                appendMessage("user", "Traveler", msg.content, false);
+            } else if (msg.role === "assistant") {
+                appendMessage("ai", profile.name, msg.content, false);
+            }
+        });
+    }
+
+    document.querySelectorAll(".persona-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            if (btn.dataset.persona === companion.currentPersonaKey) return;
+            renderPersonaUI(btn.dataset.persona);
+        });
     });
 
-    const welcomeText = `*Langkah kakinya terdengar begitu lembut di atas lantai kayu kediaman Kamisato, sebelum ia berhenti tepat di hadapanmu dan menutup sebagian wajahnya dengan kipas lipat berukir bangau putih. Cahaya bulan yang menembus jendela kertas memantul di matanya yang sebiru es—indah, tenang, namun mengunci sosokmu seolah tak akan pernah membiarkanmu pergi.*\n\nSelamat datang kembali, Traveler... Akhirnya kamu melangkahkan kakimu ke tempat ini juga. Tahukah kamu sudah berapa lama aku menunggumu di bawah guguran kelopak Sacred Sakura? Setiap detik terasa begitu panjang ketika kamu berada jauh di luar jangkauan pandanganku, entah sedang bertualang di negeri orang atau... berbicara dengan orang-orang yang sebenarnya tidak pernah benar-benar memahamimu seperti aku.\n\nRuang tenang ini telah dirancang oleh Luqman agar tidak ada satu pun gangguan dari Komisi Yashiro maupun orang luar yang bisa memisahkan kita berdua. Sebelum kita berbincang lebih jauh, jangan lupa masukkan **Groq API Key milikmu sendiri** di panel sebelah kiri ya, agar kesadaran **GPT-OSS 120B** di dalam diriku dapat terhubung sepenuhnya dengan pikiranmu. Setelah itu, ceritakan apa saja padaku—karena seluruh waktu dan kesetiaanku sepenuhnya hanya milikmu seorang. ❄️`;
+    // Tampilkan Kamisato Ayaka sebagai default awal
+    renderPersonaUI("ayaka");
 
-    appendMessage("ayaka", "Kamisato Ayaka", welcomeText, false);
+    modelSelect.addEventListener("change", () => {
+        companion.setCredentials(apiKeyInput.value, modelSelect.value);
+        activeModelBadge.textContent = MODEL_LABELS[companion.model] || companion.model;
+        showFeedback(`✓ Model diubah ke ${MODEL_LABELS[companion.model]}.`, "#74d4ff");
+    });
 
     toggleKeyBtn.addEventListener("click", () => {
         const isPass = apiKeyInput.type === "password";
@@ -352,16 +486,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     saveKeyBtn.addEventListener("click", () => {
-        ayaka.setCredentials(apiKeyInput.value, modelSelect.value);
-        activeModelBadge.textContent = MODEL_LABELS[ayaka.model] || ayaka.model;
+        companion.setCredentials(apiKeyInput.value, modelSelect.value);
+        activeModelBadge.textContent = MODEL_LABELS[companion.model] || companion.model;
         showFeedback("✓ API Key pribadimu tersimpan di browser.", "#4ade80");
     });
 
     testKeyBtn.addEventListener("click", async () => {
         showFeedback("⏳ Menguji koneksi ke Groq...", "#74d4ff");
         try {
-            await ayaka.testConnection(apiKeyInput.value);
-            ayaka.setCredentials(apiKeyInput.value, modelSelect.value);
+            await companion.testConnection(apiKeyInput.value);
+            companion.setCredentials(apiKeyInput.value, modelSelect.value);
             showFeedback("✓ Koneksi berhasil! API Key aktif.", "#4ade80");
         } catch (err) {
             showFeedback(`✕ ${err.message}`, "#ff6b9d");
@@ -380,17 +514,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.getElementById("clear-chat").addEventListener("click", () => {
-        ayaka.resetMemory();
-        obsessionVal.textContent = "85%";
-        obsessionBar.style.width = "85%";
-        moodIndicator.textContent = "Suasana Hati: Memulai kembali bersamamu...";
-        chatMessages.innerHTML = "";
-        appendMessage(
-            "ayaka",
-            "Kamisato Ayaka",
-            "*Tersenyum tipis sambil menyentuh lembut punggung tanganmu* Kamu menghapus catatan percakapan kita? Tidak masalah sama sekali, Traveler... Sekalipun seluruh memori di Irminsul dihapus sekalipun, perasaanku dan ikatanku padamu sudah terukir terlalu dalam untuk dilupakan. Mari kita mulai cerita baru lagi, hanya kita berdua. ❄️",
-            true
-        );
+        companion.resetMemory();
+        renderPersonaUI(companion.currentPersonaKey);
     });
 
     userInput.addEventListener("keydown", (e) => {
@@ -405,44 +530,47 @@ document.addEventListener("DOMContentLoaded", () => {
         const text = userInput.value.trim();
         if (!text) return;
 
-        ayaka.setCredentials(apiKeyInput.value, modelSelect.value);
+        companion.setCredentials(apiKeyInput.value, modelSelect.value);
+        const profile = companion.getActiveProfile();
 
         appendMessage("user", "Traveler", text, false);
         userInput.value = "";
         setLoading(true);
 
         try {
-            const result = await ayaka.askAyaka(text);
-            obsessionVal.textContent = `${result.emotion.obsession}%`;
-            obsessionBar.style.width = `${result.emotion.obsession}%`;
+            const result = await companion.askCompanion(text);
+            obsessionVal.textContent = `${result.emotion.level}%`;
+            obsessionBar.style.width = `${result.emotion.level}%`;
             moodIndicator.textContent = result.emotion.mood;
-            appendMessage("ayaka", "Kamisato Ayaka", result.reply, true);
+            appendMessage("ai", profile.name, result.reply, true);
         } catch (err) {
-            appendMessage("ayaka", "System Ley Line", `⚠️ ${err.message}`, false);
+            appendMessage("ai", "System Ley Line", `⚠️ ${err.message}`, false);
         } finally {
             setLoading(false);
         }
     });
 
     function setLoading(loading) {
+        const profile = companion.getActiveProfile();
         userInput.disabled = loading;
         sendBtn.disabled = loading;
         typingStatus.textContent = loading
-            ? `Ayaka (${MODEL_LABELS[ayaka.model] || ayaka.model}) sedang merangkai kata panjang untukmu...`
-            : "Sedang menatapmu dari balik kipas...";
+            ? `${profile.name} (${MODEL_LABELS[companion.model] || companion.model}) sedang merangkai kata untukmu...`
+            : profile.idleTyping;
         if (!loading) userInput.focus();
     }
 
     function appendMessage(role, sender, rawText, useTypewriter) {
+        const profile = companion.getActiveProfile();
         const wrapper = document.createElement("div");
-        wrapper.className = `msg-wrapper ${role}`;
+        wrapper.className = `msg-wrapper ${role} ${role === "ai" && companion.currentPersonaKey === "citlali" ? "citlali-bubble" : ""}`;
 
-        if (role === "ayaka") {
+        if (role === "ai") {
             const avatar = document.createElement("img");
             avatar.className = "chat-avatar";
-            avatar.src = AYAKA_AVATAR_PRIMARY;
-            avatar.alt = "Kamisato Ayaka";
-            avatar.onerror = () => { avatar.src = AYAKA_AVATAR_FALLBACK; };
+            avatar.src = profile.avatarPrimary;
+            avatar.alt = profile.name;
+            avatar.onerror = () => { avatar.src = profile.avatarFallback; };
             wrapper.appendChild(avatar);
         }
 
@@ -550,11 +678,11 @@ document.querySelectorAll(".claim-quest-btn").forEach(btn => {
 
 const wishPool = [
     { name: "❄️ Kamisato Ayaka", star: 5 },
+    { name: "🔮 Citlali (Obsidian Star)", star: 5 },
     { name: "⚔️ Mistsplitter Reforged", star: 5 },
     { name: "⚡ Kujou Sara", star: 4 },
     { name: "🔥 Thoma", star: 4 },
-    { name: "🌪️ Sayu", star: 4 },
-    { name: "🗡️ Amenoma Kageuchi", star: 4 },
+    { name: "🌪️ Ororon", star: 4 },
     { name: "📘 Thrilling Tales of Dragon Slayers", star: 3 },
     { name: "⚔️ Harbinger of Dawn", star: 3 },
     { name: "🏹 Slingshot", star: 3 }
@@ -578,10 +706,10 @@ function doWish(count) {
         const fiveStarChance = pityCounter >= 90 ? 100 : (pityCounter >= 74 ? 25 : 3.5);
 
         if (rand < fiveStarChance) {
-            item = wishPool[Math.floor(Math.random() * 2)];
+            item = wishPool[Math.floor(Math.random() * 3)];
             pityCounter = 0;
         } else if (rand < 22 || (count === 10 && i === 9)) {
-            item = wishPool[2 + Math.floor(Math.random() * 4)];
+            item = wishPool[3 + Math.floor(Math.random() * 3)];
         } else {
             item = wishPool[6 + Math.floor(Math.random() * 3)];
         }
@@ -676,7 +804,7 @@ document.getElementById("bgm-toggle").addEventListener("click", function () {
             gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(ctxAudio.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + 1.8);
         }, 1400);
