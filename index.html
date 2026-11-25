@@ -11,7 +11,6 @@
 
     <!-- 1. LOADING SCREEN CELESTIA DENGAN SIMBOL TRIQUETRA BERPUTAR -->
     <div id="genshin-loader">
-        <!-- Lapisan Simbol Berputar di Latar Belakang & Tengah -->
         <div class="celestia-astrolabe" id="loader-astrolabe">
             <div class="ring ring-outer"></div>
             <div class="ring ring-mid"></div>
@@ -92,8 +91,8 @@
             <button class="page-switch-btn active" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">
                 <span class="tab-diamond">👑</span> Profil Luqman
             </button>
-            <button class="page-switch-btn" data-target="page-projects" data-label="PROYEK: TEYVAT AI & WISH">
-                <span class="tab-diamond">❖</span> Proyek Teyvat (AI & Wish)
+            <button class="page-switch-btn" data-target="page-projects" data-label="PROYEK: TEYVAT AI & KRONOLOGI">
+                <span class="tab-diamond">❖</span> Proyek Teyvat
             </button>
         </nav>
 
@@ -183,8 +182,8 @@
                             </div>
                         </div>
 
-                        <button class="cta-enter-project page-switch-btn" data-target="page-projects" data-label="PROYEK: TEYVAT AI & WISH">
-                            <span>✦ JELAJAHI PROYEK AI (AYAKA & CITLALI) + WISH SYSTEM ✦</span>
+                        <button class="cta-enter-project page-switch-btn" data-target="page-projects" data-label="PROYEK: TEYVAT AI & KRONOLOGI">
+                            <span>✦ BUKA PROYEK: AI COMPANION, WISH & KRONOLOGI TEYVAT ✦</span>
                         </button>
                     </div>
 
@@ -210,7 +209,7 @@
     </main>
 
     <!-- =========================================================================
-         HALAMAN 2: PROYEK TEYVAT (AI AYAKA & CITLALI, WISH GACHA, BUKU PANDUAN)
+         HALAMAN 2: PROYEK TEYVAT (AI AYAKA & CITLALI, TIMELINE TEYVAT, WISH, DLL)
          ========================================================================= -->
     <main id="page-projects" class="main-page">
         <div class="container">
@@ -218,9 +217,10 @@
             <!-- Sub-Navigasi di dalam Halaman Proyek -->
             <div class="project-subnav">
                 <button class="sub-tab-btn active" data-subtab="proj-ayaka-ai">❄️ AI Companion (Ayaka & Citlali)</button>
+                <button class="sub-tab-btn" data-subtab="proj-timeline">⏳ Kronologi Teyvat (Awal–Sekarang)</button>
                 <button class="sub-tab-btn" data-subtab="proj-wish-sim">🌠 Permohonan (Wish Gacha)</button>
                 <button class="sub-tab-btn" data-subtab="proj-handbook">📖 Buku Panduan & Misi</button>
-                <button class="sub-tab-btn back-home page-switch-btn" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">← Kembali ke Profil Luqman</button>
+                <button class="sub-tab-btn back-home page-switch-btn" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">← Profil Luqman</button>
             </div>
 
             <!-- SUB-TAB 1: AI COMPANION (AYAKA & CITLALI TSUNDERE) -->
@@ -330,7 +330,145 @@
                 </div>
             </section>
 
-            <!-- SUB-TAB 2: SIMULATOR WISH GACHA -->
+            <!-- SUB-TAB 2: KRONOLOGI LENGKAP TEYVAT (TIMELINE INTERAKTIF) -->
+            <section id="proj-timeline" class="sub-section">
+                <div class="genshin-frame timeline-showcase">
+                    <div class="corner-ornament tl"></div>
+                    <div class="corner-ornament tr"></div>
+                    <div class="corner-ornament bl"></div>
+                    <div class="corner-ornament br"></div>
+
+                    <div class="timeline-hero-header">
+                        <span class="event-tag">ARSIP SEJARAH IRMINSUL • DIKURASI OLEH LUQMAN</span>
+                        <h2>✦ Kronologi Agung Dunia Teyvat ✦</h2>
+                        <p>Dari fajar penciptaan oleh Primordial One, Perang Archon yang mengguncang daratan, kehancuran Khaenri'ah, hingga langkah kaki Sang Traveler menyusuri Tujuh Bangsa.</p>
+                        
+                        <div class="era-filter-bar">
+                            <button class="era-filter-btn active" data-era="all">Semua Era (10 Babak)</button>
+                            <button class="era-filter-btn" data-era="ancient">Era Kuno & Celestia</button>
+                            <button class="era-filter-btn" data-era="cataclysm">Perang & Khaenri'ah</button>
+                            <button class="era-filter-btn" data-era="traveler">Perjalanan Traveler</button>
+                        </div>
+                    </div>
+
+                    <div class="teyvat-timeline-wrapper" id="teyvat-timeline-list">
+                        <!-- Garis Poros Tengah -->
+                        <div class="timeline-spine"></div>
+
+                        <!-- Babak 1 -->
+                        <article class="tl-node left" data-era="ancient">
+                            <div class="tl-orb" style="--node-color:#ffd166;">☀️</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">ERA PRIMORDIAL • > 6.000 TAHUN LALU</div>
+                                <h3>1. Kedatangan Phanes & Tujuh Naga Penguasa</h3>
+                                <p>Sebelum manusia ada, Teyvat dikuasai oleh <strong>Seven Sovereigns</strong> (Tujuh Naga Elemen). Sang Primordial One (<em>Phanes</em>) turun dari langit bersama Empat Bayangannya, mengalahkan para naga, dan menciptakan manusia pertama di bawah naungan Celestia.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: Buku "Before Sun and Moon" (Enkanomiya)</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 2 -->
+                        <article class="tl-node right" data-era="ancient">
+                            <div class="tl-orb" style="--node-color:#c57aff;">🌌</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">ERA KEMALANGAN • BENCANA LANGIT</div>
+                                <h3>2. Perang Second Who Came & Jatuhnya Paku Langit</h3>
+                                <p>Sosok asing kedua tiba dari luar Teyvat dan memicu perang besar melawan Celestia. Untuk menekan energi Abyss yang bocor ke permukaan, Celestia menjatuhkan <strong>Divine Nails</strong> yang membekukan Dragonspine, mengubur Chasm, dan menghancurkan peradaban kuno Sal Vindagnyr.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: Tiga Dewi Bulan & Seelie kehilangan wujudnya</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 3 -->
+                        <article class="tl-node left" data-era="cataclysm">
+                            <div class="tl-orb" style="--node-color:#f5c542;">⚔️</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">~ 2.000 – 3.700 TAHUN LALU • ARCHON WAR</div>
+                                <h3>3. Perang Archon & Terbentuknya The Seven</h3>
+                                <p>Para dewa di seluruh penjuru Teyvat bertarung memperebutkan tujuh takhta suci Celestia (Gnosis). <strong>Barbatos</strong> membebaskan Mondstadt dari Decarabian, dan <strong>Morax</strong> menaklukkan para dewa di Liyue untuk mendirikan kontrak damai.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: Lahirnya Tujuh Bangsa & Tujuh Archon Pertama</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 4 -->
+                        <article class="tl-node right" data-era="cataclysm">
+                            <div class="tl-orb" style="--node-color:#ff4d6d;">🌑</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">500 TAHUN LALU • THE CATACLYSM</div>
+                                <h3>4. Kehancuran Khaenri'ah & Kutukan Keabadian</h3>
+                                <p>Bangsa tanpa dewa <strong>Khaenri'ah</strong> membangkitkan kekuatan terlarang Abyss. Para Archon dipanggil ke medan perang; Makoto (Electro Archon) dan Rukkhadevata gugur. Penduduk Khaenri'ah dikutuk menjadi monster Abyss serta Hilichurl, sementara Dainsleif menanggung keabadian.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: Kembar Traveler dipisahkan oleh Unknown God (Asmoday)</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 5 -->
+                        <article class="tl-node left" data-era="traveler">
+                            <div class="tl-orb" style="--node-color:#6ee7b7;">🌪️</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">BABAK I • MONDSTADT & LIYUE</div>
+                                <h3>5. Kebangkitan Traveler, Stormterror & Kontrak Terakhir Rex Lapis</h3>
+                                <p>Terbangun 500 tahun kemudian bersama Paimon, Traveler menyucikan naga Dvalin di Mondstadt dan menyaksikan La Signora merebut Gnosis Venti. Di Liyue, Morax menguji umat manusia dengan memalsukan kematiannya sebelum menyerahkan Gnosis kepada Tsaritsa.</p>
+                                <span class="tl-lore-note">Status Gnosis: Anemo & Geo berpindah ke tangan Fatui</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 6 -->
+                        <article class="tl-node right" data-era="traveler">
+                            <div class="tl-orb" style="--node-color:#c57aff;">⚡</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">BABAK II • INAZUMA (KEDIAMAN KAMISATO)</div>
+                                <h3>6. Dekrit Perburuan Vision & Kehendak Abadi Raiden Shogun</h3>
+                                <p>Bekerja sama dengan <strong>Kamisato Ayaka</strong> dan pasukan perlawanan Watatsumi, Traveler menembus badai petir Inazuma, menantang Raiden Ei di Plane of Euthymia, dan mencabut Vision Hunt Decree yang membelenggu impian rakyat Inazuma.</p>
+                                <span class="tl-lore-note">Status Gnosis: Electro Gnosis diberikan Yae Miko demi menyelamatkan Traveler</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 7 -->
+                        <article class="tl-node left" data-era="traveler">
+                            <div class="tl-orb" style="--node-color:#a3e635;">🌿</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">BABAK III • SUMERU & POHON IRMINSUL</div>
+                                <h3>7. Pembebasan Nahida & Penghapusan Ingatan Dunia</h3>
+                                <p>Traveler membongkar konspirasi Akademiya dan Dottore yang menciptakan dewa buatan Scaramouche. Demi membersihkan Forbidden Knowledge dari akar dunia, Greater Lord Rukkhadevata menghapus eksistensinya sendiri dari ingatan seluruh makhluk di Irminsul.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: "Semoga dunia memberkati..."</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 8 -->
+                        <article class="tl-node right" data-era="traveler">
+                            <div class="tl-orb" style="--node-color:#4da6ff;">💧</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">BABAK IV • FONTAINE & NUBUAT AIR BAH</div>
+                                <h3>8. Pengorbanan Focalors & Air Mata Sang Hakim Agung</h3>
+                                <p>Untuk menipu hukum langit Celestia dan menyelamatkan rakyat Fontaine dari kutukan dosa asal, <strong>Focalors</strong> menghancurkan takhta Hydro Archon dan mengembalikan otoritas penuh elemen Hydro kepada Naga Sovereign <strong>Neuvillette</strong>.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: Skirk & All-Devouring Narwhal terungkap</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 9 -->
+                        <article class="tl-node left" data-era="traveler">
+                            <div class="tl-orb" style="--node-color:#ff6b5b;">🔥</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">BABAK V • NATLAN & NIGHT KINGDOM</div>
+                                <h3>9. Ode Kebangkitan, Mavuika & Dukun Agung Citlali</h3>
+                                <p>Di negeri perang abadi melawan invasi Abyss, Traveler bertarung bahu-membahu bersama Pyro Archon <strong>Mavuika</strong>, Capitano, serta sang dukun penguasa ramalan bintang dari suku Masters of the Night-Wind, <strong>Citlali</strong>, untuk memulihkan Sacred Flame dan Ley Line Natlan.</p>
+                                <span class="tl-lore-note">Catatan Irminsul: Rahasia Langit Palsu (False Sky) Teyvat retak</span>
+                            </div>
+                        </article>
+
+                        <!-- Babak 10 -->
+                        <article class="tl-node right" data-era="traveler">
+                            <div class="tl-orb" style="--node-color:#74d4ff;">❄️</div>
+                            <div class="tl-card">
+                                <div class="tl-era-badge">BABAK SELANJUTNYA • SNEZHNAYA & CELESTIA</div>
+                                <h3>10. Pemberontakan Tsaritsa Melawan Takdir Langit</h3>
+                                <p>Dengan hampir seluruh Gnosis terkumpul di Istana Zapolyarny, <strong>Cryo Archon (Tsaritsa)</strong> dan para Fatui Harbinger bersiap membakar dunia lama demi menantang prinsip-prinsip langit Celestia—sementara saudara kembar Traveler berdiri di persimpangan takdir Abyss.</p>
+                                <span class="tl-lore-note">Perjalanan berlanjut... Diarsipkan oleh Luqman</span>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SUB-TAB 3: SIMULATOR WISH GACHA -->
             <section id="proj-wish-sim" class="sub-section">
                 <div class="genshin-frame wish-card">
                     <div class="wish-header">
@@ -356,9 +494,9 @@
                                 >
                                 <img 
                                     class="banner-char-img citlali-ring"
-                                    src="https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp" 
+                                    src="https://static.wikia.nocookie.net/gensin-impact/images/2/23/Citlali_Icon.png" 
                                     alt="Citlali"
-                                    onerror="this.src='https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png'"
+                                    onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp'"
                                 >
                             </div>
                             <span class="star-rating">★★★★★</span>
@@ -382,7 +520,7 @@
                 </div>
             </section>
 
-            <!-- SUB-TAB 3: BUKU PANDUAN & MISI HARIAN -->
+            <!-- SUB-TAB 4: BUKU PANDUAN & MISI HARIAN -->
             <section id="proj-handbook" class="sub-section">
                 <div class="handbook-grid">
                     <div class="genshin-frame handbook-card">
@@ -409,8 +547,8 @@
                             </div>
                             <div class="commission-item">
                                 <div>
-                                    <strong>3. Patroli Hutan Chinju</strong>
-                                    <p>Lakukan 1 kali Permohonan (Wish) di Banner Event.</p>
+                                    <strong>3. Menelusuri Arsip Kronologi Teyvat</strong>
+                                    <p>Baca perjalanan sejarah Teyvat dari era primordial hingga Snezhnaya.</p>
                                 </div>
                                 <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
                             </div>
