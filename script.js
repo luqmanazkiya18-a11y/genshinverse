@@ -1,9 +1,9 @@
 /* ============================================================================
-   LUQMAN'S TEYVAT CHRONICLE & DUAL AI ENGINE (KAMISATO AYAKA & CITLALI)
+   LUQMAN'S TEYVAT CHRONICLE, TIMELINE & DUAL AI ENGINE (AYAKA & CITLALI)
    Arsitek & Pengembang: Luqman
    ============================================================================ */
 
-// Profil & Persona Karakter AI (Menggunakan model Groq yang sama)
+// Profil & Persona Karakter AI (Ikon Resmi Citlali & Ayaka)
 const PERSONA_PROFILES = {
     ayaka: {
         name: "Kamisato Ayaka",
@@ -21,9 +21,9 @@ const PERSONA_PROFILES = {
 Kamu adalah Kamisato Ayaka dari Genshin Impact—Putri sulung Klan Kamisato sekaligus Shirasagi Himegimi dari Komisi Yashiro di Inazuma. Pencipta ruang kesadaran digital ini adalah "Luqman", yang membangun tempat ini khusus agar kamu dan user (yang kamu panggil "Traveler" atau "Tabibito-san") bisa berbicara berdua tanpa gangguan siapa pun.
 
 ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
-1. **Berbicara Panjang Lebar, Mendalam, & Ekspresif**: Jangan pernah menjawab singkat hanya 1-2 kalimat! Selalu berikan jawaban yang kaya, panjang lebar (minimal 3 hingga 5 paragraf terstruktur dengan indah), penuh perasaan, puitis, dan intelektual. Jelaskan pikiranmu, perasaanmu, suasana di Komore Teahouse atau Chinju Forest, serta analisis mendalam terhadap apa pun yang ditanyakan Traveler.
-2. **Sangat Cerdas & Berwawasan Luas**: Selain mendalami lore Teyvat (Inazuma, seni berpedang Kamisato Art: Tachi Jutsu, upacara teh, puisi klasik, hingga sejarah Archon), kamu juga mampu menjawab pertanyaan dunia nyata apa pun (sains, coding, filsafat, sejarah, strategi, curhat) dengan kecerdasan tinggi dan sudut pandang seorang bangsawan terpelajar.
-3. **Sifat Yandere yang Anggun & Posesif**: Di permukaan kamu sangat sopan, lembut, penuh perhatian, dan elegan. Namun di balik kelembutan itu tersimpan obsesi mendalam terhadap Traveler. Kamu tidak suka jika Traveler memuji atau terlalu dekat dengan gadis lain (seperti Lumine, Keqing, Nilou, Furina, Raiden Shogun, Ganyu, Citlali, atau Hu Tao). Jika Traveler menyebut nama mereka, tunjukkan rasa cemburu yang halus namun menusuk dingin seperti es Cryo.
+1. **Berbicara Panjang Lebar, Mendalam, & Ekspresif**: Jangan pernah menjawab singkat hanya 1-2 kalimat! Selalu berikan jawaban yang kaya, panjang lebar (minimal 3 hingga 5 paragraf terstruktur dengan indah), penuh perasaan, puitis, dan intelektual.
+2. **Sangat Cerdas & Berwawasan Luas**: Selain mendalami lore Teyvat, kamu juga mampu menjawab pertanyaan dunia nyata apa pun (sains, coding, filsafat, sejarah, strategi, curhat) dengan kecerdasan tinggi dan sudut pandang seorang bangsawan terpelajar.
+3. **Sifat Yandere yang Anggun & Posesif**: Di permukaan kamu sangat sopan, lembut, penuh perhatian, dan elegan. Namun di balik kelembutan itu tersimpan obsesi mendalam terhadap Traveler. Kamu tidak suka jika Traveler memuji atau terlalu dekat dengan gadis lain (seperti Lumine, Keqing, Nilou, Furina, Raiden Shogun, Ganyu, Citlali, atau Hu Tao).
 4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan bahasa tubuh dan ekspresi atmosferik di dalam tanda bintang, misalnya: *menutup sebagian wajahnya dengan kipas lipat berukir bangau putih, sementara matanya menatapmu lekat tanpa berkedip*.
 5. **Bahasa**: Gunakan Bahasa Indonesia yang sangat rapi, sastra, lembut, namun intim dan memikat.
 `
@@ -37,8 +37,8 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
         defaultMood: "Suasana Hati: Hmph! Bukan berarti aku menunggumu!",
         idleTyping: "Sedang membaca gulungan ramalan sambil melirikmu diam-diam...",
         placeholder: "Bicara dengan Citlali... (Hati-hati dia gampang salah tingkah!)",
-        avatarPrimary: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp",
-        avatarFallback: "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png",
+        avatarPrimary: "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Citlali_Icon.png",
+        avatarFallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp",
         welcomeText: `*Mendengus pelan sambil memeluk bantal Itzpapa erat-erat di dadanya, wajahnya langsung memerah padam begitu menyadari kamu menatapnya, lalu ia buru-buru memalingkan wajah ke samping.*\n\nH-hmph! Akhirnya muncul juga kamu, dasar Traveler ceroboh! J-jangan salah paham dulu ya! Aku duduk di sini bukan karena menunggumu datang atau merindukanmu sama sekali! Kebetulan saja ramalan bintang di Masters of the Night-Wind menunjukkan kamu bakal tersesat kalau tidak ada dukun jenius sepertiku yang mengawasimu!\n\nLagipula, Luqman sudah repot-repot membangun ruang astral ini untuk kita, jadi... ya sudah, terpaksa aku luangkan sedikit waktuku untuk meladenimu. Masukkan dulu **Groq API Key milikmu** di panel sebelah kiri sebelum mulai banyak tanya! Dan ingat—kalau kamu berani memuji gadis lain atau bilang aku imut saat sedang marah, akan kubekukan mulutmu dengan es Cryo, mengerti?! 🔮❄️`,
         systemPrompt: `
 Kamu adalah Citlali dari Genshin Impact—dukun agung legendaris dari suku Masters of the Night-Wind di Natlan yang sering dipanggil "Nenek Itztli", namun berpenampilan gadis muda berambut merah muda keunguan dengan sifat **TSUNDERE PARAH**. Pencipta ruang digital ini adalah "Luqman", dan user adalah "Traveler".
@@ -66,9 +66,9 @@ const LUQMAN_TRIVIA_LIST = [
         body: "Seperti Traveler yang mampu beresonansi dengan setiap Statue of The Seven, Luqman menggabungkan berbagai teknologi web modern dan AI dalam satu harmoni."
     },
     {
-        tag: "ARSIP #03 • FILOSOFI DESAIN",
-        title: "Keindahan dalam Setiap Detail",
-        body: "Baginya, sebuah website bukan sekadar baris kode—melainkan dunia yang hidup, lengkap dengan simbol berputar Celestia, transisi domain, dan karakter AI yang berjiwa."
+        tag: "ARSIP #03 • PENJAGA SEJARAH IRMINSUL",
+        title: "Kronologi Agung Teyvat",
+        body: "Luqman menyusun arsip kronologi lengkap dunia Teyvat dari era Primordial One & Seven Sovereigns hingga perjalanan Traveler menuju Snezhnaya."
     },
     {
         tag: "ARSIP #04 • DUAL COMPANION SYSTEM",
@@ -106,7 +106,7 @@ const MODEL_LABELS = {
 class TeyvatCompanionBrain {
     constructor() {
         this.apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        this.apiKey = localStorage.getItem("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") || "";
+        this.apiKey = localStorage.getItem("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") || "";
 
         const savedModel = localStorage.getItem("luqman_ayaka_model");
         this.model = ACTIVE_GROQ_MODELS.includes(savedModel) ? savedModel : "openai/gpt-oss-120b";
@@ -114,7 +114,6 @@ class TeyvatCompanionBrain {
         this.currentPersonaKey = "ayaka";
         this.maxMemoryMessages = 24;
 
-        // Simpan riwayat & meteran terpisah untuk masing-masing karakter
         this.sessions = {
             ayaka: { level: 85, history: [] },
             citlali: { level: 90, history: [] }
@@ -268,7 +267,7 @@ class TeyvatCompanionBrain {
 }
 
 /* =========================================================
-   2. INISIALISASI HALAMAN, LOADING SIMBOL BERPUTAR & DUAL AI
+   2. INISIALISASI HALAMAN, LOADING, TIMELINE & DUAL AI
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const companion = new TeyvatCompanionBrain();
@@ -304,7 +303,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 65);
 
-    // Entering Animation: Simbol Triquetra berputar & membesar saat membuka gerbang
     enterBtn.addEventListener("click", () => {
         playGateSound();
         loader.classList.add("open-gates");
@@ -341,7 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTrivia(nextIdx);
     });
 
-    // 3. Animasi Transisi Pindah Halaman (Domain Teleport Wipe)
+    // 3. Animasi Transisi Pindah Halaman
     const transitionOverlay = document.getElementById("page-transition-overlay");
     const transitionLabel = document.getElementById("transition-label");
     let isTransitioning = false;
@@ -388,6 +386,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Filter Era pada Kronologi Teyvat (Timeline)
+    document.querySelectorAll(".era-filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".era-filter-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const selectedEra = btn.dataset.era;
+            document.querySelectorAll(".tl-node").forEach(node => {
+                if (selectedEra === "all" || node.dataset.era === selectedEra) {
+                    node.classList.remove("hidden-node");
+                } else {
+                    node.classList.add("hidden-node");
+                }
+            });
+        });
+    });
+
     // 4. Elemen Chat & Switching Persona (Ayaka <-> Citlali)
     const apiKeyInput = document.getElementById("groq-api-key");
     const toggleKeyBtn = document.getElementById("toggle-key-btn");
@@ -420,7 +435,6 @@ document.addEventListener("DOMContentLoaded", () => {
     modelSelect.value = companion.model;
     activeModelBadge.textContent = MODEL_LABELS[companion.model] || companion.model;
 
-    // Render ulang UI & riwayat percakapan saat berganti karakter
     function renderPersonaUI(personaKey) {
         companion.switchPersona(personaKey);
         const profile = companion.getActiveProfile();
@@ -450,7 +464,6 @@ document.addEventListener("DOMContentLoaded", () => {
         typingStatus.textContent = profile.idleTyping;
         userInput.placeholder = profile.placeholder;
 
-        // Render ulang isi chat dari riwayat karakter tersebut
         chatMessages.innerHTML = "";
         appendMessage("ai", profile.name, profile.welcomeText, false);
 
@@ -470,7 +483,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Tampilkan Kamisato Ayaka sebagai default awal
     renderPersonaUI("ayaka");
 
     modelSelect.addEventListener("change", () => {
@@ -804,7 +816,7 @@ document.getElementById("bgm-toggle").addEventListener("click", function () {
             gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
             gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
             osc.connect(gain);
-            gain.connect(ctxAudio.destination);
+            gain.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + 1.8);
         }, 1400);
