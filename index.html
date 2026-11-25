@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luqman — Teyvat Archive & Kamisato AI</title>
+    <title>Luqman — Teyvat Archive & AI Companion (Ayaka & Citlali)</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-vision="cryo">
 
-    <!-- 1. LOADING SCREEN CELESTIA ASTROLABE + TRIVIA LUQMAN -->
+    <!-- 1. LOADING SCREEN CELESTIA DENGAN SIMBOL TRIQUETRA BERPUTAR -->
     <div id="genshin-loader">
-        <div class="celestia-astrolabe">
+        <!-- Lapisan Simbol Berputar di Latar Belakang & Tengah -->
+        <div class="celestia-astrolabe" id="loader-astrolabe">
             <div class="ring ring-outer"></div>
             <div class="ring ring-mid"></div>
             <div class="ring ring-inner"></div>
-            <div class="astrolabe-star">✦</div>
+            <svg class="triquetra-svg" viewBox="0 0 200 200" width="170" height="170">
+                <circle cx="100" cy="100" r="88" fill="none" stroke="#c8a456" stroke-width="1.5" stroke-dasharray="6 4"/>
+                <polygon points="100,18 171,141 29,141" fill="none" stroke="#b58d3d" stroke-width="2"/>
+                <polygon points="100,182 171,59 29,59" fill="none" stroke="#d4af37" stroke-width="1.5"/>
+                <circle cx="100" cy="100" r="32" fill="none" stroke="#b58d3d" stroke-width="2"/>
+                <path d="M100 58 L108 92 L142 100 L108 108 L100 142 L92 108 L58 100 L92 92 Z" fill="#d4af37" opacity="0.85"/>
+            </svg>
         </div>
 
         <div class="loader-content">
@@ -51,10 +58,11 @@
         <div class="gate-right"></div>
     </div>
 
-    <!-- 2. ANIMASI TRANSISI PINDAH HALAMAN (TELEPORT DOMAIN WIPE) -->
+    <!-- 2. ANIMASI TRANSISI PINDAH HALAMAN (SIMBOL PORTAL BERPUTAR) -->
     <div id="page-transition-overlay">
         <div class="transition-flash"></div>
         <div class="transition-emblem">
+            <div class="emblem-ring-outer"></div>
             <div class="emblem-ring"></div>
             <span>✦</span>
             <p id="transition-label">MEMASUKI DOMAIN...</p>
@@ -84,7 +92,7 @@
             <button class="page-switch-btn active" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">
                 <span class="tab-diamond">👑</span> Profil Luqman
             </button>
-            <button class="page-switch-btn" data-target="page-projects" data-label="PROYEK: KAMISATO ESTATE">
+            <button class="page-switch-btn" data-target="page-projects" data-label="PROYEK: TEYVAT AI & WISH">
                 <span class="tab-diamond">❖</span> Proyek Teyvat (AI & Wish)
             </button>
         </nav>
@@ -128,13 +136,11 @@
                         <div class="orbit-track-outer"></div>
                         <div class="orbit-track-inner"></div>
                         
-                        <!-- Inti Inisial Luqman -->
                         <div class="luqman-core-emblem">
                             <span class="initial-letter">L</span>
                             <small>LUQMAN</small>
                         </div>
 
-                        <!-- 7 Elemen Mengorbit -->
                         <div class="orbit-ring">
                             <div class="orbit-planet" style="--i:0; --el-color:#ff6b5b;" title="Pyro">🔥</div>
                             <div class="orbit-planet" style="--i:1; --el-color:#4da6ff;" title="Hydro">💧</div>
@@ -169,16 +175,16 @@
                             </div>
                             <div class="h-stat">
                                 <span>Wilayah Favorit</span>
-                                <strong>Inazuma ❄️</strong>
+                                <strong>Inazuma & Natlan</strong>
                             </div>
                             <div class="h-stat">
-                                <span>Karakter Utama</span>
-                                <strong>Kamisato Ayaka</strong>
+                                <span>AI Companion</span>
+                                <strong>Ayaka & Citlali</strong>
                             </div>
                         </div>
 
-                        <button class="cta-enter-project page-switch-btn" data-target="page-projects" data-label="PROYEK: KAMISATO ESTATE">
-                            <span>✦ JELAJAHI PROYEK AYAKA AI & WISH SYSTEM ✦</span>
+                        <button class="cta-enter-project page-switch-btn" data-target="page-projects" data-label="PROYEK: TEYVAT AI & WISH">
+                            <span>✦ JELAJAHI PROYEK AI (AYAKA & CITLALI) + WISH SYSTEM ✦</span>
                         </button>
                     </div>
 
@@ -204,47 +210,56 @@
     </main>
 
     <!-- =========================================================================
-         HALAMAN 2: PROYEK TEYVAT (AI KAMISATO AYAKA, WISH GACHA, BUKU PANDUAN)
+         HALAMAN 2: PROYEK TEYVAT (AI AYAKA & CITLALI, WISH GACHA, BUKU PANDUAN)
          ========================================================================= -->
     <main id="page-projects" class="main-page">
         <div class="container">
             
             <!-- Sub-Navigasi di dalam Halaman Proyek -->
             <div class="project-subnav">
-                <button class="sub-tab-btn active" data-subtab="proj-ayaka-ai">❄️ AI Kamisato Ayaka</button>
+                <button class="sub-tab-btn active" data-subtab="proj-ayaka-ai">❄️ AI Companion (Ayaka & Citlali)</button>
                 <button class="sub-tab-btn" data-subtab="proj-wish-sim">🌠 Permohonan (Wish Gacha)</button>
                 <button class="sub-tab-btn" data-subtab="proj-handbook">📖 Buku Panduan & Misi</button>
                 <button class="sub-tab-btn back-home page-switch-btn" data-target="page-luqman" data-label="PROFIL & TRIVIA LUQMAN">← Kembali ke Profil Luqman</button>
             </div>
 
-            <!-- SUB-TAB 1: AI KAMISATO AYAKA (API KEY TIDAK DIUBAH) -->
+            <!-- SUB-TAB 1: AI COMPANION (AYAKA & CITLALI TSUNDERE) -->
             <section id="proj-ayaka-ai" class="sub-section active">
                 <div class="ai-layout">
                     <!-- Kartu Karakter & Pengaturan Groq -->
-                    <aside class="genshin-frame character-card">
+                    <aside class="genshin-frame character-card" id="character-aside">
                         <div class="corner-ornament tl"></div>
                         <div class="corner-ornament tr"></div>
                         <div class="corner-ornament bl"></div>
                         <div class="corner-ornament br"></div>
 
+                        <!-- Pemilih Karakter AI: Ayaka vs Citlali -->
+                        <div class="persona-switcher">
+                            <button type="button" class="persona-btn active" data-persona="ayaka">
+                                ❄️ Kamisato Ayaka
+                            </button>
+                            <button type="button" class="persona-btn" data-persona="citlali">
+                                🔮 Citlali (Tsundere)
+                            </button>
+                        </div>
+
                         <div class="char-banner">
-                            <div class="vision-badge">❄️ CRYO • YASHIRO COMMISSION</div>
-                            <div class="char-avatar">
+                            <div class="vision-badge" id="char-vision-badge">❄️ CRYO • YASHIRO COMMISSION</div>
+                            <div class="char-avatar" id="char-avatar-ring">
                                 <img 
-                                    id="ayaka-main-avatar"
+                                    id="active-char-avatar"
                                     src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
-                                    alt="Kamisato Ayaka"
-                                    onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                                    alt="Karakter AI"
                                 >
                             </div>
-                            <h2>Kamisato Ayaka</h2>
-                            <p class="char-title">"Shirasagi Himegimi" • Lv. 90</p>
-                            <div class="friendship-level">Friendship Lv. 10 ♥</div>
+                            <h2 id="char-name">Kamisato Ayaka</h2>
+                            <p class="char-title" id="char-subtitle">"Shirasagi Himegimi" • Lv. 90</p>
+                            <div class="friendship-level" id="char-bond-badge">Friendship Lv. 10 ♥</div>
                         </div>
 
                         <div class="affection-meter">
                             <div class="meter-header">
-                                <span>Tingkat Obsesi</span>
+                                <span id="meter-label">Tingkat Obsesi</span>
                                 <span id="obsession-val">85%</span>
                             </div>
                             <div class="meter-bar">
@@ -253,7 +268,7 @@
                             <small id="mood-indicator" class="mood-text">Suasana Hati: Menunggu dengan sabar...</small>
                         </div>
 
-                        <!-- Pengaturan API Groq Pribadi (UTUH) -->
+                        <!-- Pengaturan API Groq Pribadi (UTUH TIDAK DIUBAH) -->
                         <div class="api-box">
                             <label for="groq-api-key">🔑 Groq API Key Milikmu</label>
                             <div class="key-input-group">
@@ -293,12 +308,12 @@
                             <div class="chat-header-user">
                                 <img 
                                     class="header-avatar"
+                                    id="chat-header-avatar"
                                     src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
-                                    alt="Ayaka"
-                                    onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                                    alt="Avatar"
                                 >
                                 <div>
-                                    <strong>Kamisato Ayaka</strong> • <span id="active-model-badge" class="model-pill">GPT-OSS 120B</span>
+                                    <strong id="chat-header-name">Kamisato Ayaka</strong> • <span id="active-model-badge" class="model-pill">GPT-OSS 120B</span>
                                     <p id="typing-status" class="typing-subtitle">Sedang menatapmu dari balik kipas...</p>
                                 </div>
                             </div>
@@ -321,7 +336,7 @@
                     <div class="wish-header">
                         <div>
                             <span class="event-tag">PERMOHONAN EVENT KARAKTER</span>
-                            <h2>✦ The Heron's Court (Bangau Putih) ✦</h2>
+                            <h2>✦ The Heron's Court & Obsidian Starlight ✦</h2>
                         </div>
                         <div class="wish-stats-bar">
                             <div class="stat-pill">Pity 5★: <strong id="pity-count">0</strong>/90</div>
@@ -332,15 +347,23 @@
 
                     <div class="banner-display">
                         <div class="banner-art">
-                            <img 
-                                class="banner-char-img"
-                                src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
-                                alt="Kamisato Ayaka"
-                                onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
-                            >
+                            <div class="dual-banner-avatars">
+                                <img 
+                                    class="banner-char-img"
+                                    src="https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png" 
+                                    alt="Kamisato Ayaka"
+                                    onerror="this.src='https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp'"
+                                >
+                                <img 
+                                    class="banner-char-img citlali-ring"
+                                    src="https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp" 
+                                    alt="Citlali"
+                                    onerror="this.src='https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png'"
+                                >
+                            </div>
                             <span class="star-rating">★★★★★</span>
-                            <h3>Kamisato Ayaka</h3>
-                            <p>Frostflake Heron • Rate Up! (Dijamin 5★ pada tarikan ke-90)</p>
+                            <h3>Kamisato Ayaka & Citlali</h3>
+                            <p>Dual Cryo Rate Up! (Dijamin 5★ pada tarikan ke-90)</p>
                         </div>
                     </div>
 
@@ -367,7 +390,7 @@
                             <h3>🧭 Misi Harian (Adventurers' Guild)</h3>
                             <span class="guild-note">"Ad Astra Abyssosque!"</span>
                         </div>
-                        <p class="handbook-desc">Selesaikan Misi Harian di Inazuma untuk mengumpulkan Primogems:</p>
+                        <p class="handbook-desc">Selesaikan Misi Harian di Teyvat untuk mengumpulkan Primogems:</p>
                         
                         <div class="commission-list">
                             <div class="commission-item">
@@ -379,15 +402,15 @@
                             </div>
                             <div class="commission-item">
                                 <div>
-                                    <strong>2. Latihan Pedang Kamisato Art</strong>
-                                    <p>Uji Resonansi Elemen di bilah atas layar.</p>
+                                    <strong>2. Ramalan Bintang Masters of the Night-Wind</strong>
+                                    <p>Beralih ke mode karakter Citlali dan sapa dia.</p>
                                 </div>
                                 <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
                             </div>
                             <div class="commission-item">
                                 <div>
                                     <strong>3. Patroli Hutan Chinju</strong>
-                                    <p>Lakukan 1 kali Permohonan (Wish) di Banner Ayaka.</p>
+                                    <p>Lakukan 1 kali Permohonan (Wish) di Banner Event.</p>
                                 </div>
                                 <button class="genshin-btn gold-fill claim-quest-btn" data-reward="60">Klaim 60 💎</button>
                             </div>
@@ -403,15 +426,15 @@
 
                     <div class="genshin-frame handbook-card">
                         <div class="handbook-title">
-                            <h3>⚔️ Build Kamisato Ayaka Milik Luqman</h3>
-                            <span class="guild-note">C6 R5 Mistsplitter</span>
+                            <h3>⚔️ Build Cryo Duo Milik Luqman</h3>
+                            <span class="guild-note">Inazuma × Natlan</span>
                         </div>
                         <ul class="stat-list">
-                            <li><span>Senjata Utama:</span> <strong>Mistsplitter Reforged (Lv. 90 • R5)</strong></li>
-                            <li><span>Set Artefak:</span> <strong>4-Piece Blizzard Strayer</strong></li>
-                            <li><span>CRIT Rate / CRIT DMG:</span> <strong>45.2% / 278.4%</strong></li>
-                            <li><span>Talenta Prioritas:</span> <strong>Kamisato Art: Soumetsu (Lv. 10)</strong></li>
-                            <li><span>Konstelasi:</span> <strong>C6 — Dance of Suigetsu</strong></li>
+                            <li><span>Ayaka Weapon:</span> <strong>Mistsplitter Reforged (Lv. 90 • R5)</strong></li>
+                            <li><span>Citlali Weapon:</span> <strong>Starcaller's Watch (Lv. 90 • R5)</strong></li>
+                            <li><span>Artefak Ayaka:</span> <strong>4-Piece Blizzard Strayer</strong></li>
+                            <li><span>Artefak Citlali:</span> <strong>4-Piece Scroll of the Hero of Cinder City</strong></li>
+                            <li><span>Resonansi Party:</span> <strong>Shattering Ice (+15% CRIT Rate)</strong></li>
                         </ul>
                     </div>
                 </div>
