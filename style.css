@@ -1201,7 +1201,7 @@ h1, h2, h3, h4, .hoyoverse-tag, .event-tag, .subtitle-gold, .initial-letter, .tl
 }
 
 /* =========================================
-   7. WISH GACHA & HANDBOOK
+   7. WISH GACHA (100% KARAKTER ASLI TEYVAT) & HANDBOOK
    ========================================= */
 .wish-card { padding: 2rem; text-align: center; }
 .wish-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; text-align: left; }
@@ -1258,10 +1258,114 @@ h1, h2, h3, h4, .hoyoverse-tag, .event-tag, .subtitle-gold, .initial-letter, .tl
 .wish-btn.gold { background: linear-gradient(135deg, #f8e2ad, #d4a64a); }
 .wish-btn:hover { transform: translateY(-2px); }
 
-.wish-results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 12px; }
-.wish-item { padding: 1rem; border-radius: 12px; background: rgba(0, 0, 0, 0.45); border: 1px solid #4c566a; font-size: 0.85rem; }
-.wish-item.star-5 { border-color: #ffb703; background: linear-gradient(135deg, rgba(255, 183, 3, 0.22), rgba(255, 140, 0, 0.12)); color: #ffd166; font-weight: 700; }
-.wish-item.star-4 { border-color: #c77dff; background: rgba(199, 125, 255, 0.16); color: #e0aaff; }
+.wish-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+    gap: 14px;
+    text-align: left;
+}
+
+.wish-item {
+    position: relative;
+    padding: 1.1rem;
+    border-radius: 14px;
+    background: rgba(15, 22, 36, 0.88);
+    border: 1.5px solid #4c566a;
+    font-size: 0.84rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: domainReveal 0.4s ease;
+}
+
+.wish-item:hover {
+    transform: translateY(-4px);
+}
+
+.wish-item.star-5 {
+    border-color: #ffb703;
+    background: linear-gradient(155deg, rgba(255, 183, 3, 0.22), rgba(24, 30, 48, 0.95) 60%);
+    box-shadow: 0 0 22px rgba(255, 183, 3, 0.28);
+}
+
+.wish-item.star-4 {
+    border-color: #c77dff;
+    background: linear-gradient(155deg, rgba(199, 125, 255, 0.18), rgba(20, 26, 42, 0.95) 60%);
+    box-shadow: 0 0 15px rgba(199, 125, 255, 0.18);
+}
+
+.wish-card-top {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.wish-char-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #1a263d;
+    border: 2px solid var(--gold);
+    flex-shrink: 0;
+}
+
+.wish-item.star-5 .wish-char-avatar {
+    border-color: #ffd166;
+    box-shadow: 0 0 12px rgba(255, 209, 102, 0.6);
+}
+
+.wish-item.star-4 .wish-char-avatar {
+    border-color: #e0aaff;
+}
+
+.wish-char-head h4 {
+    font-size: 0.98rem;
+    color: var(--gold-bright);
+    margin: 2px 0;
+}
+
+.wish-item.star-5 .wish-char-head h4 { color: #ffe082; }
+.wish-item.star-4 .wish-char-head h4 { color: #f3d5ff; }
+
+.wish-stars {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #ffd166;
+}
+
+.wish-item.star-4 .wish-stars { color: #d896ff; }
+
+.wish-char-title {
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-style: italic;
+}
+
+.wish-meta-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 0.7rem;
+}
+
+.wish-tag {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(230, 198, 135, 0.25);
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: var(--text-main);
+}
+
+.wish-quote {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.45;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+    padding-top: 6px;
+}
 
 .handbook-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
 .handbook-card { padding: 1.8rem; }
