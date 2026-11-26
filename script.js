@@ -106,7 +106,7 @@ const MODEL_LABELS = {
 class TeyvatCompanionBrain {
     constructor() {
         this.apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        this.apiKey = localStorage.getItem("luqman_user_groq_key") || "";
+        this.apiKey = localStorage.getItem("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") || "";
 
         const savedModel = localStorage.getItem("luqman_ayaka_model");
         this.model = ACTIVE_GROQ_MODELS.includes(savedModel) ? savedModel : "openai/gpt-oss-120b";
