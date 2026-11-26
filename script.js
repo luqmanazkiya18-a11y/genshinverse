@@ -1,5 +1,5 @@
 /* ============================================================================
-   LUQMAN'S TEYVAT CHRONICLE, TIMELINE & DUAL AI ENGINE (AYAKA & CITLALI)
+   LUQMAN'S TEYVAT CHRONICLE, TIMELINE, FULL CHARACTER WISH & DUAL AI ENGINE
    Arsitek & Pengembang: Luqman
    ============================================================================ */
 
@@ -106,7 +106,7 @@ const MODEL_LABELS = {
 class TeyvatCompanionBrain {
     constructor() {
         this.apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        this.apiKey = localStorage.getItem("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") || "";
+        this.apiKey = localStorage.getItem("luqman_user_groq_key") || "";
 
         const savedModel = localStorage.getItem("luqman_ayaka_model");
         this.model = ACTIVE_GROQ_MODELS.includes(savedModel) ? savedModel : "openai/gpt-oss-120b";
@@ -632,7 +632,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================================
-   3. RESONANSI ELEMEN, RESIN, PRIMOGEMS & WISH GACHA
+   3. RESONANSI ELEMEN, RESIN, PRIMOGEMS & WISH 32 KARAKTER ASLI
    ========================================================= */
 document.querySelectorAll(".v-orb").forEach(orb => {
     orb.addEventListener("click", () => {
@@ -688,16 +688,410 @@ document.querySelectorAll(".claim-quest-btn").forEach(btn => {
     });
 });
 
-const wishPool = [
-    { name: "❄️ Kamisato Ayaka", star: 5 },
-    { name: "🔮 Citlali (Obsidian Star)", star: 5 },
-    { name: "⚔️ Mistsplitter Reforged", star: 5 },
-    { name: "⚡ Kujou Sara", star: 4 },
-    { name: "🔥 Thoma", star: 4 },
-    { name: "🌪️ Ororon", star: 4 },
-    { name: "📘 Thrilling Tales of Dragon Slayers", star: 3 },
-    { name: "⚔️ Harbinger of Dawn", star: 3 },
-    { name: "🏹 Slingshot", star: 3 }
+const CHARACTER_ROSTER_5_STAR = [
+    {
+        name: "Kamisato Ayaka",
+        star: 5,
+        rateUp: true,
+        element: "❄️ Cryo",
+        weapon: "Sword",
+        region: "Inazuma",
+        title: "Frostflake Heron",
+        constellation: "Grus Nivis",
+        quote: "Seorang pedang bagaikan teh; setelah pahitnya tempaan, tersisa keharuman abadi.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp"
+    },
+    {
+        name: "Citlali",
+        star: 5,
+        rateUp: true,
+        element: "🔮 Cryo",
+        weapon: "Catalyst",
+        region: "Natlan",
+        title: "Obsidian Tzitzimitl",
+        constellation: "Patina Anima",
+        quote: "Bintang-bintang sudah meramalkan kedatanganmu... b-bukan berarti aku menunggumu!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Citlali_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp"
+    },
+    {
+        name: "Raiden Shogun",
+        star: 5,
+        rateUp: false,
+        element: "⚡ Electro",
+        weapon: "Polearm",
+        region: "Inazuma",
+        title: "Plane of Euthymia",
+        constellation: "Imperatrix Umbrosa",
+        quote: "Kilat abadi menerangi keheningan Narukami.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/2/24/Raiden_Shogun_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Shougun.webp"
+    },
+    {
+        name: "Furina",
+        star: 5,
+        rateUp: false,
+        element: "💧 Hydro",
+        weapon: "Sword",
+        region: "Fontaine",
+        title: "Endless Solo of Solitude",
+        constellation: "Animula Choragi",
+        quote: "Biarkan seluruh dunia bertepuk tangan untuk babak paling megah ini!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/e/e6/Furina_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Furina.webp"
+    },
+    {
+        name: "Mavuika",
+        star: 5,
+        rateUp: false,
+        element: "🔥 Pyro",
+        weapon: "Claymore",
+        region: "Natlan",
+        title: "Night-Igniting Flame",
+        constellation: "Sol Invictus",
+        quote: "Untuk Natlan, nyala api suci ini tidak akan pernah padam!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/e/e1/Mavuika_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Mavuika.webp"
+    },
+    {
+        name: "Nahida",
+        star: 5,
+        rateUp: false,
+        element: "🌿 Dendro",
+        weapon: "Catalyst",
+        region: "Sumeru",
+        title: "Physic of Purity",
+        constellation: "Sapientia Oromasdis",
+        quote: "Segala pengetahuan di bawah naungan Irminsul terhubung dalam mimpi.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/f/f9/Nahida_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Nahida.webp"
+    },
+    {
+        name: "Zhongli",
+        star: 5,
+        rateUp: false,
+        element: "🪨 Geo",
+        weapon: "Polearm",
+        region: "Liyue",
+        title: "Vago Mundo",
+        constellation: "Lapis Dei",
+        quote: "Osmanthus wine terasa sama seperti yang kuingat... di mana mereka yang berbagi kenangan?",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/a/a6/Zhongli_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Zhongli.webp"
+    },
+    {
+        name: "Kaedehara Kazuha",
+        star: 5,
+        rateUp: false,
+        element: "🌪️ Anemo",
+        weapon: "Sword",
+        region: "Inazuma",
+        title: "Scarlet Leaves Pursue Wild Waves",
+        constellation: "Acer Palmatum",
+        quote: "Awan berarak dan daun maple gugur; di mana pun angin bertiup, di situlah rumahku.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/e/e3/Kaedehara_Kazuha_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Kazuha.webp"
+    },
+    {
+        name: "Neuvillette",
+        star: 5,
+        rateUp: false,
+        element: "💧 Hydro",
+        weapon: "Catalyst",
+        region: "Fontaine",
+        title: "Ordainer of Inexorable Judgment",
+        constellation: "Leviathan Judicator",
+        quote: "Air mata langit Fontaine akhirnya menemukan keadilannya.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/2/21/Neuvillette_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Neuvillette.webp"
+    },
+    {
+        name: "Arlecchino",
+        star: 5,
+        rateUp: false,
+        element: "🔥 Pyro",
+        weapon: "Polearm",
+        region: "Snezhnaya",
+        title: "Dire Balemoon",
+        constellation: "Ignis Purgatorius",
+        quote: "Bulan merah sabit akan membakar segala rantai takdir.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/9/9a/Arlecchino_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Arlecchino.webp"
+    },
+    {
+        name: "Ganyu",
+        star: 5,
+        rateUp: false,
+        element: "❄️ Cryo",
+        weapon: "Bow",
+        region: "Liyue",
+        title: "Plenilune Gaze",
+        constellation: "Sinae Unicornis",
+        quote: "Semua demi kemakmuran Liyue dan kontrak bersama Rex Lapis.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/7/79/Ganyu_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ganyu.webp"
+    },
+    {
+        name: "Keqing",
+        star: 5,
+        rateUp: false,
+        element: "⚡ Electro",
+        weapon: "Sword",
+        region: "Liyue",
+        title: "Driving Thunder",
+        constellation: "Trulla Cementarii",
+        quote: "Ayo bergerak! Masa depan Liyue dibangun oleh tangan manusia sendiri.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/5/52/Keqing_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Keqing.webp"
+    },
+    {
+        name: "Mona",
+        star: 5,
+        rateUp: false,
+        element: "💧 Hydro",
+        weapon: "Catalyst",
+        region: "Mondstadt",
+        title: "Astral Reflection",
+        constellation: "Astrolabos",
+        quote: "Takdir manusia tertulis jelas di permukaan air dan cahaya bintang!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/4/41/Mona_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Mona.webp"
+    },
+    {
+        name: "Jean",
+        star: 5,
+        rateUp: false,
+        element: "🌪️ Anemo",
+        weapon: "Sword",
+        region: "Mondstadt",
+        title: "Dandelion Knight",
+        constellation: "Leo Minor",
+        quote: "Angin, dengarkan doaku! Pedang ini untuk melindungi kebebasan Mondstadt.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/6/64/Jean_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Qin.webp"
+    },
+    {
+        name: "Diluc",
+        star: 5,
+        rateUp: false,
+        element: "🔥 Pyro",
+        weapon: "Claymore",
+        region: "Mondstadt",
+        title: "The Dark Side of Dawn",
+        constellation: "Noctua",
+        quote: "Fajar akan selalu menyingsing untuk mengusir bayang-bayang malam.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/3d/Diluc_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Diluc.webp"
+    },
+    {
+        name: "Tighnari",
+        star: 5,
+        rateUp: false,
+        element: "🌿 Dendro",
+        weapon: "Bow",
+        region: "Sumeru",
+        title: "Verdant Strider",
+        constellation: "Vulpes Zerda",
+        quote: "Jangan sembarangan memakan jamur liar di Hutan Avidya!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/8/87/Tighnari_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Tighnari.webp"
+    }
+];
+
+const CHARACTER_ROSTER_4_STAR = [
+    {
+        name: "Ororon",
+        star: 4,
+        element: "⚡ Electro",
+        weapon: "Bow",
+        region: "Natlan",
+        title: "Shadow of the Night-Wind",
+        constellation: "Vampyrus Noctis",
+        quote: "Nenek Citlali sering mengomel, tapi dia selalu menjaga semua orang.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/9/9f/Ororon_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Olorun.webp"
+    },
+    {
+        name: "Thoma",
+        star: 4,
+        element: "🔥 Pyro",
+        weapon: "Polearm",
+        region: "Inazuma",
+        title: "Protector From Afar",
+        constellation: "Rubeum Scutum",
+        quote: "Serahkan urusan rumah tangga Klan Kamisato dan tameng api padaku!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/5/5b/Thoma_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Tohma.webp"
+    },
+    {
+        name: "Kujou Sara",
+        star: 4,
+        element: "⚡ Electro",
+        weapon: "Bow",
+        region: "Inazuma",
+        title: "Crowfeather Kaburaya",
+        constellation: "Flabellum",
+        quote: "Demi keabadian Yang Mulia Raiden Shogun, panahku tak akan meleset.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/d/df/Kujou_Sara_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Sara.webp"
+    },
+    {
+        name: "Xingqiu",
+        star: 4,
+        element: "💧 Hydro",
+        weapon: "Sword",
+        region: "Liyue",
+        title: "Juvenile Galant",
+        constellation: "Fabulae Textile",
+        quote: "Seni pedang Guhua mengalir tenang bagaikan hujan yang membasahi bumi.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/d/d4/Xingqiu_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Xingqiu.webp"
+    },
+    {
+        name: "Bennett",
+        star: 4,
+        element: "🔥 Pyro",
+        weapon: "Sword",
+        region: "Mondstadt",
+        title: "Trial by Fire",
+        constellation: "Rota Calamitas",
+        quote: "Tim Petualang Benny siap berangkat! Meski sering sial, semangatku tak pernah padam!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/7/79/Bennett_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Bennett.webp"
+    },
+    {
+        name: "Fischl",
+        star: 4,
+        element: "⚡ Electro",
+        weapon: "Bow",
+        region: "Mondstadt",
+        title: "Prinzessin der Verurteilung!",
+        constellation: "Corvus",
+        quote: "Aku, Prinzessin der Verurteilung, turun ke dunia fana bersama Oz!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/9/9a/Fischl_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Fischl.webp"
+    },
+    {
+        name: "Xiangling",
+        star: 4,
+        element: "🔥 Pyro",
+        weapon: "Polearm",
+        region: "Liyue",
+        title: "Exquisite Delicacy",
+        constellation: "Trulla",
+        quote: "Ayo Guoba! Saatnya memasak hidangan paling pedas di Restoran Wanmin!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/39/Xiangling_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Xiangling.webp"
+    },
+    {
+        name: "Sucrose",
+        star: 4,
+        element: "🌪️ Anemo",
+        weapon: "Catalyst",
+        region: "Mondstadt",
+        title: "Harmless Sweetie",
+        constellation: "Ampulla",
+        quote: "Eksperimen bio-alkimia ini menghasilkan pusaran angin yang sangat stabil!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/0/0e/Sucrose_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Sucrose.webp"
+    },
+    {
+        name: "Kuki Shinobu",
+        star: 4,
+        element: "⚡ Electro",
+        weapon: "Sword",
+        region: "Inazuma",
+        title: "Mender of Tribulations",
+        constellation: "Tribulatio Demptio",
+        quote: "Selama aku di sini, Geng Arataki tidak akan berbuat ulah macam-macam.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/b/b3/Kuki_Shinobu_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Shinobu.webp"
+    },
+    {
+        name: "Layla",
+        star: 4,
+        element: "❄️ Cryo",
+        weapon: "Sword",
+        region: "Sumeru",
+        title: "Fantastical Evening Star",
+        constellation: "Luscinia",
+        quote: "Bintang-bintang Rtawahist berputar... semoga skripsiku selesai sebelum pagi...",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/1/1a/Layla_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Layla.webp"
+    },
+    {
+        name: "Faruzan",
+        star: 4,
+        element: "🌪️ Anemo",
+        weapon: "Bow",
+        region: "Sumeru",
+        title: "Enigmatic Machinist",
+        constellation: "Flosculi Implexi",
+        quote: "Panggil aku Madam Faruzan! Pengalaman mekanik kuno seratus tahun bukan main-main.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/b/b2/Faruzan_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Faruzan.webp"
+    },
+    {
+        name: "Charlotte",
+        star: 4,
+        element: "❄️ Cryo",
+        weapon: "Catalyst",
+        region: "Fontaine",
+        title: "Lens of Verity",
+        constellation: "Hulda",
+        quote: "Cekrek! Momen luar biasa ini pasti jadi berita utama di The Steambird!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/1/11/Charlotte_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Charlotte.webp"
+    },
+    {
+        name: "Chevreuse",
+        star: 4,
+        element: "🔥 Pyro",
+        weapon: "Polearm",
+        region: "Fontaine",
+        title: "Executor of Justice",
+        constellation: "Sclopetum Ensiferum",
+        quote: "Patroli Khusus Gardes akan menegakkan keadilan hingga peluru terakhir.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/3c/Chevreuse_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Chevreuse.webp"
+    },
+    {
+        name: "Gaming",
+        star: 4,
+        element: "🔥 Pyro",
+        weapon: "Claymore",
+        region: "Liyue",
+        title: "Leonine Vanguard",
+        constellation: "Leo Expergiscens",
+        quote: "Tarian Wushou membawa keberuntungan dan kehangatan dimsum ke seluruh Liyue!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/7/77/Gaming_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Gaming.webp"
+    },
+    {
+        name: "Kachina",
+        star: 4,
+        element: "🪨 Geo",
+        weapon: "Polearm",
+        region: "Natlan",
+        title: "Mottled Gold",
+        constellation: "Ochotona Princeps",
+        quote: "Turbo Twirly siap meluncur! Aku pasti bisa membuktikan namaku di Natlan!",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/1/18/Kachina_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Kachina.webp"
+    },
+    {
+        name: "Rosaria",
+        star: 4,
+        element: "❄️ Cryo",
+        weapon: "Polearm",
+        region: "Mondstadt",
+        title: "Thorny Benevolence",
+        constellation: "Spinea Corona",
+        quote: "Biarlah bayang-bayang malam menyelesaikan pekerjaan kotor demi Mondstadt.",
+        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/35/Rosaria_Icon.png",
+        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Rosaria.webp"
+    }
 ];
 
 function doWish(count) {
@@ -713,22 +1107,47 @@ function doWish(count) {
     for (let i = 0; i < count; i++) {
         pityCounter++;
         const rand = Math.random() * 100;
-        let item;
+        let charData;
 
-        const fiveStarChance = pityCounter >= 90 ? 100 : (pityCounter >= 74 ? 25 : 3.5);
+        const fiveStarChance = pityCounter >= 90 ? 100 : (pityCounter >= 74 ? 28 : 4.5);
 
         if (rand < fiveStarChance) {
-            item = wishPool[Math.floor(Math.random() * 3)];
+            if (Math.random() < 0.55) {
+                const rateUpChars = CHARACTER_ROSTER_5_STAR.filter(c => c.rateUp);
+                charData = rateUpChars[Math.floor(Math.random() * rateUpChars.length)];
+            } else {
+                const standardFiveChars = CHARACTER_ROSTER_5_STAR.filter(c => !c.rateUp);
+                charData = standardFiveChars[Math.floor(Math.random() * standardFiveChars.length)];
+            }
             pityCounter = 0;
-        } else if (rand < 22 || (count === 10 && i === 9)) {
-            item = wishPool[3 + Math.floor(Math.random() * 3)];
         } else {
-            item = wishPool[6 + Math.floor(Math.random() * 3)];
+            charData = CHARACTER_ROSTER_4_STAR[Math.floor(Math.random() * CHARACTER_ROSTER_4_STAR.length)];
         }
 
         const card = document.createElement("div");
-        card.className = `wish-item star-${item.star}`;
-        card.innerHTML = `${"★".repeat(item.star)}<br>${item.name}`;
+        card.className = `wish-item star-${charData.star}`;
+        card.innerHTML = `
+            <div class="wish-card-top">
+                <img 
+                    class="wish-char-avatar" 
+                    src="${charData.icon}" 
+                    alt="${charData.name}"
+                    onerror="this.src='${charData.fallback}'"
+                >
+                <div class="wish-char-head">
+                    <div class="wish-stars">${"★".repeat(charData.star)} ${charData.rateUp ? "• RATE UP" : ""}</div>
+                    <h4>${charData.name}</h4>
+                    <div class="wish-char-title">"${charData.title}"</div>
+                </div>
+            </div>
+            <div class="wish-meta-tags">
+                <span class="wish-tag">${charData.element}</span>
+                <span class="wish-tag">⚔️ ${charData.weapon}</span>
+                <span class="wish-tag">🗺️ ${charData.region}</span>
+                <span class="wish-tag">✨ ${charData.constellation}</span>
+            </div>
+            <p class="wish-quote">“${charData.quote}”</p>
+        `;
         wishResults.appendChild(card);
     }
 
