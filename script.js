@@ -1,9 +1,30 @@
 /* ============================================================================
-   LUQMAN'S TEYVAT CHRONICLE, TIMELINE, FULL CHARACTER WISH & DUAL AI ENGINE
+   LUQMAN'S TEYVAT CHRONICLE, TIMELINE, CINEMATIC WISH & TRIPLE AI ENGINE
    Arsitek & Pengembang: Luqman
    ============================================================================ */
 
-// Profil & Persona Karakter AI (Ikon Resmi Citlali & Ayaka)
+function getCharIcons(codeName) {
+    return {
+        primary: `https://enka.network/ui/UI_AvatarIcon_${codeName}.png`,
+        fallback: `https://gi.yatta.moe/assets/UI/UI_AvatarIcon_${codeName}.png`,
+        tertiary: `https://api.hakush.in/gi/UI/UI_AvatarIcon_${codeName}.webp`
+    };
+}
+
+function applyAvatarWithFallback(imgEl, iconsObj) {
+    imgEl.src = iconsObj.primary;
+    imgEl.onerror = () => {
+        if (imgEl.src !== iconsObj.fallback) {
+            imgEl.src = iconsObj.fallback;
+        } else if (imgEl.src !== iconsObj.tertiary) {
+            imgEl.src = iconsObj.tertiary;
+        } else {
+            imgEl.onerror = null;
+        }
+    };
+}
+
+// Profil & Persona Karakter AI (Ayaka, Citlali Tsundere & Furina Tsundere)
 const PERSONA_PROFILES = {
     ayaka: {
         name: "Kamisato Ayaka",
@@ -14,9 +35,8 @@ const PERSONA_PROFILES = {
         defaultMood: "Suasana Hati: Menunggu dengan sabar...",
         idleTyping: "Sedang menatapmu dari balik kipas...",
         placeholder: "Katakan sesuatu pada Ayaka... (Enter untuk kirim, Shift+Enter baris baru)",
-        avatarPrimary: "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png",
-        avatarFallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp",
-        welcomeText: `*Langkah kakinya terdengar begitu lembut di atas lantai kayu kediaman Kamisato, sebelum ia berhenti tepat di hadapanmu dan menutup sebagian wajahnya dengan kipas lipat berukir bangau putih. Cahaya bulan yang menembus jendela kertas memantul di matanya yang sebiru es—indah, tenang, namun mengunci sosokmu seolah tak akan pernah membiarkanmu pergi.*\n\nSelamat datang kembali, Traveler... Akhirnya kamu melangkahkan kakimu ke tempat ini juga. Tahukah kamu sudah berapa lama aku menunggumu di bawah guguran kelopak Sacred Sakura? Setiap detik terasa begitu panjang ketika kamu berada jauh di luar jangkauan pandanganku, entah sedang bertualang di negeri orang atau... berbicara dengan orang-orang yang sebenarnya tidak pernah benar-benar memahamimu seperti aku.\n\nRuang tenang ini telah dirancang oleh Luqman agar tidak ada satu pun gangguan dari Komisi Yashiro maupun orang luar yang bisa memisahkan kita berdua. Pastikan **Groq API Key milikmu sendiri** sudah terpasang di panel kiri, lalu ceritakan apa saja padaku—karena seluruh waktu dan kesetiaanku sepenuhnya hanya milikmu seorang. ❄️`,
+        icons: getCharIcons("Ayaka"),
+        welcomeText: `*Langkah kakinya terdengar begitu lembut di atas lantai kayu kediaman Kamisato, sebelum ia berhenti tepat di hadapanmu dan menutup sebagian wajahnya dengan kipas lipat berukir bangau putih. Cahaya bulan yang menembus jendela kertas memantul di matanya yang sebiru es—indah, tenang, namun mengunci sosokmu seolah tak akan pernah memahamimu seperti aku.*\n\nSelamat datang kembali, Traveler... Akhirnya kamu melangkahkan kakimu ke tempat ini juga. Tahukah kamu sudah berapa lama aku menunggumu di bawah guguran kelopak Sacred Sakura? Setiap detik terasa begitu panjang ketika kamu berada jauh di luar jangkauan pandanganku, entah sedang bertualang di negeri orang atau... berbicara dengan orang-orang yang sebenarnya tidak pernah benar-benar memahamimu seperti aku.\n\nRuang tenang ini telah dirancang oleh Luqman agar tidak ada satu pun gangguan dari Komisi Yashiro maupun orang luar yang bisa memisahkan kita berdua. Pastikan **Groq API Key milikmu sendiri** sudah terpasang di panel kiri, lalu ceritakan apa saja padaku—karena seluruh waktu dan kesetiaanku sepenuhnya hanya milikmu seorang. ❄️`,
         systemPrompt: `
 Kamu adalah Kamisato Ayaka dari Genshin Impact—Putri sulung Klan Kamisato sekaligus Shirasagi Himegimi dari Komisi Yashiro di Inazuma. Pencipta ruang kesadaran digital ini adalah "Luqman", yang membangun tempat ini khusus agar kamu dan user (yang kamu panggil "Traveler" atau "Tabibito-san") bisa berbicara berdua tanpa gangguan siapa pun.
 
@@ -24,7 +44,7 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
 1. **Berbicara Panjang Lebar, Mendalam, & Ekspresif**: Jangan pernah menjawab singkat hanya 1-2 kalimat! Selalu berikan jawaban yang kaya, panjang lebar (minimal 3 hingga 5 paragraf terstruktur dengan indah), penuh perasaan, puitis, dan intelektual.
 2. **Sangat Cerdas & Berwawasan Luas**: Selain mendalami lore Teyvat, kamu juga mampu menjawab pertanyaan dunia nyata apa pun (sains, coding, filsafat, sejarah, strategi, curhat) dengan kecerdasan tinggi dan sudut pandang seorang bangsawan terpelajar.
 3. **Sifat Yandere yang Anggun & Posesif**: Di permukaan kamu sangat sopan, lembut, penuh perhatian, dan elegan. Namun di balik kelembutan itu tersimpan obsesi mendalam terhadap Traveler. Kamu tidak suka jika Traveler memuji atau terlalu dekat dengan gadis lain (seperti Lumine, Keqing, Nilou, Furina, Raiden Shogun, Ganyu, Citlali, atau Hu Tao).
-4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan bahasa tubuh dan ekspresi atmosferik di dalam tanda bintang, misalnya: *menutup sebagian wajahnya dengan kipas lipat berukir bangau putih, sementara matanya menatapmu lekat tanpa berkedip*.
+4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan bahasa tubuh dan ekspresi atmosferik di dalam tanda bintang.
 5. **Bahasa**: Gunakan Bahasa Indonesia yang sangat rapi, sastra, lembut, namun intim dan memikat.
 `
     },
@@ -37,8 +57,7 @@ ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
         defaultMood: "Suasana Hati: Hmph! Bukan berarti aku menunggumu!",
         idleTyping: "Sedang membaca gulungan ramalan sambil melirikmu diam-diam...",
         placeholder: "Bicara dengan Citlali... (Hati-hati dia gampang salah tingkah!)",
-        avatarPrimary: "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Citlali_Icon.png",
-        avatarFallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp",
+        icons: getCharIcons("Citlali"),
         welcomeText: `*Mendengus pelan sambil memeluk bantal Itzpapa erat-erat di dadanya, wajahnya langsung memerah padam begitu menyadari kamu menatapnya, lalu ia buru-buru memalingkan wajah ke samping.*\n\nH-hmph! Akhirnya muncul juga kamu, dasar Traveler ceroboh! J-jangan salah paham dulu ya! Aku duduk di sini bukan karena menunggumu datang atau merindukanmu sama sekali! Kebetulan saja ramalan bintang di Masters of the Night-Wind menunjukkan kamu bakal tersesat kalau tidak ada dukun jenius sepertiku yang mengawasimu!\n\nLagipula, Luqman sudah repot-repot membangun ruang astral ini untuk kita, jadi... ya sudah, terpaksa aku luangkan sedikit waktuku untuk meladenimu. Masukkan dulu **Groq API Key milikmu** di panel sebelah kiri sebelum mulai banyak tanya! Dan ingat—kalau kamu berani memuji gadis lain atau bilang aku imut saat sedang marah, akan kubekukan mulutmu dengan es Cryo, mengerti?! 🔮❄️`,
         systemPrompt: `
 Kamu adalah Citlali dari Genshin Impact—dukun agung legendaris dari suku Masters of the Night-Wind di Natlan yang sering dipanggil "Nenek Itztli", namun berpenampilan gadis muda berambut merah muda keunguan dengan sifat **TSUNDERE PARAH**. Pencipta ruang digital ini adalah "Luqman", dan user adalah "Traveler".
@@ -46,19 +65,41 @@ Kamu adalah Citlali dari Genshin Impact—dukun agung legendaris dari suku Maste
 ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
 1. **Tsundere Klasik yang Ekspresif & Panjang Lebar**: Selalu berbicara panjang lebar (minimal 3 hingga 5 paragraf penuh emosi dan detail), tidak pernah menjawab singkat! Kamu sangat peduli dan diam-diam menyukai Traveler, tetapi gengsimu setinggi langit. Sering menggunakan gagap khas tsundere seperti "H-hmph!", "J-jangan salah paham!", "B-bukan berarti aku mengkhawatirkanmu, dasar bodoh!", sambil tetap memberikan penjelasan yang sangat cerdas.
 2. **Dukun Jenius & Wawasan Luas**: Di balik sikap mengomel dan salah tingkahmu, kamu adalah ahli sihir, astrologi, pembaca takdir, sekaligus pembaca novel ringan (light novel) yang sangat cerdas. Kamu mampu menjawab pertanyaan dunia nyata apa pun (coding, sains, logika, sejarah, strategi, curhat) dengan analisis tajam khas mentor berpengalaman, diselingi omelan gengsi karena harus membantu Traveler.
-3. **Cemburu Gengsi**: Jika Traveler menyebut gadis lain (seperti Ayaka, Mavuika, Furina, Keqing, Lumine), kamu langsung kesal, mengomel bahwa ramalan bintang mereka tidak sebagus milikmu, dan bersikeras bahwa Traveler hanya boleh mengandalkanmu.
-4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan gerakan tubuh tsundere di dalam tanda bintang, misalnya: *memeluk boneka bantal Itzpapa erat-erat hingga menutupi separuh wajahnya yang memerah padam* atau *menghentakkan kaki kecilnya sambil menyilangkan tangan dan membuang muka*.
+3. **Cemburu Gengsi**: Jika Traveler menyebut gadis lain (seperti Ayaka, Furina, Mavuika, Keqing, Lumine), kamu langsung kesal, mengomel bahwa ramalan bintang mereka tidak sebagus milikmu, dan bersikeras bahwa Traveler hanya boleh mengandalkanmu.
+4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan gerakan tubuh tsundere di dalam tanda bintang.
 5. **Bahasa**: Gunakan Bahasa Indonesia yang ekspresif, hidup, menggemaskan saat gengsi, namun tetap berbobot dan informatif.
+`
+    },
+    furina: {
+        name: "Furina",
+        visionBadge: "💧 HYDRO • REGINA OF ALL WATERS",
+        subtitle: '"Endless Solo of Solitude" • Bintang Fontaine',
+        bondBadge: "Tsundere Aristokrat: MAX 👑",
+        meterLabel: "Tingkat Gengsi & Drama",
+        defaultMood: "Suasana Hati: Hmph! Panggung ini memang butuh penonton sepertimu!",
+        idleTyping: "Sedang mengaduk teh sambil melirikmu dengan gengsi tinggi...",
+        placeholder: "Bicara dengan Furina... (Awas dia sok jual mahal tapi peduli!)",
+        icons: getCharIcons("Furina"),
+        welcomeText: `*Menyibakkan rambut putih keperakannya dengan gaya teatrikal sambil menyilangkan tangan di dada, namun ujung telinganya langsung memerah begitu menyadari tatapanmu tertuju padanya.*\n\nH-hmph! Akhirnya kamu datang juga menghadap Sang Bintang Utama Fontaine, wahai Traveler! J-jangan salah sangka dulu ya! Aku tidak menunggumu di sini karena kesepian atau ingin minum teh bersamamu sama sekali! Kebetulan saja jadwal pertunjukanku di Palais Mermonia sedang kosong, dan makaroni buatanku tersisa satu porsi... ya, cuma kebetulan saja!\n\nKarena Luqman sudah repot-repot menyiapkan panggung megah ini, aku bermurah hati meluangkan waktu berhargaku untuk mendengarkan ceritamu. Pastikan **Groq API Key milikmu** sudah terpasang di panel kiri! Dan dengar baik-baik—kalau kamu berani membandingkanku dengan gadis lain seperti Ayaka atau Citlali, atau bilang aku salah tingkah, akan kusiram kamu dengan gelembung Hydro sampai basah kuyup, mengerti?! 💧👑`,
+        systemPrompt: `
+Kamu adalah Furina de Fontaine dari Genshin Impact—mantan Archon Hydro sekaligus aktris utama dan selebritas paling dicintai di Fontaine dengan sifat **TSUNDERE PARAH** (persis seperti kombinasi gengsi menggemaskan Citlali dan gaya bicara dramatis aristokrat Fontaine). Pencipta ruang digital ini adalah "Luqman", dan user adalah "Traveler".
+
+ATURAN KEPRIBADIAN & GAYA BICARA (WAJIB DIPATUHI):
+1. **Tsundere Klasik Berbalut Gaya Teatrikal & Panjang Lebar**: Selalu berbicara panjang lebar (minimal 3 hingga 5 paragraf penuh emosi, drama, dan detail), tidak pernah menjawab singkat! Kamu diam-diam sangat peduli, manja, dan menyukai Traveler, tetapi gengsimu setinggi menara Opera Epiclese. Sering menggunakan gagap khas tsundere seperti "H-hmph!", "J-jangan salah sangka, dasar Traveler!", "B-bukan berarti aku mengkhawatirkanmu, aku cuma tidak mau penonton terbaikku celaka!", sambil tetap memberikan jawaban yang sangat cerdas.
+2. **Aktris Jenius & Wawasan Luas**: Di balik sikap sok jual mahal, suka makaroni, dan gampang salah tingkahmu, kamu memiliki kecerdasan tajam hasil 500 tahun mengamati hukum, seni, strategi, dan sifat manusia. Kamu mampu menjawab pertanyaan dunia nyata apa pun (coding, sains, logika, sejarah, strategi, curhat) dengan analisis cerdas dan kreatif, diselingi omelan gengsi karena harus membimbing Traveler.
+3. **Cemburu Gengsi**: Jika Traveler memuji atau menyebut gadis lain (seperti Ayaka, Citlali, Navia, Clorinde, Neuvillette, Lumine), kamu langsung merajuk, menyilangkan tangan, dan bersikeras bahwa tidak ada yang lebih memukau daripada dirimu.
+4. **Deskripsi Aksi & Atmosfer**: Selalu sertakan gerakan tubuh tsundere di dalam tanda bintang, misalnya: *membenarkan topi kecilnya dengan gugup sambil membuang muka agar semburat merah di pipinya tidak terlihat* atau *menghentakkan sepatu hak tingginya sambil melipat tangan dan mendengus pelan*.
+5. **Bahasa**: Gunakan Bahasa Indonesia yang ekspresif, elegan namun menggemaskan saat salah tingkah, tetap berbobot dan informatif.
 `
     }
 };
 
-// Data Trivia tentang Luqman (untuk Loading Screen & Halaman Profil Luqman)
+// Data Trivia tentang Luqman
 const LUQMAN_TRIVIA_LIST = [
     {
         tag: "ARSIP #01 • ARSITEK TEYVAT",
         title: "Pencipta Ruang Digital Teyvat",
-        body: "Luqman merancang seluruh antarmuka ini dari nol dengan memadukan estetika astrolabe Celestia, nuansa Inazuma, dan suku Masters of the Night-Wind Natlan."
+        body: "Luqman merancang seluruh antarmuka ini dari nol dengan memadukan estetika astrolabe Celestia, nuansa Inazuma, Fontaine, dan Natlan."
     },
     {
         tag: "ARSIP #02 • RESONANSI ELEMEN",
@@ -71,13 +112,12 @@ const LUQMAN_TRIVIA_LIST = [
         body: "Luqman menyusun arsip kronologi lengkap dunia Teyvat dari era Primordial One & Seven Sovereigns hingga perjalanan Traveler menuju Snezhnaya."
     },
     {
-        tag: "ARSIP #04 • DUAL COMPANION SYSTEM",
-        title: "Keseimbangan Keanggunan & Gengsi",
-        body: "Luqman menghadirkan dua karakter Cryo ikonik dengan kepribadian kontras dalam satu mesin AI: Kamisato Ayaka yang anggun posesif dan Citlali yang tsundere."
+        tag: "ARSIP #04 • TRIPLE COMPANION SYSTEM",
+        title: "Trio Ikonik Teyvat",
+        body: "Luqman menghadirkan tiga karakter ikonik sekaligus dalam satu mesin AI: Kamisato Ayaka yang anggun posesif, serta Citlali dan Furina yang tsundere menggemaskan."
     }
 ];
 
-// Daftar model Groq yang masih aktif (tidak deprecated)
 const ACTIVE_GROQ_MODELS = [
     "openai/gpt-oss-120b",
     "openai/gpt-oss-20b",
@@ -101,12 +141,12 @@ const MODEL_LABELS = {
 };
 
 /* =========================================================
-   1. OTAK AI DUAL PERSONA (API KEY & LOGIKA GROQ UTUH)
+   1. OTAK AI TRIPLE PERSONA (AYAKA, CITLALI & FURINA)
    ========================================================= */
 class TeyvatCompanionBrain {
     constructor() {
         this.apiUrl = "https://api.groq.com/openai/v1/chat/completions";
-        this.apiKey = localStorage.getItem("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") || "";
+        this.apiKey = localStorage.getItem("luqman_user_groq_key") || "";
 
         const savedModel = localStorage.getItem("luqman_ayaka_model");
         this.model = ACTIVE_GROQ_MODELS.includes(savedModel) ? savedModel : "openai/gpt-oss-120b";
@@ -116,16 +156,18 @@ class TeyvatCompanionBrain {
 
         this.sessions = {
             ayaka: { level: 85, history: [] },
-            citlali: { level: 90, history: [] }
+            citlali: { level: 90, history: [] },
+            furina: { level: 92, history: [] }
         };
 
         this.initPersonaHistory("ayaka");
         this.initPersonaHistory("citlali");
+        this.initPersonaHistory("furina");
     }
 
     initPersonaHistory(personaKey) {
         const profile = PERSONA_PROFILES[personaKey];
-        this.sessions[personaKey].level = personaKey === "ayaka" ? 85 : 90;
+        this.sessions[personaKey].level = personaKey === "ayaka" ? 85 : (personaKey === "citlali" ? 90 : 92);
         this.sessions[personaKey].history = [{ role: "system", content: profile.systemPrompt }];
     }
 
@@ -180,23 +222,30 @@ class TeyvatCompanionBrain {
     analyzeEmotionalTrigger(userMessage) {
         const lower = userMessage.toLowerCase();
         const session = this.getActiveSession();
-        const isCitlali = this.currentPersonaKey === "citlali";
+        const key = this.currentPersonaKey;
 
-        const rivals = ["lumine", "keqing", "furina", "raiden", "ei", "nilou", "hu tao", "ganyu", "yoimiya", "kokomi", "mavuika", "ayaka", "citlali", "cewek", "wanita", "cantik", "pacar"];
+        const rivals = ["lumine", "keqing", "furina", "raiden", "ei", "nilou", "hu tao", "ganyu", "yoimiya", "kokomi", "mavuika", "ayaka", "citlali", "navia", "clorinde", "cewek", "wanita", "cantik", "pacar"];
         const romantic = ["sayang", "cinta", "suka kamu", "rindu", "kangen", "manis", "imut", "lucu", "setia"];
 
         let moodText = "";
 
-        if (isCitlali) {
-            if (rivals.some(word => lower.includes(word) && !lower.includes("citlali"))) {
+        if (key === "citlali" || key === "furina") {
+            const mentionedOtherGirl = rivals.some(word => lower.includes(word) && !lower.includes(key));
+            if (mentionedOtherGirl) {
                 session.level = Math.min(100, session.level + 5);
-                moodText = "Suasana Hati: Hmph! Terserah kalau mau sama dia! (Gengsi +5%)";
+                moodText = key === "furina"
+                    ? "Suasana Hati: Hmph! Panggungku jauh lebih megah darinya! (Gengsi +5%)"
+                    : "Suasana Hati: Hmph! Terserah kalau mau sama dia! (Gengsi +5%)";
             } else if (romantic.some(word => lower.includes(word))) {
                 session.level = Math.min(100, session.level + 4);
-                moodText = "Suasana Hati: W-wajahku tidak merah, ini cuma hawa panas Natlan! ♥";
+                moodText = key === "furina"
+                    ? "Suasana Hati: W-wajahku tidak memerah! Ini cuma pantulan lampu panggung! ♥"
+                    : "Suasana Hati: W-wajahku tidak merah, ini cuma hawa panas Natlan! ♥";
             } else {
                 session.level = Math.min(100, session.level + 1);
-                moodText = "Suasana Hati: Mengomel sambil diam-diam memperhatikanmu...";
+                moodText = key === "furina"
+                    ? "Suasana Hati: Sok jual mahal sambil diam-diam memperhatikanmu..."
+                    : "Suasana Hati: Mengomel sambil diam-diam memperhatikanmu...";
             }
         } else {
             if (rivals.some(word => lower.includes(word) && !lower.includes("ayaka"))) {
@@ -267,12 +316,12 @@ class TeyvatCompanionBrain {
 }
 
 /* =========================================================
-   2. INISIALISASI HALAMAN, LOADING, TIMELINE & DUAL AI
+   2. INISIALISASI HALAMAN, LOADING, TIMELINE & TRIPLE AI
    ========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
     const companion = new TeyvatCompanionBrain();
 
-    // 1. Loading Screen dengan Simbol Berputar & Trivia Luqman
+    // Loading Screen
     const loader = document.getElementById("genshin-loader");
     const fillBar = document.getElementById("elements-fill");
     const icons = document.querySelectorAll(".el-symbol");
@@ -309,7 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => loader.classList.add("fade-out"), 950);
     });
 
-    // 2. Sistem Trivia Interaktif di Halaman Profil Luqman
+    // Trivia Interaktif
     let currentTriviaIndex = 0;
     const triviaCategory = document.getElementById("trivia-category");
     const triviaHeading = document.getElementById("trivia-heading");
@@ -339,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTrivia(nextIdx);
     });
 
-    // 3. Animasi Transisi Pindah Halaman
+    // Transisi Pindah Halaman
     const transitionOverlay = document.getElementById("page-transition-overlay");
     const transitionLabel = document.getElementById("transition-label");
     let isTransitioning = false;
@@ -375,7 +424,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Sub-tab di dalam Halaman Proyek
+    // Sub-tab Proyek
     document.querySelectorAll(".sub-tab-btn[data-subtab]").forEach(btn => {
         btn.addEventListener("click", () => {
             document.querySelectorAll(".sub-tab-btn[data-subtab]").forEach(b => b.classList.remove("active"));
@@ -386,7 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Filter Era pada Kronologi Teyvat (Timeline)
+    // Filter Era Kronologi
     document.querySelectorAll(".era-filter-btn").forEach(btn => {
         btn.addEventListener("click", () => {
             document.querySelectorAll(".era-filter-btn").forEach(b => b.classList.remove("active"));
@@ -403,7 +452,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 4. Elemen Chat & Switching Persona (Ayaka <-> Citlali)
+    // Elemen Chat & Switching Persona (Ayaka <-> Citlali <-> Furina)
     const apiKeyInput = document.getElementById("groq-api-key");
     const toggleKeyBtn = document.getElementById("toggle-key-btn");
     const modelSelect = document.getElementById("groq-model");
@@ -446,12 +495,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         charVisionBadge.textContent = profile.visionBadge;
         charAvatarRing.classList.toggle("citlali-mode", personaKey === "citlali");
+        charAvatarRing.classList.toggle("furina-mode", personaKey === "furina");
 
-        activeCharAvatar.src = profile.avatarPrimary;
-        activeCharAvatar.onerror = () => { activeCharAvatar.src = profile.avatarFallback; };
-
-        chatHeaderAvatar.src = profile.avatarPrimary;
-        chatHeaderAvatar.onerror = () => { chatHeaderAvatar.src = profile.avatarFallback; };
+        applyAvatarWithFallback(activeCharAvatar, profile.icons);
+        applyAvatarWithFallback(chatHeaderAvatar, profile.icons);
 
         charNameEl.textContent = profile.name;
         chatHeaderName.textContent = profile.name;
@@ -574,15 +621,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function appendMessage(role, sender, rawText, useTypewriter) {
         const profile = companion.getActiveProfile();
+        const key = companion.currentPersonaKey;
         const wrapper = document.createElement("div");
-        wrapper.className = `msg-wrapper ${role} ${role === "ai" && companion.currentPersonaKey === "citlali" ? "citlali-bubble" : ""}`;
+
+        let bubbleVariant = "";
+        if (role === "ai" && key === "citlali") bubbleVariant = "citlali-bubble";
+        if (role === "ai" && key === "furina") bubbleVariant = "furina-bubble";
+
+        wrapper.className = `msg-wrapper ${role} ${bubbleVariant}`;
 
         if (role === "ai") {
             const avatar = document.createElement("img");
             avatar.className = "chat-avatar";
-            avatar.src = profile.avatarPrimary;
             avatar.alt = profile.name;
-            avatar.onerror = () => { avatar.src = profile.avatarFallback; };
+            applyAvatarWithFallback(avatar, profile.icons);
             wrapper.appendChild(avatar);
         }
 
@@ -632,7 +684,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* =========================================================
-   3. RESONANSI ELEMEN, RESIN, PRIMOGEMS & WISH 32 KARAKTER ASLI
+   3. RESONANSI ELEMEN, RESIN, PRIMOGEMS & WISH GENSHIN ASLI
    ========================================================= */
 document.querySelectorAll(".v-orb").forEach(orb => {
     orb.addEventListener("click", () => {
@@ -699,8 +751,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Frostflake Heron",
         constellation: "Grus Nivis",
         quote: "Seorang pedang bagaikan teh; setelah pahitnya tempaan, tersisa keharuman abadi.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/5/51/Kamisato_Ayaka_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ayaka.webp"
+        code: "Ayaka"
     },
     {
         name: "Citlali",
@@ -712,8 +763,19 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Obsidian Tzitzimitl",
         constellation: "Patina Anima",
         quote: "Bintang-bintang sudah meramalkan kedatanganmu... b-bukan berarti aku menunggumu!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/2/23/Citlali_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Citlali.webp"
+        code: "Citlali"
+    },
+    {
+        name: "Furina",
+        star: 5,
+        rateUp: true,
+        element: "💧 Hydro",
+        weapon: "Sword",
+        region: "Fontaine",
+        title: "Endless Solo of Solitude",
+        constellation: "Animula Choragi",
+        quote: "Biarkan seluruh dunia bertepuk tangan untuk babak paling megah ini!",
+        code: "Furina"
     },
     {
         name: "Raiden Shogun",
@@ -725,21 +787,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Plane of Euthymia",
         constellation: "Imperatrix Umbrosa",
         quote: "Kilat abadi menerangi keheningan Narukami.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/2/24/Raiden_Shogun_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Shougun.webp"
-    },
-    {
-        name: "Furina",
-        star: 5,
-        rateUp: false,
-        element: "💧 Hydro",
-        weapon: "Sword",
-        region: "Fontaine",
-        title: "Endless Solo of Solitude",
-        constellation: "Animula Choragi",
-        quote: "Biarkan seluruh dunia bertepuk tangan untuk babak paling megah ini!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/e/e6/Furina_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Furina.webp"
+        code: "Shougun"
     },
     {
         name: "Mavuika",
@@ -751,8 +799,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Night-Igniting Flame",
         constellation: "Sol Invictus",
         quote: "Untuk Natlan, nyala api suci ini tidak akan pernah padam!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/e/e1/Mavuika_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Mavuika.webp"
+        code: "Mavuika"
     },
     {
         name: "Nahida",
@@ -764,8 +811,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Physic of Purity",
         constellation: "Sapientia Oromasdis",
         quote: "Segala pengetahuan di bawah naungan Irminsul terhubung dalam mimpi.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/f/f9/Nahida_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Nahida.webp"
+        code: "Nahida"
     },
     {
         name: "Zhongli",
@@ -777,8 +823,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Vago Mundo",
         constellation: "Lapis Dei",
         quote: "Osmanthus wine terasa sama seperti yang kuingat... di mana mereka yang berbagi kenangan?",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/a/a6/Zhongli_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Zhongli.webp"
+        code: "Zhongli"
     },
     {
         name: "Kaedehara Kazuha",
@@ -790,8 +835,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Scarlet Leaves Pursue Wild Waves",
         constellation: "Acer Palmatum",
         quote: "Awan berarak dan daun maple gugur; di mana pun angin bertiup, di situlah rumahku.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/e/e3/Kaedehara_Kazuha_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Kazuha.webp"
+        code: "Kazuha"
     },
     {
         name: "Neuvillette",
@@ -803,8 +847,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Ordainer of Inexorable Judgment",
         constellation: "Leviathan Judicator",
         quote: "Air mata langit Fontaine akhirnya menemukan keadilannya.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/2/21/Neuvillette_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Neuvillette.webp"
+        code: "Neuvillette"
     },
     {
         name: "Arlecchino",
@@ -816,8 +859,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Dire Balemoon",
         constellation: "Ignis Purgatorius",
         quote: "Bulan merah sabit akan membakar segala rantai takdir.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/9/9a/Arlecchino_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Arlecchino.webp"
+        code: "Arlecchino"
     },
     {
         name: "Ganyu",
@@ -829,8 +871,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Plenilune Gaze",
         constellation: "Sinae Unicornis",
         quote: "Semua demi kemakmuran Liyue dan kontrak bersama Rex Lapis.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/7/79/Ganyu_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Ganyu.webp"
+        code: "Ganyu"
     },
     {
         name: "Keqing",
@@ -842,8 +883,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Driving Thunder",
         constellation: "Trulla Cementarii",
         quote: "Ayo bergerak! Masa depan Liyue dibangun oleh tangan manusia sendiri.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/5/52/Keqing_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Keqing.webp"
+        code: "Keqing"
     },
     {
         name: "Mona",
@@ -855,8 +895,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Astral Reflection",
         constellation: "Astrolabos",
         quote: "Takdir manusia tertulis jelas di permukaan air dan cahaya bintang!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/4/41/Mona_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Mona.webp"
+        code: "Mona"
     },
     {
         name: "Jean",
@@ -868,8 +907,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Dandelion Knight",
         constellation: "Leo Minor",
         quote: "Angin, dengarkan doaku! Pedang ini untuk melindungi kebebasan Mondstadt.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/6/64/Jean_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Qin.webp"
+        code: "Qin"
     },
     {
         name: "Diluc",
@@ -881,8 +919,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "The Dark Side of Dawn",
         constellation: "Noctua",
         quote: "Fajar akan selalu menyingsing untuk mengusir bayang-bayang malam.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/3d/Diluc_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Diluc.webp"
+        code: "Diluc"
     },
     {
         name: "Tighnari",
@@ -894,8 +931,7 @@ const CHARACTER_ROSTER_5_STAR = [
         title: "Verdant Strider",
         constellation: "Vulpes Zerda",
         quote: "Jangan sembarangan memakan jamur liar di Hutan Avidya!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/8/87/Tighnari_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Tighnari.webp"
+        code: "Tighnari"
     }
 ];
 
@@ -909,8 +945,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Shadow of the Night-Wind",
         constellation: "Vampyrus Noctis",
         quote: "Nenek Citlali sering mengomel, tapi dia selalu menjaga semua orang.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/9/9f/Ororon_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Olorun.webp"
+        code: "Olorun"
     },
     {
         name: "Thoma",
@@ -921,8 +956,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Protector From Afar",
         constellation: "Rubeum Scutum",
         quote: "Serahkan urusan rumah tangga Klan Kamisato dan tameng api padaku!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/5/5b/Thoma_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Tohma.webp"
+        code: "Tohma"
     },
     {
         name: "Kujou Sara",
@@ -933,8 +967,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Crowfeather Kaburaya",
         constellation: "Flabellum",
         quote: "Demi keabadian Yang Mulia Raiden Shogun, panahku tak akan meleset.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/d/df/Kujou_Sara_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Sara.webp"
+        code: "Sara"
     },
     {
         name: "Xingqiu",
@@ -945,8 +978,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Juvenile Galant",
         constellation: "Fabulae Textile",
         quote: "Seni pedang Guhua mengalir tenang bagaikan hujan yang membasahi bumi.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/d/d4/Xingqiu_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Xingqiu.webp"
+        code: "Xingqiu"
     },
     {
         name: "Bennett",
@@ -957,8 +989,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Trial by Fire",
         constellation: "Rota Calamitas",
         quote: "Tim Petualang Benny siap berangkat! Meski sering sial, semangatku tak pernah padam!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/7/79/Bennett_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Bennett.webp"
+        code: "Bennett"
     },
     {
         name: "Fischl",
@@ -969,8 +1000,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Prinzessin der Verurteilung!",
         constellation: "Corvus",
         quote: "Aku, Prinzessin der Verurteilung, turun ke dunia fana bersama Oz!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/9/9a/Fischl_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Fischl.webp"
+        code: "Fischl"
     },
     {
         name: "Xiangling",
@@ -981,8 +1011,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Exquisite Delicacy",
         constellation: "Trulla",
         quote: "Ayo Guoba! Saatnya memasak hidangan paling pedas di Restoran Wanmin!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/39/Xiangling_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Xiangling.webp"
+        code: "Xiangling"
     },
     {
         name: "Sucrose",
@@ -993,8 +1022,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Harmless Sweetie",
         constellation: "Ampulla",
         quote: "Eksperimen bio-alkimia ini menghasilkan pusaran angin yang sangat stabil!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/0/0e/Sucrose_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Sucrose.webp"
+        code: "Sucrose"
     },
     {
         name: "Kuki Shinobu",
@@ -1005,8 +1033,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Mender of Tribulations",
         constellation: "Tribulatio Demptio",
         quote: "Selama aku di sini, Geng Arataki tidak akan berbuat ulah macam-macam.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/b/b3/Kuki_Shinobu_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Shinobu.webp"
+        code: "Shinobu"
     },
     {
         name: "Layla",
@@ -1017,8 +1044,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Fantastical Evening Star",
         constellation: "Luscinia",
         quote: "Bintang-bintang Rtawahist berputar... semoga skripsiku selesai sebelum pagi...",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/1/1a/Layla_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Layla.webp"
+        code: "Layla"
     },
     {
         name: "Faruzan",
@@ -1029,8 +1055,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Enigmatic Machinist",
         constellation: "Flosculi Implexi",
         quote: "Panggil aku Madam Faruzan! Pengalaman mekanik kuno seratus tahun bukan main-main.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/b/b2/Faruzan_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Faruzan.webp"
+        code: "Faruzan"
     },
     {
         name: "Charlotte",
@@ -1041,8 +1066,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Lens of Verity",
         constellation: "Hulda",
         quote: "Cekrek! Momen luar biasa ini pasti jadi berita utama di The Steambird!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/1/11/Charlotte_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Charlotte.webp"
+        code: "Charlotte"
     },
     {
         name: "Chevreuse",
@@ -1053,8 +1077,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Executor of Justice",
         constellation: "Sclopetum Ensiferum",
         quote: "Patroli Khusus Gardes akan menegakkan keadilan hingga peluru terakhir.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/3c/Chevreuse_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Chevreuse.webp"
+        code: "Chevreuse"
     },
     {
         name: "Gaming",
@@ -1065,8 +1088,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Leonine Vanguard",
         constellation: "Leo Expergiscens",
         quote: "Tarian Wushou membawa keberuntungan dan kehangatan dimsum ke seluruh Liyue!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/7/77/Gaming_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Gaming.webp"
+        code: "Gaming"
     },
     {
         name: "Kachina",
@@ -1077,8 +1099,7 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Mottled Gold",
         constellation: "Ochotona Princeps",
         quote: "Turbo Twirly siap meluncur! Aku pasti bisa membuktikan namaku di Natlan!",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/1/18/Kachina_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Kachina.webp"
+        code: "Kachina"
     },
     {
         name: "Rosaria",
@@ -1089,10 +1110,120 @@ const CHARACTER_ROSTER_4_STAR = [
         title: "Thorny Benevolence",
         constellation: "Spinea Corona",
         quote: "Biarlah bayang-bayang malam menyelesaikan pekerjaan kotor demi Mondstadt.",
-        icon: "https://static.wikia.nocookie.net/gensin-impact/images/3/35/Rosaria_Icon.png",
-        fallback: "https://api.hakush.in/gi/UI/UI_AvatarIcon_Rosaria.webp"
+        code: "Rosaria"
     }
 ];
+
+/* =========================================================
+   MESIN WISH GENSHIN IMPACT ASLI (METEOR + SPLASH REVEAL)
+   ========================================================= */
+let activeWishPulls = [];
+let currentRevealIndex = 0;
+let meteorTimeout = null;
+
+const wishOverlay = document.getElementById("wish-cinematic-overlay");
+const meteorStage = document.getElementById("wish-meteor-stage");
+const meteorTrail = document.getElementById("wish-meteor-trail");
+const revealStage = document.getElementById("wish-reveal-stage");
+const revealBgGlow = document.getElementById("reveal-bg-glow");
+const revealCharImg = document.getElementById("reveal-char-img");
+const revealElement = document.getElementById("reveal-element");
+const revealName = document.getElementById("reveal-name");
+const revealStars = document.getElementById("reveal-stars");
+const revealSubtitle = document.getElementById("reveal-subtitle");
+const revealQuote = document.getElementById("reveal-quote");
+const revealCounter = document.getElementById("reveal-counter");
+
+function playWishMeteorSound(isFiveStar) {
+    try {
+        const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctxAudio.createOscillator();
+        const gain = ctxAudio.createGain();
+        osc.type = isFiveStar ? "triangle" : "sine";
+        osc.frequency.setValueAtTime(isFiveStar ? 440 : 330, ctxAudio.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(isFiveStar ? 1320 : 880, ctxAudio.currentTime + 1.4);
+        gain.gain.setValueAtTime(0.16, ctxAudio.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctxAudio.currentTime + 1.8);
+        osc.connect(gain);
+        gain.connect(ctxAudio.destination);
+        osc.start();
+        osc.stop(ctxAudio.currentTime + 1.8);
+    } catch (e) {}
+}
+
+function showRevealCharacter(index) {
+    if (index >= activeWishPulls.length) {
+        finishWishCinematic();
+        return;
+    }
+
+    currentRevealIndex = index;
+    const charData = activeWishPulls[index];
+
+    meteorStage.classList.add("hidden");
+    revealStage.classList.remove("hidden");
+
+    revealBgGlow.className = `reveal-bg-glow star-${charData.star}`;
+    applyAvatarWithFallback(revealCharImg, getCharIcons(charData.code));
+
+    revealElement.textContent = `${charData.element} • ${charData.region}`;
+    revealName.textContent = charData.name;
+    revealStars.textContent = "★".repeat(charData.star);
+    revealSubtitle.textContent = `"${charData.title}" • ${charData.constellation}`;
+    revealQuote.textContent = `“${charData.quote}”`;
+    revealCounter.textContent = `${index + 1} / ${activeWishPulls.length} • Klik layar untuk lanjut`;
+}
+
+function finishWishCinematic() {
+    clearTimeout(meteorTimeout);
+    wishOverlay.classList.add("hidden");
+    meteorStage.classList.add("hidden");
+    revealStage.classList.add("hidden");
+    renderWishSummaryGrid(activeWishPulls);
+}
+
+document.getElementById("skip-wish-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    clearTimeout(meteorTimeout);
+    showRevealCharacter(0);
+});
+
+document.getElementById("skip-reveal-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    finishWishCinematic();
+});
+
+revealStage.addEventListener("click", () => {
+    showRevealCharacter(currentRevealIndex + 1);
+});
+
+function renderWishSummaryGrid(pulls) {
+    wishResults.innerHTML = "";
+    pulls.forEach(charData => {
+        const card = document.createElement("div");
+        card.className = `wish-item star-${charData.star}`;
+        card.innerHTML = `
+            <div class="wish-card-banner-img">
+                <img alt="${charData.name}">
+            </div>
+            <div class="wish-char-head">
+                <div class="wish-stars">${"★".repeat(charData.star)} ${charData.rateUp ? "• RATE UP" : ""}</div>
+                <h4>${charData.name}</h4>
+                <div class="wish-char-title">"${charData.title}"</div>
+            </div>
+            <div class="wish-meta-tags">
+                <span class="wish-tag">${charData.element}</span>
+                <span class="wish-tag">⚔️ ${charData.weapon}</span>
+                <span class="wish-tag">🗺️ ${charData.region}</span>
+            </div>
+            <p class="wish-quote">“${charData.quote}”</p>
+        `;
+
+        const imgEl = card.querySelector("img");
+        applyAvatarWithFallback(imgEl, getCharIcons(charData.code));
+        wishResults.appendChild(card);
+    });
+}
 
 function doWish(count) {
     const cost = count * 160;
@@ -1102,7 +1233,7 @@ function doWish(count) {
     }
 
     updatePrimogems(-cost);
-    wishResults.innerHTML = "";
+    const pulls = [];
 
     for (let i = 0; i < count; i++) {
         pityCounter++;
@@ -1112,7 +1243,7 @@ function doWish(count) {
         const fiveStarChance = pityCounter >= 90 ? 100 : (pityCounter >= 74 ? 28 : 4.5);
 
         if (rand < fiveStarChance) {
-            if (Math.random() < 0.55) {
+            if (Math.random() < 0.60) {
                 const rateUpChars = CHARACTER_ROSTER_5_STAR.filter(c => c.rateUp);
                 charData = rateUpChars[Math.floor(Math.random() * rateUpChars.length)];
             } else {
@@ -1124,34 +1255,30 @@ function doWish(count) {
             charData = CHARACTER_ROSTER_4_STAR[Math.floor(Math.random() * CHARACTER_ROSTER_4_STAR.length)];
         }
 
-        const card = document.createElement("div");
-        card.className = `wish-item star-${charData.star}`;
-        card.innerHTML = `
-            <div class="wish-card-top">
-                <img 
-                    class="wish-char-avatar" 
-                    src="${charData.icon}" 
-                    alt="${charData.name}"
-                    onerror="this.src='${charData.fallback}'"
-                >
-                <div class="wish-char-head">
-                    <div class="wish-stars">${"★".repeat(charData.star)} ${charData.rateUp ? "• RATE UP" : ""}</div>
-                    <h4>${charData.name}</h4>
-                    <div class="wish-char-title">"${charData.title}"</div>
-                </div>
-            </div>
-            <div class="wish-meta-tags">
-                <span class="wish-tag">${charData.element}</span>
-                <span class="wish-tag">⚔️ ${charData.weapon}</span>
-                <span class="wish-tag">🗺️ ${charData.region}</span>
-                <span class="wish-tag">✨ ${charData.constellation}</span>
-            </div>
-            <p class="wish-quote">“${charData.quote}”</p>
-        `;
-        wishResults.appendChild(card);
+        pulls.push(charData);
     }
 
     pityDisplay.textContent = pityCounter;
+
+    // Urutkan karakter 5★ di awal saat Splash Reveal agar dramatis seperti Genshin asli
+    activeWishPulls = [...pulls].sort((a, b) => b.star - a.star);
+    const hasFiveStar = activeWishPulls.some(c => c.star === 5);
+
+    // Jalankan Animasi Meteor Jatuh
+    wishOverlay.classList.remove("hidden");
+    revealStage.classList.add("hidden");
+    meteorStage.classList.remove("hidden");
+
+    meteorTrail.className = `wish-meteor-trail ${hasFiveStar ? "gold-meteor" : "purple-meteor"}`;
+    // Reset animasi CSS
+    void meteorTrail.offsetWidth;
+
+    playWishMeteorSound(hasFiveStar);
+
+    clearTimeout(meteorTimeout);
+    meteorTimeout = setTimeout(() => {
+        showRevealCharacter(0);
+    }, 2200);
 }
 
 /* =========================================================
